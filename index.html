@@ -71,6 +71,8 @@ const SUPABASE_KEY = 'sb_publishable_2FD2bNN5kt9U954xwnfidg_HEZu7b2M';
 const ALLOWED_DOMAINS = ['headroyce.org'];
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+try { const r = new URLSearchParams(location.search).get('ref'); if (r) localStorage.setItem('ref', r.trim().toLowerCase()); } catch (e) {}
+const savedRef = () => { try { return localStorage.getItem('ref') || ''; } catch (e) { return ''; } };
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const root = document.documentElement;
@@ -157,8 +159,8 @@ function chart(id){
   return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto">${grid}<path d="${d}" fill="none" stroke="var(--acc)" stroke-width="2"/>${xs}<text x="${L + pw / 2}" y="${H - 6}" text-anchor="middle" font-size="11" fill="var(--mut)">Trade number (Open = starting odds)</text><text transform="rotate(-90)" x="${-(TP + ph / 2)}" y="12" text-anchor="middle" font-size="11" fill="var(--mut)">YES probability (%)</text></svg>`;
 }
 
-// ---------- auth ----------
-function authView(){
+// ----------  ----------
+function View(){
   $('#app').innerHTML = `<div style="max-width:420px;margin:12vh auto;padding:16px"><div class="card"><h1>EagleEye Market</h1>
   <p class="mut">Please sign up with your Head-Royce email</p>
   <input id="u" placeholder="Username (sign up only)"><input id="e" type="email" placeholder="Email"><input id="p" type="password" placeholder="Password">
@@ -168,7 +170,7 @@ function authView(){
 async function auth(login){
   const email = $('#e').value, password = $('#p').value;
   if (!login && ALLOWED_DOMAINS.length && !ALLOWED_DOMAINS.includes(email.split('@').pop().toLowerCase())) return toast('Please use your ' + ALLOWED_DOMAINS.join(' or ') + ' email.');
-  const r = login ? await sb.auth.signInWithPassword({email, password}) : await sb.auth.signUp({email, password, options:{data:{username:$('#u').value}}});
+  const r = login ? await sb.auth.signInWithPassword({email, password}) : await sb.auth.signUp({email, password, options:{data:{username:$('#u').value, referred_by:savedRef()}}});
   if (r.error) return toast(r.error.message);
   if (!r.data.session) return toast('Check your email to confirm, then log in.');
   load();
@@ -417,9 +419,14 @@ const pgAdmin = () => `<h1>Admin tools</h1><div class="grid"><div class="card"><
   <div class="card"><b>Promote by username</b><input id="pu" placeholder="Username"><div class="row"><button onclick="setRole($('#pu').value,'admin')">Make admin</button></div></div>
   <div class="card"><b>Current admins</b><table>${STAFF.filter(s => s.role === 'admin').map(s => `<tr><td>${esc(s.username)}</td><td><button class="g" data-u="${esc(s.username)}" onclick="setRole(this.dataset.u,'user')">Remove</button></td></tr>`).join('') || '<tr><td class="mut">None yet</td></tr>'}</table></div></div>`;
 
-const pgAccount = () => `<h1>Account</h1><div class="card narrow"><b>${esc(me.username)}</b> <span class="chip">${me.role}</span><p class="mut">${(+me.balance).toFixed(1)} tokens</p></div>
-  ${me.role === 'user' ? `<div class="card narrow"><b>Have an admin invite code?</b><input id="ic" placeholder="Code"><div class="row"><button onclick="redeem()">Redeem</button></div></div>` : ''}`;
+const refLink = () => location.origin + location.pathname + '?ref=' + me.referral_code;
 
+const pgAccount = () => `<h1>Account</h1><div class="card narrow"><b>${esc(me.username)}</b> <span class="chip">${me.role}</span><p class="mut">${(+me.balance).toFixed(1)} tokens</p></div>
+  <div class="card narrow"><b>Your referral link</b>
+    <p class="mut">Each friend who signs up and confirms their email earns you both a bonus.</p>
+    <input readonly value="${refLink()}" onclick="this.select()">
+    <div class="row"><button onclick="navigator.clipboard.writeText(refLink());toast('Link copied')">Copy link</button></div></div>
+  ${me.role === 'user' ? `<div class="card narrow"><b>Have an admin invite code?</b><input id="ic" placeholder="Code"><div class="row"><button onclick="redeem()">Redeem</button></div></div>` : ''}`;
 // ---------- shell + router ----------
 function render(){
   if (!me) return authView();
