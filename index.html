@@ -221,7 +221,8 @@ const FETCH = {
 
 async function ensureExtras(){
   if (!me) return;
-  const keys = new Set(EXTRAS[curPage()] || []);
+  const page = (location.hash.slice(2) || 'markets').split('/')[0];
+  const keys = new Set(EXTRAS[page] || []);
   if (me.role !== 'user') keys.add('pr');
   const stale = [...keys].filter(k => !AT[k] || Date.now() - AT[k] > TTL[k]);
   if (!stale.length) return;
