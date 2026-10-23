@@ -262,6 +262,12 @@ async function ensureExtras(){
     if (r.error) AT[k] = 0;
     LOADED[k] = true;
   }));
+  const cur = (location.hash.slice(2) || 'markets').split('/')[0];
+  if (stale.length === 1 && stale[0] === 'ev' && cur === page && page !== 'race') {
+    const rb = $('#rb');
+    if (rb) rb.innerHTML = refBanner();
+    return;
+  }
   render();
 }
 
@@ -347,7 +353,7 @@ function refBanner(){
     : '<b>Referral Race!</b> Bring a friend and you BOTH score ' + REFERRAL_BONUS + ' tokens! The player with the most referrals by ' + raceEnd() + ' wins ' + REV.prize + ' bonus tokens!';
   return `<div class="race-bar">
     <div class="blurb">${blurb}</div>
-    <div class="lk"><b>Your Link</b><input readonly value="${refLink()}" onclick="this.select()" aria-label="Your Link">
+    <div class="lk"><b>Your Link</b><input readonly value="${esc(refLink())}" onclick="this.select()" aria-label="Your Link">
     <button onclick="navigator.clipboard.writeText(refLink());toast('Link copied! Go share it!')">Copy it!</button></div>
     <span class="rc">Your referrals: <b>${REV.mine}</b>!</span>
     <a href="#/race">See the leaderboard!</a></div>`;
@@ -363,7 +369,7 @@ function pgRace(){
   const standing = at >= 0 ? 'You are #' + (at + 1) + '!' : (REV.mine > 0 ? 'Not in the top 10 yet. Keep sharing!' : 'No referrals yet. Go get your first!');
   return `<div class="race-hero"><h1>Referral Race!</h1>
     <p>Share your link and race to the top! When a friend signs up through it and confirms their email, you each get ${REFERRAL_BONUS} tokens! The player with the most confirmed referrals wins a bonus ${REV.prize} tokens! Ties go to whoever reached the count first, so be quick!</p>
-    <div class="lk" style="margin-top:14px;max-width:480px"><b>Your Link</b><input readonly value="${refLink()}" onclick="this.select()" aria-label="Your Link">
+    <div class="lk" style="margin-top:14px;max-width:480px"><b>Your Link</b><input readonly value="${esc(refLink())}" onclick="this.select()" aria-label="Your Link">
     <button onclick="navigator.clipboard.writeText(refLink());toast('Link copied! Go share it!')">Copy it!</button></div>
     <div class="race-stats"><span class="rc">${status}</span><span class="rc">Your referrals: <b>${REV.mine}</b>!</span><span class="rc">${standing}</span></div></div>
   <div class="race-board"><b>Top 10 racers!</b>${rows ? `<table><tr><th></th><th>Player</th><th>Referrals</th></tr>${rows}</table>` : '<p class="mut">No referrals yet. Be the first!</p>'}</div>`;
@@ -485,7 +491,7 @@ const refLink = () => location.origin + location.pathname + '?ref=' + me.referra
 const pgAccount = () => `<h1>Account</h1><div class="card narrow"><b>${esc(me.username)}</b> <span class="chip">${me.role}</span><p class="mut">${(+me.balance).toFixed(1)} tokens</p></div>
   <div class="card narrow"><b>Your referral link</b>
     <p class="mut">Every friend who signs up and confirms their email earns you BOTH a bonus! Share it and rack up referrals!</p>
-    <input readonly value="${refLink()}" onclick="this.select()">
+    <input readonly value="${esc(refLink())}" onclick="this.select()">
     <div class="row"><button onclick="navigator.clipboard.writeText(refLink());toast('Link copied! Go share it!')">Copy link</button></div></div>
   ${me.role === 'user' ? `<div class="card narrow"><b>Have an admin invite code?</b><input id="ic" placeholder="Code"><div class="row"><button onclick="redeem()">Redeem</button></div></div>` : ''}`;
 
@@ -497,7 +503,7 @@ function render(){
   const [pg, arg] = (location.hash.slice(2) || 'markets').split('/');
   const staff = me.role !== 'user', owner = me.role === 'owner';
   const pend = PR.filter(p => p.status === 'pending').length;
-  const link = (id, label, badge, cls) => `<a href="#/${id}" class="${cls || ''} ${id === pg || (id === 'markets' && pg === 'market') ? 'on' : ''}">${label}${badge ? `<span class="chip">${badge}</span>` : ''}</a>`;
+  const link = (id, label, badge, cls) => `<a href="#/${id}" class="${cls ? cls + ' ' : ''}${id === pg || (id === 'markets' && pg === 'market') ? 'on' : ''}">${label}${badge ? `<span class="chip">${badge}</span>` : ''}</a>`;
   const pages = {markets: pgMarkets, market: () => pgMarket(+arg), portfolio: pgPortfolio, leaderboard: pgBoard, race: pgRace, rules: pgRules, suggest: pgSuggest, create: pgCreate, review: pgReview, admin: pgAdmin, account: pgAccount};
   const ok = {create: staff, review: staff, admin: owner, suggest: !staff};
   const waiting = BLOCKING[pg] && (EXTRAS[pg] || []).some(k => !LOADED[k]);
@@ -509,7 +515,7 @@ function render(){
     ${owner ? link('admin', 'Admin tools') : ''}${link('account', 'Account')}
     <div class="card" style="margin:auto 0 0"><b>${esc(me.username)}</b> <span class="chip">${me.role}</span><div class="mut">${(+me.balance).toFixed(1)} tokens</div>
     <div class="row"><button class="g" onclick="toggleTheme()">${root.dataset.theme === 'dark' ? 'Light mode' : 'Dark mode'}</button><button class="g" onclick="sb.auth.signOut().then(load)">Log out</button></div></div>
-    </nav><main><div class="card split"><b id="cd">${cdText()}</b><a href="#/rules">Rules</a></div>${pg === 'race' ? '' : refBanner()}${body}</main></div>`;
+    </nav><main><div class="card split"><b id="cd">${cdText()}</b><a href="#/rules">Rules</a></div><div id="rb">${pg === 'race' ? '' : refBanner()}</div>${body}</main></div>`;
 
   for (const k in keep) {
     const el = document.getElementById(k);
