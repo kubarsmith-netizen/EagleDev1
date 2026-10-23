@@ -61,8 +61,10 @@ nav a.hot.on{outline:2px solid #fff9;outline-offset:-2px}
 .race-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:12px 16px;margin:0 0 16px;border-radius:12px;color:#fff;background:linear-gradient(110deg,#0891b2,#059669 48%,#db2777);box-shadow:0 2px 14px #0891b255}
 .race-bar .blurb{flex:2 1 280px;font-size:14px;line-height:1.4;text-shadow:0 1px 2px #0005}
 .race-bar a{color:#fff;white-space:nowrap;font-weight:600}
-.race-bar input{flex:1 1 200px;max-width:300px;width:auto;min-width:0;margin:0;padding:7px 10px;font-size:13px;background:#ffffff26;border:1px solid #ffffff66;color:#fff}
-.race-bar button{background:#fff;color:#0b4f5c;font-weight:600;padding:7px 12px}
+.lk{display:flex;align-items:center;gap:8px;flex:1 1 320px;min-width:0}
+.lk b{white-space:nowrap}
+.lk input{flex:1 1 120px;max-width:260px;width:auto;min-width:0;margin:0;padding:7px 10px;font-size:13px;background:#ffffff26;border:1px solid #ffffff66;color:#fff}
+.lk button{background:#fff;color:#0b4f5c;font-weight:600;padding:7px 12px;white-space:nowrap}
 .rc{display:inline-block;background:#0003;border-radius:10px;padding:4px 12px;white-space:nowrap}
 nav a.race{background:linear-gradient(110deg,#0891b2,#059669 50%,#db2777);color:#fff;font-weight:700;margin:6px 0;box-shadow:0 2px 12px #0891b255}
 nav a.race:hover{filter:brightness(1.1);background:linear-gradient(110deg,#0891b2,#059669 50%,#db2777)}
@@ -341,28 +343,30 @@ function refBanner(){
   if (!REV) return '';
   const ended = Date.now() >= new Date(REV.ends_at);
   const blurb = ended
-    ? 'The Referral Race is over' + (REV.winner ? '. Winner: <b>' + esc(REV.winner) + '</b>.' : '.') + ' You and a friend still get ' + REFERRAL_BONUS + ' tokens each when they join with your link.'
-    : '<b>Referral Race:</b> you and a friend each get ' + REFERRAL_BONUS + ' tokens when they join with your link. Most referrals by ' + raceEnd() + ' wins ' + REV.prize + ' more.';
+    ? 'The Referral Race is over!' + (REV.winner ? ' Congrats to our winner, <b>' + esc(REV.winner) + '</b>!' : '') + ' Keep sharing: you and a friend still each get ' + REFERRAL_BONUS + ' tokens when they join with your link!'
+    : '<b>Referral Race!</b> Bring a friend and you BOTH score ' + REFERRAL_BONUS + ' tokens! The player with the most referrals by ' + raceEnd() + ' wins ' + REV.prize + ' bonus tokens!';
   return `<div class="race-bar">
     <div class="blurb">${blurb}</div>
-    <input readonly value="${refLink()}" onclick="this.select()" aria-label="Your referral link">
-    <button onclick="navigator.clipboard.writeText(refLink());toast('Link copied')">Copy link</button>
-    <span class="rc">Your referrals: <b>${REV.mine}</b></span>
-    <a href="#/race">See leaderboard</a></div>`;
+    <div class="lk"><b>Your Link</b><input readonly value="${refLink()}" onclick="this.select()" aria-label="Your Link">
+    <button onclick="navigator.clipboard.writeText(refLink());toast('Link copied! Go share it!')">Copy it!</button></div>
+    <span class="rc">Your referrals: <b>${REV.mine}</b>!</span>
+    <a href="#/race">See the leaderboard!</a></div>`;
 }
 
 function pgRace(){
-  if (!REV) return '<h1>Referral Race</h1><p class="mut">No race is running right now.</p>';
+  if (!REV) return '<h1>Referral Race!</h1><p class="mut">No race is running right now. Check back soon!</p>';
   const ended = Date.now() >= new Date(REV.ends_at);
   const lead = REV.leaders || [];
   const at = lead.findIndex(r => r.username === me.username);
   const rows = lead.map((r, i) => `<tr class="${r.username === me.username ? 'mine' : ''}"><td><span class="rank r${i < 3 ? i + 1 : 0}">${i + 1}</span></td><td>${esc(r.username)}</td><td><b>${r.n}</b></td></tr>`).join('');
-  const status = ended ? (REV.winner ? 'Winner: <b>' + esc(REV.winner) + '</b> (+' + REV.prize + ' tokens)' : 'The race has ended') : 'Ends ' + raceEnd();
-  const standing = at >= 0 ? 'You are #' + (at + 1) : (REV.mine > 0 ? 'Outside the top 10' : 'No referrals yet');
-  return `<div class="race-hero"><h1>Referral Race</h1>
-    <p>Share your link. When a friend signs up through it and confirms their email, you each get ${REFERRAL_BONUS} tokens. The player with the most confirmed referrals wins an extra <b>${REV.prize} tokens</b>. Ties go to whoever reached the count first.</p>
-    <div class="race-stats"><span class="rc">${status}</span><span class="rc">Your referrals: <b>${REV.mine}</b></span><span class="rc">${standing}</span></div></div>
-  <div class="race-board"><b>Top 10</b>${rows ? `<table><tr><th></th><th>Player</th><th>Referrals</th></tr>${rows}</table>` : '<p class="mut">No referrals yet. Be the first!</p>'}</div>`;
+  const status = ended ? (REV.winner ? 'Winner: <b>' + esc(REV.winner) + '</b>! (+' + REV.prize + ' tokens!)' : 'The race has ended!') : 'Ends ' + raceEnd() + '!';
+  const standing = at >= 0 ? 'You are #' + (at + 1) + '!' : (REV.mine > 0 ? 'Not in the top 10 yet. Keep sharing!' : 'No referrals yet. Go get your first!');
+  return `<div class="race-hero"><h1>Referral Race!</h1>
+    <p>Share your link and race to the top! When a friend signs up through it and confirms their email, you each get ${REFERRAL_BONUS} tokens! The player with the most confirmed referrals wins a bonus ${REV.prize} tokens! Ties go to whoever reached the count first, so be quick!</p>
+    <div class="lk" style="margin-top:14px;max-width:480px"><b>Your Link</b><input readonly value="${refLink()}" onclick="this.select()" aria-label="Your Link">
+    <button onclick="navigator.clipboard.writeText(refLink());toast('Link copied! Go share it!')">Copy it!</button></div>
+    <div class="race-stats"><span class="rc">${status}</span><span class="rc">Your referrals: <b>${REV.mine}</b>!</span><span class="rc">${standing}</span></div></div>
+  <div class="race-board"><b>Top 10 racers!</b>${rows ? `<table><tr><th></th><th>Player</th><th>Referrals</th></tr>${rows}</table>` : '<p class="mut">No referrals yet. Be the first!</p>'}</div>`;
 }
 
 function pgMarkets(){
@@ -480,9 +484,9 @@ const refLink = () => location.origin + location.pathname + '?ref=' + me.referra
 
 const pgAccount = () => `<h1>Account</h1><div class="card narrow"><b>${esc(me.username)}</b> <span class="chip">${me.role}</span><p class="mut">${(+me.balance).toFixed(1)} tokens</p></div>
   <div class="card narrow"><b>Your referral link</b>
-    <p class="mut">Each friend who signs up and confirms their email earns you both a bonus.</p>
+    <p class="mut">Every friend who signs up and confirms their email earns you BOTH a bonus! Share it and rack up referrals!</p>
     <input readonly value="${refLink()}" onclick="this.select()">
-    <div class="row"><button onclick="navigator.clipboard.writeText(refLink());toast('Link copied')">Copy link</button></div></div>
+    <div class="row"><button onclick="navigator.clipboard.writeText(refLink());toast('Link copied! Go share it!')">Copy link</button></div></div>
   ${me.role === 'user' ? `<div class="card narrow"><b>Have an admin invite code?</b><input id="ic" placeholder="Code"><div class="row"><button onclick="redeem()">Redeem</button></div></div>` : ''}`;
 
 // ---------- shell + router ----------
@@ -500,12 +504,12 @@ function render(){
   const body = !pages[pg] ? '<p>Page not found.</p>' : (pg in ok && !ok[pg]) ? '<p class="mut">You do not have access to this page.</p>' : waiting ? '<p class="mut">Loading...</p>' : pages[pg]();
 
   $('#app').innerHTML = `<div id="shell"><nav><h2 style="margin:0 12px 14px">EagleEye Market</h2>
-    ${link('markets', 'Markets')}${link('portfolio', 'Portfolio')}${link('leaderboard', 'Leaderboard')}${link('race', 'Referral Race', '', 'race')}${link('rules', 'Rules')}
+    ${link('markets', 'Markets')}${link('portfolio', 'Portfolio')}${link('leaderboard', 'Leaderboard')}${link('race', 'Referral Race!', '', 'race')}${link('rules', 'Rules')}
     ${staff ? link('create', 'Create market') + link('review', 'Review suggestions', pend || '') : link('suggest', 'Suggest a market')}
     ${owner ? link('admin', 'Admin tools') : ''}${link('account', 'Account')}
     <div class="card" style="margin:auto 0 0"><b>${esc(me.username)}</b> <span class="chip">${me.role}</span><div class="mut">${(+me.balance).toFixed(1)} tokens</div>
     <div class="row"><button class="g" onclick="toggleTheme()">${root.dataset.theme === 'dark' ? 'Light mode' : 'Dark mode'}</button><button class="g" onclick="sb.auth.signOut().then(load)">Log out</button></div></div>
-    </nav><main><div class="card split"><b id="cd">${cdText()}</b><a href="#/rules">Rules</a></div>${refBanner()}${body}</main></div>`;
+    </nav><main><div class="card split"><b id="cd">${cdText()}</b><a href="#/rules">Rules</a></div>${pg === 'race' ? '' : refBanner()}${body}</main></div>`;
 
   for (const k in keep) {
     const el = document.getElementById(k);
@@ -603,7 +607,7 @@ async function checkReferralAlerts(){
   if (!me) return;
   const {data} = await sb.rpc('claim_referral_alerts');
   if (data && data.length) {
-    toast('New referral: ' + data.map(x => x.username).join(', ') + ' joined with your link! Bonus added.');
+    toast('New referral! ' + data.map(x => x.username).join(', ') + ' joined with your link! Bonus added!');
     AT.ev = 0;
     load();
   }
