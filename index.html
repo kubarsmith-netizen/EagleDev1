@@ -76,7 +76,7 @@ const savedRef = () => { try { return localStorage.getItem('ref') || ''; } catch
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const root = document.documentElement;
-let me = null, markets = [], P = [], CD = [], T = [], LB = [], STAFF = [], INV = [], PR = [], FINAL = [], ACT = {}, MT = {}, MTok = {}, FILTER = 'open';
+let REV = null, me = null, markets = [], P = [], CD = [], T = [], LB = [], STAFF = [], INV = [], PR = [], FINAL = [], ACT = {}, MT = {}, MTok = {}, FILTER = 'open';
 
 const SEASON_END = new Date('2026-12-18T15:20:00-08:00');
 
@@ -178,15 +178,14 @@ async function auth(login){
 
 // ---------- data ----------
 const AT = {}, LOADED = {};
-const TTL = {act:60e3, pts:60e3, lb:30e3, final:300e3, staff:60e3, inv:60e3, pr:60e3};
-const EXTRAS = {markets:['act'], market:['pts'], leaderboard:['lb','final'], admin:['staff','inv','final'], suggest:['pr'], review:['pr']};
+const TTL = {ev:60e3, act:60e3, pts:60e3, lb:30e3, final:300e3, staff:60e3, inv:60e3, pr:60e3};
+const EXTRAS = {markets:['act','ev'], market:['pts'], leaderboard:['lb','final'], admin:['staff','inv','final'], suggest:['pr'], review:['pr']};
 const BLOCKING = {leaderboard:1, admin:1, suggest:1, review:1};
 
 const FETCH = {
-  act: async () => {
-    const r = await sb.rpc('market_activity');
-    ACT = {};
-    (r.data || []).forEach(x => { ACT[x.market_id] = x.recent; });
+  ev: async () => {
+    const r = await sb.rpc('referral_event_info');
+    REV = r.data || null;
     return r;
   },
   pts: async () => {
@@ -307,10 +306,23 @@ const sorters = {
   active: (a, b) => (ACT[b.id] || 0) - (ACT[a.id] || 0),
   closing: (a, b) => (a.closes_at ? new Date(a.closes_at) : Infinity) - (b.closes_at ? new Date(b.closes_at) : Infinity) || 0
 };
+function refBanner(){
+  if (!REV) return '';
+  const ended = Date.now() >= new Date(REV.ends_at);
+  const rows = (REV.leaders || []).map((r, i) => `<tr${r.username === me.username ? ' style="font-weight:600"' : ''}><td>${i+1}</td><td>${esc(r.username)}</td><td>${r.n}</td></tr>`).join('');
+  const msg = ended
+    ? (REV.winner ? 'Final winner: <b>' + esc(REV.winner) + '</b>' : 'The event has ended.')
+    : 'Share your link from the Account page. Whoever refers the most friends who join and confirm their email by ' + new Date(REV.ends_at).toLocaleString([], {dateStyle:'medium', timeStyle:'short'}) + ' wins ' + REV.prize + ' tokens.';
+  return `<div class="card" style="border-color:var(--acc)">
+    <div class="split"><b>Referral Race</b><span class="chip">${REV.prize} token prize</span></div>
+    <p class="mut">${msg}</p>
+    <p>Your referrals: <b>${REV.mine}</b></p>
+    ${rows ? `<table><tr><th>#</th><th>Player</th><th>Referrals</th></tr>${rows}</table>` : '<p class="mut">No referrals yet. Be the first!</p>'}</div>`;
+}
 
 function pgMarkets(){
   const list = markets.filter(m => FILTER === 'all' || (FILTER === 'open') === (m.status === 'open')).sort(sorters[SORT]);
-  return `<h1>Markets</h1><div class="tabs">${['open','resolved','all'].map(f => `<button class="${FILTER === f ? '' : 'g'}" onclick="setFilter('${f}')">${f[0].toUpperCase() + f.slice(1)}</button>`).join('')}<select style="margin-left:auto" onchange="setSort(this.value)">${Object.entries(SORTS).map(([k, v]) => `<option value="${k}"${SORT === k ? ' selected' : ''}>${v}</option>`).join('')}</select></div>
+  return `<h1>Markets</h1>${refBanner()}<div class="tabs">${['open','resolved','all'].map(f => `<button class="${FILTER === f ? '' : 'g'}" onclick="setFilter('${f}')">${f[0].toUpperCase() + f.slice(1)}</button>`).join('')}<select style="margin-left:auto" onchange="setSort(this.value)">${Object.entries(SORTS).map(([k, v]) => `<option value="${k}"${SORT === k ? ' selected' : ''}>${v}</option>`).join('')}</select></div>
   <div class="grid">${list.map(m => {
     const y = py(m), mine = P.some(p => p.market_id === m.id);
     return `<a class="card mk" href="#/market/${m.id}">${tags(m)}<b>${esc(m.question)}</b>${m.proposed_by ? `<div class="mut">Suggested by ${esc(m.proposed_by)}</div>` : ''}
@@ -541,7 +553,18 @@ const setRole = (u, r) => rpc('set_role', {p_username:u, p_role:r});
 const recordFinal = () => confirm('Record the final standings now? This can only be done once.') && rpc('record_final_standings');
 const redeem = () => rpc('redeem_invite', {p_code:$('#ic').value});
 
-load();
+async function checkReferralAlerts(){
+  if (!me) return;
+  const {data} = await sb.rpc('claim_referral_alerts');
+  if (data && data.length) {
+    toast('New referral: ' + data.map(x => x.username).join(', ') + ' joined with your link! Bonus added.');
+    AT.ev = 0;
+    load();
+  }
+}
+setInterval(() => { if (!document.hidden) checkReferralAlerts(); }, 30000);
+
+load().then(checkReferralAlerts);
 </script>
 </body>
 </html>
