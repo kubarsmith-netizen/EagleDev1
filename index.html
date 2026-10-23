@@ -504,7 +504,7 @@ function render(){
   const body = !pages[pg] ? '<p>Page not found.</p>' : (pg in ok && !ok[pg]) ? '<p class="mut">You do not have access to this page.</p>' : waiting ? '<p class="mut">Loading...</p>' : pages[pg]();
 
   $('#app').innerHTML = `<div id="shell"><nav><h2 style="margin:0 12px 14px">EagleEye Market</h2>
-    ${link('markets', 'Markets')}${link('portfolio', 'Portfolio')}${link('leaderboard', 'Leaderboard')}${link('race', 'Referral Race!', '', 'race')}${link('rules', 'Rules')}
+    ${link('race', 'Referral Race!', '', 'race')}${link('markets', 'Markets')}${link('portfolio', 'Portfolio')}${link('leaderboard', 'Leaderboard')}${link('rules', 'Rules')}
     ${staff ? link('create', 'Create market') + link('review', 'Review suggestions', pend || '') : link('suggest', 'Suggest a market')}
     ${owner ? link('admin', 'Admin tools') : ''}${link('account', 'Account')}
     <div class="card" style="margin:auto 0 0"><b>${esc(me.username)}</b> <span class="chip">${me.role}</span><div class="mut">${(+me.balance).toFixed(1)} tokens</div>
