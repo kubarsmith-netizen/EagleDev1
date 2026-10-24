@@ -79,6 +79,16 @@ nav a.race.on{outline:2px solid #fff9;outline-offset:-2px}
 .rank.r2{background:linear-gradient(135deg,#e5e7eb,#9ca3af);color:#1f2937}
 .rank.r3{background:linear-gradient(135deg,#f59e0b,#b45309);color:#fff}
 tr.mine td{background:#0891b21f;font-weight:600}
+/* STREAKS: floating badge, panel, and leaderboard side card */
+#stk{position:fixed;right:20px;bottom:20px;z-index:8;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.stk-btn{background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:10px 16px;font-size:16px;box-shadow:0 4px 14px #0003}
+.stk-btn.off{opacity:.75}
+.stk-panel{background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:12px;padding:14px;width:260px;box-shadow:0 4px 14px #0003}
+.stk-panel p{margin:6px 0 0}
+.boardwrap{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;align-items:start}
+.boardwrap>div{min-width:0}
+.side-board th,.side-board td{padding:6px 8px;font-size:13px}
+@media(max-width:1000px){.boardwrap{grid-template-columns:1fr}}
 </style>
 <link rel="icon" href="/favicon.ico">
 </head>
@@ -99,6 +109,7 @@ const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const root = document.documentElement;
 let REV = null, me = null, markets = [], P = [], CD = [], T = [], LB = [], STAFF = [], INV = [], PR = [], FINAL = [], ACT = {}, MT = {}, MTok = {}, FILTER = 'open';
+let STK = null, SBD = [], STK_OPEN = false; /* STREAKS state */
 
 const SEASON_END = new Date('2026-12-18T15:20:00-08:00');
 
@@ -200,8 +211,8 @@ async function auth(login){
 
 // ---------- data ----------
 const AT = {}, LOADED = {};
-const TTL = {ev:60e3, act:60e3, pts:60e3, lb:30e3, final:300e3, staff:60e3, inv:60e3, pr:60e3};
-const EXTRAS = {markets:['act'], market:['pts'], leaderboard:['lb','final'], race:['ev'], admin:['staff','inv','final'], suggest:['pr'], review:['pr']};
+const TTL = {ev:60e3, act:60e3, pts:60e3, lb:30e3, final:300e3, staff:60e3, inv:60e3, pr:60e3, streak:60e3, sboard:60e3};
+const EXTRAS = {markets:['act'], market:['pts'], leaderboard:['lb','final','sboard'], race:['ev'], admin:['staff','inv','final'], suggest:['pr'], review:['pr']};
 const BLOCKING = {leaderboard:1, race:1, admin:1, suggest:1, review:1};
 
 const FETCH = {
@@ -245,6 +256,17 @@ const FETCH = {
     const r = await sb.from('proposals').select('id,question,closes_at,status,note,profiles(username)').order('created_at', {ascending:false}).limit(100);
     PR = r.data || [];
     return r;
+  },
+  /* STREAKS fetchers */
+  streak: async () => {
+    const r = await sb.rpc('my_streak');
+    STK = (r.data && r.data[0]) || null;
+    return r;
+  },
+  sboard: async () => {
+    const r = await sb.rpc('streak_board');
+    SBD = r.data || [];
+    return r;
   }
 };
 
@@ -253,6 +275,7 @@ async function ensureExtras(){
   const page = (location.hash.slice(2) || 'markets').split('/')[0];
   const keys = new Set(EXTRAS[page] || []);
   keys.add('ev'); // the referral banner appears on every page
+  keys.add('streak'); // STREAKS: the badge appears on every page
   if (me.role !== 'user') keys.add('pr');
   const stale = [...keys].filter(k => !AT[k] || Date.now() - AT[k] > TTL[k]);
   if (!stale.length) return;
@@ -263,9 +286,12 @@ async function ensureExtras(){
     LOADED[k] = true;
   }));
   const cur = (location.hash.slice(2) || 'markets').split('/')[0];
-  if (stale.length === 1 && stale[0] === 'ev' && cur === page && page !== 'race') {
+  if (stale.every(k => k === 'ev' || k === 'streak') && cur === page && page !== 'race') {
+    // only the banner and the streak badge changed: update just those, so typing is never interrupted
     const rb = $('#rb');
     if (rb) rb.innerHTML = refBanner();
+    const sw = $('#stkw');
+    if (sw) sw.innerHTML = streakBadge();
     return;
   }
   render();
@@ -274,6 +300,7 @@ async function ensureExtras(){
 function resetCaches(){
   for (const k in AT) delete AT[k];
   for (const k in LOADED) delete LOADED[k];
+  STK = null; SBD = []; STK_OPEN = false; // STREAKS: clear on logout
 }
 
 async function load(){
@@ -387,6 +414,13 @@ function pgMarkets(){
   }).join('') || '<p class="mut">No markets here yet.</p>'}</div>`;
 }
 
+/* STREAKS: preview of the cash-out bonus (profit only), using the server's current bonus % */
+const stkLine = (m, p) => {
+  if (!STK) return '';
+  const b = Math.max(0, positionValue(m, p) - (+p.invested)) * (+STK.bonus_pct) / 100;
+  return b >= 0.005 ? `<br>Streak bonus: +${b.toFixed(2)}` : '';
+};
+
 function pgMarket(id){
   const m = markets.find(x => x.id === id);
   if (!m) return '<p>Market not found. <a href="#/markets">Back to markets</a></p>';
@@ -402,7 +436,7 @@ function pgMarket(id){
 
   const pos = mine.map(p => {
     const v = positionValue(m, p);
-    return `<div class="row split"><span><b>${p.side.toUpperCase()}</b><br>Invested: ${(+p.invested).toFixed(1)}<br>Bought at: ${(boughtAtPrice(m, p) * 100).toFixed(0)}%<br>Now: ${(sidePrice(m, p.side) * 100).toFixed(0)}%<br>Cash out for: ${v.toFixed(1)}</span>
+    return `<div class="row split"><span><b>${p.side.toUpperCase()}</b><br>Invested: ${(+p.invested).toFixed(1)}<br>Bought at: ${(boughtAtPrice(m, p) * 100).toFixed(0)}%<br>Now: ${(sidePrice(m, p.side) * 100).toFixed(0)}%<br>Cash out for: ${v.toFixed(1)}${stkLine(m, p)}</span>
     <button class="g" ${i.locked || i.closed || !i.open ? 'disabled' : ''} onclick="sell(${id},'${p.side}')">Cash out</button></div>`;
   }).join('');
 
@@ -437,8 +471,20 @@ function pgPortfolio(){
     <tr><th>Market</th><th>Side</th><th>Invested</th><th>Bought at</th><th>Now</th><th>Cash out for</th><th></th></tr>${tr}</table></div>` : '<p class="mut">No open positions yet. Pick a market to start.</p>'}`;
 }
 
-const pgBoard = () => `<h1>${FINAL.length ? 'Final standings' : 'Leaderboard'}</h1><p class="mut">${FINAL.length ? 'Recorded when the season ended.' : 'Everyone by cash plus open stakes (at cost).'}</p><div class="card"><table><tr><th>#</th><th>Player</th><th>Tokens</th></tr>
+/* STREAKS: the original leaderboard is kept as pgBoardMain; pgBoard now wraps it with a side card */
+const pgBoardMain = () => `<h1>${FINAL.length ? 'Final standings' : 'Leaderboard'}</h1><p class="mut">${FINAL.length ? 'Recorded when the season ended.' : 'Everyone by cash plus open stakes (at cost).'}</p><div class="card"><table><tr><th>#</th><th>Player</th><th>Tokens</th></tr>
   ${(FINAL.length ? FINAL : LB).map((r, i) => `<tr${r.username === me.username ? ' style="font-weight:600"' : ''}><td>${i+1}</td><td>${esc(r.username)}</td><td>${(+r.score).toFixed(1)}</td></tr>`).join('')}</table></div>`;
+
+const pgStreakSide = () => {
+  const pts = {};
+  LB.forEach(r => { pts[r.username] = +r.score; });
+  const rows = SBD.slice(0, 10).map((r, i) => `<tr${r.username === me.username ? ' style="font-weight:600"' : ''}><td>${i+1}</td><td>${esc(r.username)}</td><td>🔥 ${r.streak}</td><td>${pts[r.username] !== undefined ? pts[r.username].toFixed(1) : '-'}</td></tr>`).join('');
+  return `<div class="card side-board"><b>Streak leaders</b>
+  <p class="mut">Make 5 or more trades in a day to build a streak. Each streak day adds 0.1% to your cash-out profit, up to 10%.</p>
+  ${SBD.length ? `<table><tr><th>#</th><th>Player</th><th>Streak</th><th>Tokens</th></tr>${rows}</table>` : '<p class="mut">No streaks yet.</p>'}</div>`;
+};
+
+const pgBoard = () => `<div class="boardwrap"><div>${pgBoardMain()}</div>${pgStreakSide()}</div>`;
 
 const statusRows = (list, who) => list.map(p => `<tr><td>${esc(p.question)}</td>${who ? `<td>${esc(p.profiles ? p.profiles.username : 'deleted user')}</td>` : ''}<td><span class="chip">${p.status}</span></td><td>${p.note ? esc(p.note) : '<span class="mut">none</span>'}</td></tr>`).join('');
 
@@ -460,6 +506,7 @@ const pgRules = () => `<h1>Rules</h1><div class="card" style="max-width:760px">
 <li>No love life markets.</li>
 <li>No insults of any kind and no comments about identity, about a specific person or any group of people.</li>
 </ul>
+  <h2>Daily streaks</h2><p>Make at least 5 trades in a day to build a streak. Buys and cash-outs both count, and days run midnight to midnight Pacific Time. Each streak day adds 0.1% to the profit on your cash-outs, up to 10%. Missing a day resets the bonus to 0%.</p>
   <h2>Fair play</h2><p>One account per person. Duplicate accounts or cheating can lead to disqualification. Collusion with other users is highly prohibited, though influencing the results of a market is encouraged. Automated trading programs will result in immediate disqualification.</p></div>`;
 
 const pgSuggest = () => `<h1>Suggest a market</h1><p class="mut">An admin reviews every suggestion before it goes live.</p>
@@ -495,6 +542,24 @@ const pgAccount = () => `<h1>Account</h1><div class="card narrow"><b>${esc(me.us
     <div class="row"><button onclick="navigator.clipboard.writeText(refLink());toast('Link copied! Go share it!')">Copy link</button></div></div>
   ${me.role === 'user' ? `<div class="card narrow"><b>Have an admin invite code?</b><input id="ic" placeholder="Code"><div class="row"><button onclick="redeem()">Redeem</button></div></div>` : ''}`;
 
+// ---------- STREAKS: floating badge shown on every page ----------
+const toggleStk = () => { STK_OPEN = !STK_OPEN; render(); };
+function streakBadge(){
+  if (!STK) return '';
+  const n = +STK.streak, t = +STK.today_trades, g = +STK.goal, pct = +STK.bonus_pct;
+  const need = Math.max(0, g - t);
+  const status = need === 0
+    ? 'Today\'s goal is done. Your streak is safe.'
+    : (n > 0 ? `Make ${need} more trade${need === 1 ? '' : 's'} today to keep your streak.` : `Make ${need} more trade${need === 1 ? '' : 's'} today to start a streak.`);
+  const panel = STK_OPEN ? `<div class="stk-panel"><b>Daily streak</b>
+    <p>Streak: <b>${n}</b> day${n === 1 ? '' : 's'}</p>
+    <p>Trades today: <b>${t} / ${g}</b></p>
+    <p>Cash-out bonus: <b>${pct.toFixed(1)}%</b> of profit</p>
+    <p class="mut">${status}</p>
+    <p class="mut">+0.1% per streak day, max 10%. Missing a day resets it to 0%. Days run midnight to midnight Pacific.</p></div>` : '';
+  return `<div id="stk">${panel}<button class="stk-btn${n ? '' : ' off'}" onclick="toggleStk()" aria-label="Streak details" title="Daily trading streak">🔥 <b>${n}</b></button></div>`;
+}
+
 // ---------- shell + router ----------
 function render(){
   if (!me) return authView();
@@ -515,7 +580,7 @@ function render(){
     ${owner ? link('admin', 'Admin tools') : ''}${link('account', 'Account')}
     <div class="card" style="margin:auto 0 0"><b>${esc(me.username)}</b> <span class="chip">${me.role}</span><div class="mut">${(+me.balance).toFixed(1)} tokens</div>
     <div class="row"><button class="g" onclick="toggleTheme()">${root.dataset.theme === 'dark' ? 'Light mode' : 'Dark mode'}</button><button class="g" onclick="sb.auth.signOut().then(load)">Log out</button></div></div>
-    </nav><main><div class="card split"><b id="cd">${cdText()}</b><a href="#/rules">Rules</a></div><div id="rb">${pg === 'race' ? '' : refBanner()}</div>${body}</main></div>`;
+    </nav><main><div class="card split"><b id="cd">${cdText()}</b><a href="#/rules">Rules</a></div><div id="rb">${pg === 'race' ? '' : refBanner()}</div>${body}</main></div><div id="stkw">${streakBadge()}</div>`;
 
   for (const k in keep) {
     const el = document.getElementById(k);
