@@ -80,11 +80,20 @@ nav a.race.on{outline:2px solid #fff9;outline-offset:-2px}
 .rank.r3{background:linear-gradient(135deg,#f59e0b,#b45309);color:#fff}
 tr.mine td{background:#0891b21f;font-weight:600}
 /* STREAKS: floating badge, panel, and leaderboard side card */
-#stk{position:fixed;right:20px;bottom:20px;z-index:8;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
-.stk-btn{background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:10px 16px;font-size:16px;box-shadow:0 4px 14px #0003}
-.stk-btn.off{opacity:.75}
-.stk-panel{background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:12px;padding:14px;width:260px;box-shadow:0 4px 14px #0003}
+#stk{position:fixed;top:16px;right:20px;z-index:8;display:flex;flex-direction:column-reverse;align-items:flex-end;gap:10px}
+.stk-btn{display:flex;align-items:center;gap:8px;color:#fff;border:0;border-radius:999px;padding:12px 24px;font-size:26px;line-height:1;font-weight:700;background:linear-gradient(135deg,#ff9a1f,#ef2d2d 55%,#c026d3);box-shadow:0 6px 22px #ef2d2d88,inset 0 0 0 2px #ffffff55;text-shadow:0 1px 3px #0006}
+.stk-btn b{font-size:28px}
+.stk-btn:hover{filter:brightness(1.1)}
+.stk-btn.t2{background:linear-gradient(135deg,#ef2d2d,#c026d3 55%,#6d28d9);box-shadow:0 6px 22px #c026d388,inset 0 0 0 2px #ffffff55}
+.stk-btn.t3{background:linear-gradient(135deg,#fbbf24,#f97316 40%,#db2777 75%,#7c3aed);box-shadow:0 6px 24px #fbbf2499,inset 0 0 0 2px #ffffff77}
+.stk-btn.off{background:linear-gradient(135deg,#64748b,#334155);box-shadow:0 4px 14px #33415566,inset 0 0 0 2px #ffffff33}
+@keyframes stkpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.stk-btn:not(.off){animation:stkpulse 2.4s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){.stk-btn{animation:none!important}}
+.stk-panel{color:var(--fg);border:2px solid transparent;border-radius:14px;padding:14px 16px;width:280px;background:linear-gradient(var(--card),var(--card)) padding-box,linear-gradient(135deg,#ff9a1f,#ef2d2d,#c026d3) border-box;box-shadow:0 8px 24px #0004}
 .stk-panel p{margin:6px 0 0}
+@media(min-width:861px){main{padding-right:165px}}
+@media(max-width:860px){#stk{top:auto;bottom:16px;right:12px;flex-direction:column}.stk-btn{font-size:20px;padding:10px 18px}.stk-btn b{font-size:22px}}
 .boardwrap{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;align-items:start}
 .boardwrap>div{min-width:0}
 .side-board th,.side-board td{padding:6px 8px;font-size:13px}
@@ -557,7 +566,7 @@ function streakBadge(){
     <p>Cash-out bonus: <b>${pct.toFixed(1)}%</b> of profit</p>
     <p class="mut">${status}</p>
     <p class="mut">+0.1% per streak day, max 10%. Missing a day resets it to 0%. Days run midnight to midnight Pacific.</p></div>` : '';
-  return `<div id="stk">${panel}<button class="stk-btn${n ? '' : ' off'}" onclick="toggleStk()" aria-label="Streak details" title="Daily trading streak">🔥 <b>${n}</b></button></div>`;
+  return `<div id="stk">${panel}<button class="stk-btn${n >= 30 ? ' t3' : n >= 7 ? ' t2' : n ? '' : ' off'}" onclick="toggleStk()" aria-label="Streak details" title="Daily trading streak">🔥 <b>${n}</b></button></div>`;
 }
 
 // ---------- shell + router ----------
