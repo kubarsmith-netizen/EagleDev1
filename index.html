@@ -3,93 +3,112 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://qwkmyncxomibcpmlguxj.supabase.co wss://qwkmyncxomibcpmlguxj.supabase.co; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://qwkmyncxomibcpmlguxj.supabase.co wss://qwkmyncxomibcpmlguxj.supabase.co; img-src 'self' data: blob: https://qwkmyncxomibcpmlguxj.supabase.co; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <title>EagleEye Market</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root,[data-theme=light]{--bg:#f6f6f7;--fg:#111;--card:#fff;--mut:#6b7280;--line:#e5e7eb;--yes:#16885a;--no:#c0392b;--acc:#4a78c2;--side:#fff;--hov:#f0f1f3}
-[data-theme=dark]{--bg:#0d0d0e;--fg:#ededee;--card:#161617;--mut:#9a9aa0;--line:#26262a;--yes:#3ecf8e;--no:#ef6a62;--acc:#5b8bd9;--side:#111112;--hov:#1d1d1f}
-[data-theme=slate]{--bg:#1f2227;--fg:#e8e9ec;--card:#282c33;--mut:#9aa0ab;--line:#383d46;--yes:#3ecf8e;--no:#ef6a62;--acc:#6b93d6;--side:#1a1d21;--hov:#30343c}
-[data-theme=midnight]{--bg:#0a0f1a;--fg:#e6ebf5;--card:#111826;--mut:#8d9ab3;--line:#1f2a3d;--yes:#3ecf8e;--no:#ef6a62;--acc:#5b8bd9;--side:#0c1320;--hov:#172236}
+:root,[data-theme=light]{--bg:#f3f6fb;--fg:#0f172a;--card:#fff;--mut:#5b6678;--line:#dde3ee;--bd:#a9b6cc;--yes:#16885a;--no:#c0392b;--acc:#2f6bd8;--side:#fff;--hov:#eaf1fd}
+[data-theme=dark]{--bg:#0b0f17;--fg:#ececf0;--card:#141a26;--mut:#98a2b5;--line:#232c3d;--bd:#41506c;--yes:#3ecf8e;--no:#ef6a62;--acc:#5b9bff;--side:#0f141e;--hov:#1a2336}
+[data-theme=slate]{--bg:#1e2228;--fg:#e8eaee;--card:#272c34;--mut:#9ba3b0;--line:#363c47;--bd:#566073;--yes:#3ecf8e;--no:#ef6a62;--acc:#6aa0f5;--side:#191c21;--hov:#303642}
+[data-theme=midnight]{--bg:#081022;--fg:#e6ecf8;--card:#0f1a33;--mut:#8d9bb8;--line:#1b2a4a;--bd:#35508a;--yes:#3ecf8e;--no:#ef6a62;--acc:#4d9cff;--side:#0a1429;--hov:#15244a}
+[data-theme=custom]{--side:var(--card);--line:color-mix(in srgb,var(--fg) 16%,var(--bg));--bd:color-mix(in srgb,var(--fg) 34%,var(--bg));--hov:color-mix(in srgb,var(--acc) 12%,var(--card));--mut:color-mix(in srgb,var(--fg) 58%,var(--bg))}
+:root{--grad:linear-gradient(120deg,color-mix(in srgb,var(--acc) 22%,var(--card)),color-mix(in srgb,var(--acc) 5%,var(--card)))}
 [data-pat=dots] body{background-image:radial-gradient(var(--line) 1px,transparent 1px);background-size:16px 16px}
 [data-pat=grid] body{background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:28px 28px}
 [data-pat=lines] body{background-image:repeating-linear-gradient(45deg,var(--line) 0 1px,transparent 1px 14px)}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
-h1{margin:0 0 6px;font-size:22px;font-weight:600;letter-spacing:-.01em}
-h2{font-size:15px;font-weight:600;margin:24px 0 8px}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+h1{margin:0 0 8px;font-size:25px;font-weight:600;letter-spacing:-.01em}
+h2{font-size:16px;font-weight:600;margin:26px 0 10px}
 #shell{display:flex;min-height:100vh}
-nav{width:196px;flex-shrink:0;background:var(--side);border-right:1px solid var(--line);padding:16px 10px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:1px}
+nav{width:196px;flex-shrink:0;background:var(--side);border-right:1.5px solid var(--bd);padding:16px 10px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:1px;font-size:14px}
 nav h2{margin:0 10px 14px;font-size:14px;letter-spacing:.02em}
 nav a{padding:7px 10px;border-radius:6px;color:var(--mut);text-decoration:none;display:flex;gap:10px;align-items:center;font-weight:500}
 nav a svg{flex-shrink:0}
 nav a .chip{margin-left:auto}
 nav a:hover{background:var(--hov);color:var(--fg)}
 nav a.on{background:var(--hov);color:var(--fg);font-weight:600}
-nav a.me{margin-top:auto;border:1px solid var(--line);padding:8px;color:var(--fg);line-height:1.25}
-nav a.me:hover{border-color:var(--acc)}
+nav a.on svg{color:var(--acc)}
+nav a.me{margin-top:auto;border:1.5px solid var(--bd);padding:8px;color:var(--fg);line-height:1.25}
+nav a.me:hover,nav a.me.on{border-color:var(--acc)}
 nav a.me .av{width:30px;height:30px;font-size:16px;margin:0}
-main{flex:1;padding:28px 36px;min-width:0}
-.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin:0 0 14px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+main{flex:1;padding:30px 38px;min-width:0}
+.card{background:var(--card);border:1.5px solid var(--bd);border-radius:8px;padding:16px;margin:0 0 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
 .grid .card{margin:0}
 .two{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin-top:16px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}
-.stats .card{margin:0}
-.mk{color:inherit;text-decoration:none;display:block}
-.mk:hover{border-color:var(--acc)}
-.narrow{max-width:520px}
-.big{font-size:22px;font-weight:600}
-.bar{height:6px;border-radius:3px;background:var(--no);overflow:hidden;margin:10px 0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:16px 0}
+.stats .card{margin:0;border-top:3px solid var(--acc)}
+.mk{color:inherit;text-decoration:none;display:block;padding:22px;border-width:2px;transition:transform .12s,box-shadow .12s,border-color .12s}
+.mk:hover{border-color:var(--acc);transform:translateY(-2px);box-shadow:0 6px 20px color-mix(in srgb,var(--acc) 28%,transparent)}
+.mk b{display:block;font-size:18px;line-height:1.35}
+.mk .bar{height:12px;margin:14px 0}
+.mk .split{font-size:19px;font-weight:600}
+.narrow{max-width:540px}
+.big{font-size:23px;font-weight:600}
+.bar{height:8px;border-radius:4px;background:var(--no);overflow:hidden;margin:10px 0}
 .bar i{display:block;height:100%;background:var(--yes)}
 .split{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
-.mut{color:var(--mut);font-size:13px}
+.mut{color:var(--mut);font-size:13.5px}
 a{color:var(--acc)}
-.chip{background:var(--hov);color:var(--mut);border-radius:8px;padding:0 7px;font-size:11px}
-.tags{margin:0 0 8px}
-.tag{display:inline-block;padding:1px 8px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--bg);background:var(--fg);border-radius:4px}
-input,button,select{font:inherit;padding:8px 11px;border-radius:7px;border:1px solid var(--line);background:var(--bg);color:var(--fg)}
-input{width:100%;margin-top:8px}
+.chip{background:var(--hov);color:var(--acc);border:1px solid var(--bd);border-radius:6px;padding:0 7px;font-size:11px;font-weight:600}
+.tags{margin:0 0 10px}
+.tag{display:inline-block;padding:2px 10px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,#38bdf8,#2563eb);border-radius:4px}
+input,button,select,textarea{font:inherit;padding:9px 12px;border-radius:6px;border:1.5px solid var(--bd);background:var(--bg);color:var(--fg)}
+input,textarea{width:100%;margin-top:8px}
+textarea{resize:vertical}
+input:focus,textarea:focus,select:focus{outline:0;border-color:var(--acc);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 25%,transparent)}
 label{display:block;flex:1;min-width:140px}
 label input{margin-top:4px}
-button{cursor:pointer;background:var(--acc);color:#fff;border:0;font-weight:500}
+button{cursor:pointer;background:var(--acc);color:#fff;border:1.5px solid var(--acc);font-weight:500}
 button:disabled{opacity:.4;cursor:default}
-button.y{background:var(--yes)}button.n{background:var(--no)}
-button.g{background:none;color:var(--fg);border:1px solid var(--line)}
-button.g:hover:not(:disabled){border-color:var(--acc)}
-.sel{outline:2px solid var(--acc)}
+button.y{background:var(--yes);border-color:var(--yes)}button.n{background:var(--no);border-color:var(--no)}
+button.g{background:none;color:var(--fg);border:1.5px solid var(--bd)}
+button.g:hover:not(:disabled){border-color:var(--acc);color:var(--acc)}
+.btn{display:inline-block;padding:9px 14px;border-radius:6px;background:var(--acc);color:#fff;cursor:pointer;font-weight:500}
+label.up{flex:none;min-width:0}
+.clr input{padding:2px;height:38px;cursor:pointer}
+.sel{outline:2px solid var(--acc);outline-offset:1px}
 table{width:100%;border-collapse:collapse}
-th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
-th{color:var(--mut);font-weight:500;font-size:12px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line)}
+th{color:var(--acc);font-weight:600;font-size:12px;border-bottom:2px solid var(--bd);text-transform:uppercase;letter-spacing:.04em}
 .mine td{font-weight:600;background:var(--hov)}
-.tabs{display:flex;gap:8px;margin:12px 0 16px}
-#t{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:9px 16px;border-radius:8px;display:none;max-width:90%;z-index:9}
-.av{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--hov);font-size:12px;font-weight:600;flex-shrink:0;margin-right:6px;vertical-align:middle;color:var(--fg)}
+.tabs{display:flex;gap:8px;margin:12px 0 18px}
+#t{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--acc);color:#fff;padding:10px 18px;border-radius:8px;display:none;max-width:90%;z-index:9}
+.av{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--hov);border:1px solid var(--bd);font-size:12px;font-weight:600;flex-shrink:0;margin-right:6px;vertical-align:middle;color:var(--fg);overflow:hidden}
+.av img{width:100%;height:100%;object-fit:cover}
 .nm{display:inline-flex;align-items:center;max-width:100%;border-radius:6px;padding:1px 8px 1px 2px;white-space:nowrap}
 .nm.bn{padding:2px 10px 2px 3px}
 .avs{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-top:10px}
 .avs button{padding:5px;font-size:18px}
-.race-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:10px 14px;margin:0 0 14px;border-radius:10px;border:1px solid var(--line);border-left:3px solid var(--acc);background:var(--card)}
+main>.card.split:first-child{background:var(--grad)}
+.race-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:12px 16px;margin:0 0 16px;border-radius:8px;border:1.5px solid var(--bd);border-left:4px solid var(--acc);background:var(--grad)}
 .race-bar .blurb{flex:2 1 280px}
 .lk{display:flex;align-items:center;gap:8px;flex:1 1 300px;min-width:0}
 .lk b{white-space:nowrap}
 .lk input{flex:1 1 120px;max-width:260px;width:auto;min-width:0;margin:0;padding:6px 9px;font-size:13px}
 .lk button{padding:6px 11px;white-space:nowrap}
-.rc{display:inline-block;background:var(--hov);border-radius:8px;padding:3px 10px;white-space:nowrap}
+.rc{display:inline-block;background:var(--card);border:1px solid var(--bd);border-radius:6px;padding:3px 10px;white-space:nowrap}
 .race-stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.rank{display:inline-block;min-width:24px;height:24px;line-height:24px;text-align:center;border-radius:50%;background:var(--hov);font-weight:600;font-size:12px}
-.rank.r1{background:var(--acc);color:#fff}
-#stk{position:fixed;top:28px;right:36px;z-index:8;display:flex;flex-direction:column-reverse;align-items:flex-end;gap:8px}
-.stk-btn{display:flex;align-items:center;gap:6px;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:15px}
-.stk-btn.off{opacity:.7}
-.stk-panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;width:260px}
+.rank{display:inline-block;min-width:26px;height:26px;line-height:24px;text-align:center;border-radius:6px;background:var(--hov);border:1px solid var(--bd);font-weight:600;font-size:12px}
+.rank.r1{background:var(--acc);border-color:var(--acc);color:#fff}
+#stk{position:fixed;top:26px;right:36px;z-index:8;display:flex;flex-direction:column-reverse;align-items:flex-end;gap:10px}
+.stk-btn{display:flex;align-items:center;gap:8px;color:#fff;border:0;border-radius:999px;padding:10px 22px;font-size:22px;line-height:1;font-weight:700;background:linear-gradient(135deg,#7dd3fc,#3b82f6 55%,#1d4ed8);box-shadow:0 6px 22px #3b82f6bb,inset 0 0 0 2px #ffffff77;text-shadow:0 1px 3px #0b2a6a88}
+.stk-btn b{font-size:24px}
+.stk-btn:hover{filter:brightness(1.1)}
+.stk-btn.off{background:linear-gradient(135deg,#bae6fd,#60a5fa);box-shadow:0 4px 14px #60a5fa88,inset 0 0 0 2px #ffffff77}
+@keyframes stkpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.stk-btn:not(.off){animation:stkpulse 2.6s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){.stk-btn{animation:none!important}}
+.stk-panel{background:var(--card);border:2px solid var(--acc);border-radius:8px;padding:14px 16px;width:280px}
 .stk-panel p{margin:6px 0 0}
-@media(min-width:861px){main>.card.split:first-child{margin-right:100px}}
-.boardwrap{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+@media(min-width:861px){main>.card.split:first-child{margin-right:120px}}
+.boardwrap{display:grid;grid-template-columns:3fr 2fr;gap:20px;align-items:start}
 .boardwrap>div{min-width:0}
+.sm table{font-size:13px}.sm th,.sm td{padding:6px 8px}
 @media(max-width:1000px){.boardwrap{grid-template-columns:1fr}}
 @media(max-width:860px){#shell{flex-direction:column}nav{width:auto;height:auto;position:static;flex-direction:row;flex-wrap:wrap}nav h2{width:100%}nav a.me{margin-top:0}main{padding:16px}.two,.stats{grid-template-columns:1fr 1fr}.two{grid-template-columns:1fr}#stk{top:auto;bottom:16px;right:12px}}
 </style>
@@ -113,18 +132,22 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>'
 const root = document.documentElement;
 let REV = null, me = null, markets = [], P = [], CD = [], T = [], LB = [], STAFF = [], INV = [], PR = [], FINAL = [], ACT = {}, MT = {}, MTok = {}, FILTER = 'open';
 let STK = null, SBD = [], STK_OPEN = false;
-let CO = {}, SHOP = [], OWN = [], STAT = null, HIST = [];
+let CO = {}, SHOP = [], OWN = [], STAT = null, HIST = [], IDEAS = [];
 
 const AV = ['🦅','🐺','🦊','🐼','🐯','🦁','🐸','🐙','🦉','🐧','🦄','🐲','🚀','⚡','🌙','🔥','🎯','🎲','🎸','📈','🧠','👾','🎨','🏀'];
-const THEMES = {light:'Light', dark:'Dark', slate:'Slate', midnight:'Midnight'};
+const THEMES = {light:'Light', dark:'Dark', slate:'Slate', midnight:'Midnight', custom:'Custom'};
+const CK = {bg:'--bg', card:'--card', fg:'--fg', acc:'--acc'};
+const AVURL = SUPABASE_URL + '/storage/v1/object/public/avatars/';
 const PATS = {none:'None', dots:'Dots', grid:'Grid', lines:'Lines'};
-const IC = {race:'M5 21V4M5 4h11l-2 4 2 4H5', markets:'M3 17l6-6 4 4 8-8M15 7h6v6', portfolio:'M3 8h18v12H3zM8 8V5h8v3', leaderboard:'M6 20V10M12 20V4M18 20v-7', shop:'M5 7h14l-1 13H6zM9 7a3 3 0 016 0', rules:'M6 3h12v18H6zM9 8h6M9 12h6', suggest:'M12 5v14M5 12h14', create:'M12 5v14M5 12h14', review:'M5 12l5 5 9-10', admin:'M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z'};
+const IC = {race:'M5 21V4M5 4h11l-2 4 2 4H5', markets:'M3 17l6-6 4 4 8-8M15 7h6v6', portfolio:'M3 8h18v12H3zM8 8V5h8v3', leaderboard:'M6 20V10M12 20V4M18 20v-7', shop:'M5 7h14l-1 13H6zM9 7a3 3 0 016 0', rules:'M6 3h12v18H6zM9 8h6M9 12h6', suggest:'M12 5v14M5 12h14', create:'M12 5v14M5 12h14', review:'M5 12l5 5 9-10', admin:'M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z', ideas:'M9 18h6M10 21h4M12 3a6 6 0 00-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0012 3z'};
 const svg = d => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg>`;
 
 // avatar + banner + icon + name, wherever a name appears
 const avatar = (u, s) => {
-  const a = (CO[u] || {}).avatar, i = a ? +a.slice(1) : -1;
-  return `<span class="av"${s ? ` style="width:${s}px;height:${s}px;font-size:${Math.round(s * .55)}px"` : ''}>${AV[i] || esc(String(u || '?')[0].toUpperCase())}</span>`;
+  const c = (me && u === me.username) ? me : (CO[u] || {}), st = s ? ` style="width:${s}px;height:${s}px;font-size:${Math.round(s * .55)}px"` : '';
+  if (c.avatar_path) return `<span class="av"${st}><img src="${AVURL}${esc(c.avatar_path)}" alt="" onerror="this.remove()"></span>`;
+  const i = c.avatar ? +c.avatar.slice(1) : -1;
+  return `<span class="av"${st}>${AV[i] || esc(String(u || '?')[0].toUpperCase())}</span>`;
 };
 const nm = u => {
   const c = CO[u] || {}, ic = SHOP.find(x => x.id === c.icon), bn = SHOP.find(x => x.id === c.banner);
@@ -155,7 +178,12 @@ function setTheme(t){
   setTheme(THEMES[t] ? t : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
 })();
 const toggleTheme = () => { setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark'); render(); };
-const applyLook = () => { if (me.theme && THEMES[me.theme]) setTheme(me.theme); root.dataset.pat = me.pattern || 'none'; };
+const applyLook = () => {
+  if (me.theme && THEMES[me.theme]) setTheme(me.theme);
+  for (const k in CK) root.style.removeProperty(CK[k]);
+  if (me.theme === 'custom' && me.colors) for (const k in CK) if (/^#[0-9a-f]{6}$/i.test(me.colors[k] || '')) root.style.setProperty(CK[k], me.colors[k]);
+  root.dataset.pat = me.pattern || 'none';
+};
 
 const go = h => { location.hash = '#/' + h; };
 const toast = m => {
@@ -220,9 +248,9 @@ async function auth(login){
 
 // ---------- data ----------
 const AT = {}, LOADED = {};
-const TTL = {ev:60e3, act:60e3, pts:60e3, lb:30e3, final:300e3, staff:60e3, inv:60e3, pr:60e3, streak:60e3, sboard:60e3, co:60e3, shop:60e3, stats:30e3, hist:30e3};
-const EXTRAS = {markets:['act'], market:['pts'], leaderboard:['lb','final','sboard'], race:['ev'], admin:['staff','inv','final'], suggest:['pr'], review:['pr'], shop:['shop'], account:['stats','hist','shop']};
-const BLOCKING = {leaderboard:1, race:1, admin:1, suggest:1, review:1, shop:1, account:1};
+const TTL = {ev:60e3, act:60e3, pts:60e3, lb:30e3, final:300e3, staff:60e3, inv:60e3, pr:60e3, streak:60e3, sboard:60e3, co:60e3, shop:60e3, stats:30e3, hist:30e3, ideas:30e3};
+const EXTRAS = {markets:['act'], market:['pts'], leaderboard:['lb','final','sboard'], race:['ev'], admin:['staff','inv','final'], suggest:['pr'], review:['pr'], shop:['shop'], account:['stats','hist','shop'], ideas:['ideas']};
+const BLOCKING = {leaderboard:1, race:1, admin:1, suggest:1, review:1, shop:1, account:1, ideas:1};
 
 const FETCH = {
   ev: async () => { const r = await sb.rpc('referral_event_info'); REV = r.data || null; return r; },
@@ -242,7 +270,8 @@ const FETCH = {
     return a.error ? a : b;
   },
   stats: async () => { const r = await sb.rpc('my_stats'); STAT = (r.data && r.data[0]) || null; return r; },
-  hist: async () => { const r = await sb.rpc('my_trades'); HIST = r.data || []; return r; }
+  hist: async () => { const r = await sb.rpc('my_trades'); HIST = r.data || []; return r; },
+  ideas: async () => { const r = await sb.from('site_ideas').select('id,body,status,created_at,profiles(username)').order('created_at', {ascending:false}).limit(200); IDEAS = r.data || []; return r; }
 };
 
 async function ensureExtras(){
@@ -271,7 +300,7 @@ async function ensureExtras(){
 function resetCaches(){
   for (const k in AT) delete AT[k];
   for (const k in LOADED) delete LOADED[k];
-  STK = null; SBD = []; STK_OPEN = false; CO = {}; SHOP = []; OWN = []; STAT = null; HIST = [];
+  STK = null; SBD = []; STK_OPEN = false; CO = {}; SHOP = []; OWN = []; STAT = null; HIST = []; IDEAS = [];
 }
 
 async function load(){
@@ -409,16 +438,15 @@ function pgPortfolio(){
   return `<h1>Portfolio</h1>${rows.length ? `<div class="card"><table><tr><th>Market</th><th>Side</th><th>Invested</th><th>Bought at</th><th>Now</th><th>Cash out for</th><th></th></tr>${tr}</table></div>` : '<p class="mut">No open positions yet. Pick a market to start.</p>'}`;
 }
 
-// Leaderboard + streaks: same layout, side by side
+// Leaderboard + compact streak board, side by side
 function pgBoard(){
-  const pts = {}; LB.forEach(r => { pts[r.username] = +r.score; });
-  const mineCls = u => u === me.username ? ' class="mine"' : '';
-  const rows = (FINAL.length ? FINAL : LB).map((r, i) => `<tr${mineCls(r.username)}><td>${i + 1}</td><td>${nm(r.username)}</td><td>${(+r.score).toFixed(1)}</td></tr>`).join('');
-  const srows = SBD.slice(0, 25).map((r, i) => `<tr${mineCls(r.username)}><td>${i + 1}</td><td>${nm(r.username)}</td><td>🔥 ${r.streak}</td><td>${pts[r.username] !== undefined ? pts[r.username].toFixed(1) : '-'}</td></tr>`).join('');
+  const mc = u => u === me.username ? ' class="mine"' : '';
+  const rows = (FINAL.length ? FINAL : LB).map((r, i) => `<tr${mc(r.username)}><td>${i + 1}</td><td>${nm(r.username)}</td><td>${(+r.score).toFixed(1)}</td></tr>`).join('');
+  const srows = SBD.slice(0, 10).map((r, i) => `<tr${mc(r.username)}><td>${i + 1}</td><td>${nm(r.username)}</td><td>🔥 ${r.streak}</td></tr>`).join('');
   return `<div class="boardwrap"><div><h1>${FINAL.length ? 'Final standings' : 'Leaderboard'}</h1><p class="mut">${FINAL.length ? 'Recorded when the season ended.' : 'Cash plus open stakes (at cost).'}</p>
     <div class="card"><table><tr><th>#</th><th>Player</th><th>Tokens</th></tr>${rows}</table></div></div>
-    <div><h1>Streaks</h1><p class="mut">5+ trades a day builds a streak: +0.1% on cash-out profit per day, up to 10%.</p>
-    <div class="card">${SBD.length ? `<table><tr><th>#</th><th>Player</th><th>Streak</th><th>Tokens</th></tr>${srows}</table>` : '<p class="mut">No streaks yet.</p>'}</div></div></div>`;
+    <div class="sm"><h1>Streaks</h1><p class="mut">5+ trades a day. +0.1% cash-out profit per day, max 10%.</p>
+    <div class="card">${SBD.length ? `<table><tr><th>#</th><th>Player</th><th>Streak</th></tr>${srows}</table>` : '<p class="mut">No streaks yet.</p>'}</div></div></div>`;
 }
 
 const hrs = s => +((+s || 3600) / 3600).toFixed(2) + 'h';
@@ -469,6 +497,7 @@ function pgReview(){
 const pgAdmin = () => `<h1>Admin tools</h1><div class="grid"><div class="card"><b>Season</b>${Date.now() >= SEASON_END ? (FINAL.length ? '<p class="mut">Final standings are recorded.</p>' : '<p class="mut">Click right after the season ends, before resolving or voiding any market.</p><button onclick="recordFinal()">Record final standings</button>') : '<p class="mut">Available after the season ends.</p>'}</div><div class="card"><b>Invite codes</b><p class="mut">Send a one-time code. They sign up, then redeem it on their Account page.</p>
   <button onclick="inv()">New admin invite code</button><p class="mut">Unused: ${INV.filter(i => !i.used_by).map(i => '<code>' + esc(i.code) + '</code>').join(' ') || 'none'}</p></div>
   <div class="card"><b>Promote by username</b><input id="pu" placeholder="Username"><div class="row"><button onclick="setRole($('#pu').value,'admin')">Make admin</button></div></div>
+  <div class="card"><b>Reset a profile picture</b><input id="ra" placeholder="Username"><div class="row"><button onclick="rpc('reset_avatar',{p_username:$('#ra').value},'Picture reset')">Reset</button></div></div>
   <div class="card"><b>Current admins</b><table>${STAFF.filter(s => s.role === 'admin').map(s => `<tr><td>${nm(s.username)}</td><td><button class="g" data-u="${esc(s.username)}" onclick="setRole(this.dataset.u,'user')">Remove</button></td></tr>`).join('') || '<tr><td class="mut">None yet</td></tr>'}</table></div></div>`;
 
 const refLink = () => location.origin + location.pathname + '?ref=' + me.referral_code;
@@ -491,26 +520,72 @@ const equip = (kind, id) => rpc('equip_item', {p_kind:kind, p_item:id});
 
 // ---------- Account ----------
 function pgAccount(){
-  const s = STAT || {}, p = +s.net_profit || 0;
+  const s = STAT || {}, p = +s.net_profit || 0, cl = me.colors || {};
   const stat = (l, v) => `<div class="card"><div class="mut">${l}</div><div class="big">${v}</div></div>`;
   const hist = HIST.length ? `<table><tr><th>Time</th><th>Market</th><th>Action</th><th>Tokens</th><th>YES after</th></tr>${HIST.map(r =>
     `<tr><td>${new Date(r.ts).toLocaleString()}</td><td><a href="#/market/${r.market_id}">${esc(r.question)}</a></td><td>${r.kind === 'buy' ? 'Bought' : 'Cashed out'} ${r.side.toUpperCase()}</td><td>${(+r.tokens).toFixed(1)}</td><td>${(+r.price_yes * 100).toFixed(0)}%</td></tr>`).join('')}</table>` : '<p class="mut">No trades yet.</p>';
   const pick = (obj, key) => `<div class="row">${Object.entries(obj).map(([k, v]) => `<button class="g${(me[key] || (key === 'pattern' ? 'none' : 'light')) === k ? ' sel' : ''}" onclick="look({${key}:'${k}'})">${v}</button>`).join('')}</div>`;
+  const col = (id, l, k, d) => `<label class="mut clr">${l}<input id="${id}" type="color" value="${esc(cl[k] || d)}" oninput="prevC()"></label>`;
   return `<h1>Account</h1>
-  <div class="card split"><div class="row" style="margin:0">${avatar(me.username, 44)}<div>${nm(me.username)}<div class="mut">${me.role}</div></div></div><button class="g" onclick="sb.auth.signOut().then(load)">Log out</button></div>
+  <div class="card split" style="background:var(--grad)"><div class="row" style="margin:0">${avatar(me.username, 48)}<div>${nm(me.username)}<div class="mut">${me.role}</div></div></div><button class="g" onclick="sb.auth.signOut().then(load)">Log out</button></div>
   <div class="stats">${stat('Tokens', (+me.balance).toFixed(1))}${stat('Net worth', (+s.net_worth || 0).toFixed(1))}${stat('Net profit', (p >= 0 ? '+' : '') + p.toFixed(1))}${stat('Trades', s.trades || 0)}</div>
   <div class="mut" style="margin:-4px 0 14px">Net profit counts trading gains only: it excludes referral bonuses and adds back what you spent in the Shop (${(+s.shop_spent || 0).toFixed(0)} so far).</div>
   <div class="two"><div><div class="card"><b>Trade history</b> <span class="mut">(last 100)</span>${hist}</div></div>
   <div>
-    <div class="card"><b>Profile picture</b><div class="avs">${AV.map((e, i) => `<button class="g${me.avatar === 'a' + i ? ' sel' : ''}" onclick="look({avatar:'a${i}'})">${e}</button>`).join('')}</div></div>
+    <div class="card"><b>Profile picture</b><div class="row">${avatar(me.username, 56)}<label class="up"><input type="file" accept="image/jpeg,image/png,image/webp" onchange="uploadAvatar(this)" hidden><span class="btn">Upload image</span></label>${me.avatar_path ? '<button class="g" onclick="rmAvatar()">Remove</button>' : ''}</div>
+      <p class="mut">Or pick an emoji:</p><div class="avs">${AV.map((e, i) => `<button class="g${me.avatar === 'a' + i && !me.avatar_path ? ' sel' : ''}" onclick="look({avatar:'a${i}'})">${e}</button>`).join('')}</div></div>
     <div class="card"><b>Username</b><input id="nu" value="${esc(me.username)}" maxlength="20"><div class="row"><button onclick="rpc('change_username',{p_name:$('#nu').value},'Username updated')">Save username</button></div><p class="mut" style="margin-bottom:0">3-20 letters, numbers, . _ - · once every 24 hours.</p></div>
-    <div class="card"><b>Color theme</b>${pick(THEMES, 'theme')}<div style="margin-top:14px"><b>Background pattern</b></div>${pick(PATS, 'pattern')}</div>
+    <div class="card"><b>Color theme</b>${pick(THEMES, 'theme')}
+      <div style="margin-top:14px"><b>Make your own</b><div class="row">${col('cbg', 'Background', 'bg', '#f3f6fb')}${col('ccard', 'Cards', 'card', '#ffffff')}${col('cfg', 'Text', 'fg', '#0f172a')}${col('cacc', 'Highlight', 'acc', '#2f6bd8')}</div>
+      <div class="row"><button onclick="saveColors()">Save custom colors</button></div></div>
+      <div style="margin-top:14px"><b>Background pattern</b></div>${pick(PATS, 'pattern')}</div>
     <div class="card"><b>Banner and icon</b><p class="mut">Buy and equip them in the <a href="#/shop">Shop</a>.</p></div>
     <div class="card"><b>Your referral link</b><p class="mut">Every friend who signs up and confirms their email earns you both a bonus.</p><input readonly value="${esc(refLink())}" onclick="this.select()"><div class="row"><button onclick="navigator.clipboard.writeText(refLink());toast('Link copied!')">Copy link</button></div></div>
     ${me.role === 'user' ? `<div class="card"><b>Have an admin invite code?</b><input id="ic" placeholder="Code"><div class="row"><button onclick="redeem()">Redeem</button></div></div>` : ''}
   </div></div>`;
 }
 const look = o => rpc('set_look', {p_avatar:o.avatar || null, p_theme:o.theme || null, p_pattern:o.pattern || null}, 'Saved');
+const prevC = () => { root.dataset.theme = 'custom'; [['bg','cbg'],['card','ccard'],['fg','cfg'],['acc','cacc']].forEach(([k, i]) => root.style.setProperty(CK[k], $('#' + i).value)); };
+const saveColors = () => rpc('set_colors', {p_bg:$('#cbg').value, p_card:$('#ccard').value, p_fg:$('#cfg').value, p_acc:$('#cacc').value}, 'Colors saved');
+const rmAvatar = async () => { const old = me.avatar_path; await rpc('set_avatar_path', {p_path:null}, 'Picture removed'); if (old) sb.storage.from('avatars').remove([old]); };
+function uploadAvatar(inp){
+  const f = inp.files[0]; inp.value = '';
+  if (!f) return;
+  if (!/^image\/(jpeg|png|webp)$/.test(f.type) || f.size > 8e6) return toast('Choose a JPG, PNG or WebP under 8 MB.');
+  const url = URL.createObjectURL(f), img = new Image();
+  img.onerror = () => toast('Could not read that image.');
+  img.onload = () => {
+    const s = Math.min(img.width, img.height), c = document.createElement('canvas'), x = c.getContext('2d');
+    c.width = c.height = 192;
+    x.fillStyle = '#fff'; x.fillRect(0, 0, 192, 192);
+    x.drawImage(img, (img.width - s) / 2, (img.height - s) / 2, s, s, 0, 0, 192, 192);
+    URL.revokeObjectURL(url);
+    c.toBlob(async b => {
+      const path = me.id + '/' + Date.now() + '.jpg', old = me.avatar_path;
+      const up = await sb.storage.from('avatars').upload(path, b, {contentType:'image/jpeg'});
+      if (up.error) return toast(up.error.message);
+      await rpc('set_avatar_path', {p_path:path}, 'Picture updated');
+      if (old) sb.storage.from('avatars').remove([old]);
+    }, 'image/jpeg', .86);
+  };
+  img.src = url;
+}
+
+// ---------- Idea Box ----------
+function pgIdeas(){
+  const own = me.role === 'owner';
+  const rows = IDEAS.map(x => `<tr><td>${esc(x.body)}</td>${own ? `<td>${x.profiles ? nm(x.profiles.username) : '?'}</td>` : ''}<td>${new Date(x.created_at).toLocaleDateString()}</td><td><span class="chip">${x.status}</span>${own ? `<div class="row">${['planned', 'done', 'declined'].map(s => `<button class="g" onclick="setIdea(${x.id},'${s}')">${s}</button>`).join('')}</div>` : ''}</td></tr>`).join('');
+  return `<h1>Idea Box</h1><p class="mut">Got an idea for the website? New features, fixes, shop items, anything. It goes straight to the owner.</p>
+  <div class="card narrow"><textarea id="ib" rows="4" maxlength="500" placeholder="I think the site should..."></textarea><div class="row"><button onclick="sendIdea()">Send idea</button><span class="mut">Up to 5 per day</span></div></div>
+  <h2>${own ? 'All ideas' : 'Your ideas'}</h2>${IDEAS.length ? `<div class="card"><table><tr><th>Idea</th>${own ? '<th>From</th>' : ''}<th>Sent</th><th>Status</th></tr>${rows}</table></div>` : '<p class="mut">None yet.</p>'}`;
+}
+async function sendIdea(){
+  const {error} = await sb.rpc('submit_idea', {p_body:$('#ib').value});
+  if (error) return toast(error.message);
+  toast('Sent to the owner. Thanks!');
+  $('#ib').value = ''; AT.ideas = 0; ensureExtras();
+}
+const setIdea = (id, s) => rpc('set_idea_status', {p_id:id, p_status:s});
 
 // ---------- Streak badge ----------
 const toggleStk = () => { STK_OPEN = !STK_OPEN; render(); };
@@ -530,18 +605,18 @@ function streakBadge(){
 function render(){
   if (!me) return authView();
   const keep = {};
-  document.querySelectorAll('input[id]').forEach(i => keep[i.id] = i.value);
+  document.querySelectorAll('input[id],textarea[id]').forEach(i => keep[i.id] = i.value);
   const [pg, arg] = (location.hash.slice(2) || 'markets').split('/');
   const staff = me.role !== 'user', owner = me.role === 'owner';
   const pend = PR.filter(p => p.status === 'pending').length;
   const link = (id, label, badge) => `<a href="#/${id}" class="${id === pg || (id === 'markets' && pg === 'market') ? 'on' : ''}">${svg(IC[id])}${label}${badge ? `<span class="chip">${badge}</span>` : ''}</a>`;
-  const pages = {markets: pgMarkets, market: () => pgMarket(+arg), portfolio: pgPortfolio, leaderboard: pgBoard, race: pgRace, shop: pgShop, rules: pgRules, suggest: pgSuggest, create: pgCreate, review: pgReview, admin: pgAdmin, account: pgAccount};
+  const pages = {markets: pgMarkets, market: () => pgMarket(+arg), portfolio: pgPortfolio, leaderboard: pgBoard, race: pgRace, shop: pgShop, ideas: pgIdeas, rules: pgRules, suggest: pgSuggest, create: pgCreate, review: pgReview, admin: pgAdmin, account: pgAccount};
   const ok = {create: staff, review: staff, admin: owner, suggest: !staff};
   const waiting = BLOCKING[pg] && (EXTRAS[pg] || []).some(k => !LOADED[k]);
   const body = !pages[pg] ? '<p>Page not found.</p>' : (pg in ok && !ok[pg]) ? '<p class="mut">You do not have access to this page.</p>' : waiting ? '<p class="mut">Loading...</p>' : pages[pg]();
 
   $('#app').innerHTML = `<div id="shell"><nav><h2>EagleEye Market</h2>
-    ${link('race', 'Referral Race')}${link('markets', 'Markets')}${link('portfolio', 'Portfolio')}${link('leaderboard', 'Leaderboard')}${link('shop', 'Shop')}${link('rules', 'Rules')}
+    ${link('race', 'Referral Race')}${link('markets', 'Markets')}${link('portfolio', 'Portfolio')}${link('leaderboard', 'Leaderboard')}${link('shop', 'Shop')}${link('ideas', 'Idea Box')}${link('rules', 'Rules')}
     ${staff ? link('create', 'Create market') + link('review', 'Review', pend || '') : link('suggest', 'Suggest a market')}
     ${owner ? link('admin', 'Admin tools') : ''}
     <a href="#/account" class="me${pg === 'account' ? ' on' : ''}">${avatar(me.username, 30)}<span style="min-width:0"><b style="display:block;overflow:hidden;text-overflow:ellipsis">${esc(me.username)}</b><span class="mut">${(+me.balance).toFixed(0)} tokens</span></span></a>
