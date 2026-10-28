@@ -9,10 +9,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root,[data-theme=light]{--bg:#f3f6fb;--fg:#0f172a;--card:#fff;--mut:#5b6678;--line:#dde3ee;--bd:#a9b6cc;--yes:#16885a;--no:#c0392b;--acc:#2f6bd8;--side:#fff;--hov:#eaf1fd}
-[data-theme=dark]{--bg:#0b0f17;--fg:#ececf0;--card:#141a26;--mut:#98a2b5;--line:#232c3d;--bd:#41506c;--yes:#3ecf8e;--no:#ef6a62;--acc:#5b9bff;--side:#0f141e;--hov:#1a2336}
-[data-theme=slate]{--bg:#1e2228;--fg:#e8eaee;--card:#272c34;--mut:#9ba3b0;--line:#363c47;--bd:#566073;--yes:#3ecf8e;--no:#ef6a62;--acc:#6aa0f5;--side:#191c21;--hov:#303642}
-[data-theme=midnight]{--bg:#081022;--fg:#e6ecf8;--card:#0f1a33;--mut:#8d9bb8;--line:#1b2a4a;--bd:#35508a;--yes:#3ecf8e;--no:#ef6a62;--acc:#4d9cff;--side:#0a1429;--hov:#15244a}
+:root,[data-theme=light]{--bg:#f3f6fb;--fg:#0f172a;--card:#fff;--mut:#5b6678;--line:#dde3ee;--bd:#a9b6cc;--yes:#2a8a62;--no:#bb4d43;--acc:#2f6bd8;--side:#fff;--hov:#eaf1fd}
+[data-theme=dark]{--bg:#050506;--fg:#ececf0;--card:#0e0f12;--mut:#9aa1ae;--line:#1c1f26;--bd:#3a4458;--yes:#38b886;--no:#d96a63;--acc:#5b9bff;--side:#09090b;--hov:#161a24}
+[data-theme=slate]{--bg:#1e2228;--fg:#e8eaee;--card:#272c34;--mut:#9ba3b0;--line:#363c47;--bd:#566073;--yes:#38b886;--no:#d96a63;--acc:#6aa0f5;--side:#191c21;--hov:#303642}
+[data-theme=midnight]{--bg:#081022;--fg:#e6ecf8;--card:#0f1a33;--mut:#8d9bb8;--line:#1b2a4a;--bd:#35508a;--yes:#38b886;--no:#d96a63;--acc:#4d9cff;--side:#0a1429;--hov:#15244a}
 [data-theme=custom]{--side:var(--card);--line:color-mix(in srgb,var(--fg) 16%,var(--bg));--bd:color-mix(in srgb,var(--fg) 34%,var(--bg));--hov:color-mix(in srgb,var(--acc) 12%,var(--card));--mut:color-mix(in srgb,var(--fg) 58%,var(--bg))}
 :root{--grad:linear-gradient(120deg,color-mix(in srgb,var(--acc) 22%,var(--card)),color-mix(in srgb,var(--acc) 5%,var(--card)))}
 [data-pat=dots] body{background-image:radial-gradient(var(--line) 1px,transparent 1px);background-size:16px 16px}
@@ -42,7 +42,7 @@ main{flex:1;padding:30px 38px;min-width:0}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:16px 0}
 .stats .card{margin:0;border-top:3px solid var(--acc)}
 .mk{color:inherit;text-decoration:none;display:block;padding:22px;border-width:2px;transition:transform .12s,box-shadow .12s,border-color .12s}
-.mk:hover{border-color:var(--acc);transform:translateY(-2px);box-shadow:0 6px 20px color-mix(in srgb,var(--acc) 28%,transparent)}
+.mk:hover{border-color:var(--acc);transform:translateY(-2px);box-shadow:0 6px 18px color-mix(in srgb,var(--acc) 15%,transparent)}
 .mk b{display:block;font-size:18px;line-height:1.35}
 .mk .bar{height:12px;margin:14px 0}
 .mk .split{font-size:19px;font-weight:600}
@@ -56,7 +56,7 @@ main{flex:1;padding:30px 38px;min-width:0}
 a{color:var(--acc)}
 .chip{background:var(--hov);color:var(--acc);border:1px solid var(--bd);border-radius:6px;padding:0 7px;font-size:11px;font-weight:600}
 .tags{margin:0 0 10px}
-.tag{display:inline-block;padding:2px 10px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,#38bdf8,#2563eb);border-radius:4px}
+.tag{display:inline-block;padding:2px 10px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,#5b9be8,#2f63c8);border-radius:4px}
 input,button,select,textarea{font:inherit;padding:9px 12px;border-radius:6px;border:1.5px solid var(--bd);background:var(--bg);color:var(--fg)}
 input,textarea{width:100%;margin-top:8px}
 textarea{resize:vertical}
@@ -76,7 +76,8 @@ table{width:100%;border-collapse:collapse}
 th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line)}
 th{color:var(--acc);font-weight:600;font-size:12px;border-bottom:2px solid var(--bd);text-transform:uppercase;letter-spacing:.04em}
 .mine td{font-weight:600;background:var(--hov)}
-.tabs{display:flex;gap:8px;margin:12px 0 18px}
+.tabs{display:flex;gap:8px;margin:12px 0 18px;align-items:center}
+.tabs button,.tabs select{height:40px;padding:0 16px;margin:0}
 #t{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--acc);color:#fff;padding:10px 18px;border-radius:8px;display:none;max-width:90%;z-index:9}
 .av{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--hov);border:1px solid var(--bd);font-size:12px;font-weight:600;flex-shrink:0;margin-right:6px;vertical-align:middle;color:var(--fg);overflow:hidden}
 .av img{width:100%;height:100%;object-fit:cover}
@@ -84,8 +85,13 @@ th{color:var(--acc);font-weight:600;font-size:12px;border-bottom:2px solid var(-
 .nm.bn{padding:2px 10px 2px 3px}
 .avs{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-top:10px}
 .avs button{padding:5px;font-size:18px}
-main>.card.split:first-child{background:var(--grad)}
-.race-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:12px 16px;margin:0 0 16px;border-radius:8px;border:1.5px solid var(--bd);border-left:4px solid var(--acc);background:var(--grad)}
+main>.card.split:first-child{background:var(--card);border-top:3px solid var(--acc)}
+.race-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:14px 18px;margin:0 0 16px;border-radius:8px;border:1.5px solid #5b8fe0;background:linear-gradient(110deg,#1b3a9e,#2459b8 55%,#2f7fc9);color:#fff}
+.race-bar a{color:#fff;font-weight:600}
+.race-bar .rc{background:#ffffff22;border-color:#ffffff44;color:#fff}
+.race-bar .lk input{background:#ffffff1f;border-color:#ffffff55;color:#fff}
+.race-bar .lk button{background:#fff;color:#1b3a9e;border-color:#fff}
+.chip.ev{background:#fff;color:#1b3a9e;border-color:#fff}
 .race-bar .blurb{flex:2 1 280px}
 .lk{display:flex;align-items:center;gap:8px;flex:1 1 300px;min-width:0}
 .lk b{white-space:nowrap}
@@ -106,9 +112,9 @@ main>.card.split:first-child{background:var(--grad)}
 .stk-panel{background:var(--card);border:2px solid var(--acc);border-radius:8px;padding:14px 16px;width:280px}
 .stk-panel p{margin:6px 0 0}
 @media(min-width:861px){main>.card.split:first-child{margin-right:120px}}
-.boardwrap{display:grid;grid-template-columns:3fr 2fr;gap:20px;align-items:start}
+.boardwrap{display:grid;grid-template-columns:7fr 4fr;gap:20px;align-items:start}
 .boardwrap>div{min-width:0}
-.sm table{font-size:13px}.sm th,.sm td{padding:6px 8px}
+.sm table{font-size:12.5px}.sm th,.sm td{padding:5px 7px}.sm h1{font-size:21px}
 @media(max-width:1000px){.boardwrap{grid-template-columns:1fr}}
 @media(max-width:860px){#shell{flex-direction:column}nav{width:auto;height:auto;position:static;flex-direction:row;flex-wrap:wrap}nav h2{width:100%}nav a.me{margin-top:0}main{padding:16px}.two,.stats{grid-template-columns:1fr 1fr}.two{grid-template-columns:1fr}#stk{top:auto;bottom:16px;right:12px}}
 </style>
@@ -132,7 +138,7 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>'
 const root = document.documentElement;
 let REV = null, me = null, markets = [], P = [], CD = [], T = [], LB = [], STAFF = [], INV = [], PR = [], FINAL = [], ACT = {}, MT = {}, MTok = {}, FILTER = 'open';
 let STK = null, SBD = [], STK_OPEN = false;
-let CO = {}, SHOP = [], OWN = [], STAT = null, HIST = [], IDEAS = [];
+let SHOPERR = '', CO = {}, SHOP = [], OWN = [], STAT = null, HIST = [], IDEAS = [];
 
 const AV = ['🦅','🐺','🦊','🐼','🐯','🦁','🐸','🐙','🦉','🐧','🦄','🐲','🚀','⚡','🌙','🔥','🎯','🎲','🎸','📈','🧠','👾','🎨','🏀'];
 const THEMES = {light:'Light', dark:'Dark', slate:'Slate', midnight:'Midnight', custom:'Custom'};
@@ -175,7 +181,7 @@ function setTheme(t){
 (() => {
   let t;
   try { t = localStorage.getItem('theme'); } catch (e) {}
-  setTheme(THEMES[t] ? t : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+  setTheme(THEMES[t] ? t : 'dark');
 })();
 const toggleTheme = () => { setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark'); render(); };
 const applyLook = () => {
@@ -195,7 +201,7 @@ const toast = m => {
 
 async function rpc(fn, args, ok){
   const {data, error} = await sb.rpc(fn, args);
-  if (error) toast(error.message); else if (ok) toast(ok);
+  if (error) toast(/schema cache/i.test(error.message) ? 'The latest SQL update has not been applied to this Supabase project yet. Run supabase-fix-all.sql in the SQL Editor of the project your site uses.' : error.message); else if (ok) toast(ok);
   for (const k in AT) AT[k] = 0;
   await load();
   return data;
@@ -266,7 +272,7 @@ const FETCH = {
   co: async () => { const r = await sb.rpc('cosmetics'); CO = {}; (r.data || []).forEach(x => { CO[x.username] = x; }); return r; },
   shop: async () => {
     const [a, b] = await Promise.all([sb.from('shop_items').select().order('sort'), sb.from('user_items').select('item_id')]);
-    SHOP = a.data || []; OWN = (b.data || []).map(x => x.item_id);
+    SHOPERR = (a.error && a.error.message) || ''; SHOP = a.data || []; OWN = (b.data || []).map(x => x.item_id);
     return a.error ? a : b;
   },
   stats: async () => { const r = await sb.rpc('my_stats'); STAT = (r.data && r.data[0]) || null; return r; },
@@ -362,7 +368,7 @@ function refBanner(){
   const blurb = ended
     ? 'The Referral Race is over!' + (REV.winner ? ' Congrats to <b>' + esc(REV.winner) + '</b>!' : '') + ' You and a friend still each get ' + REFERRAL_BONUS + ' tokens when they join with your link.'
     : '<b>Referral Race!</b> Bring a friend and you both get ' + REFERRAL_BONUS + ' tokens. Most referrals by ' + raceEnd() + ' wins ' + REV.prize + ' bonus tokens.';
-  return `<div class="race-bar"><div class="blurb">${blurb}</div>
+  return `<div class="race-bar"><div class="blurb"><span class="chip ev">EVENT</span> ${blurb}</div>
     <div class="lk"><b>Your link</b><input readonly value="${esc(refLink())}" onclick="this.select()" aria-label="Your link">
     <button onclick="navigator.clipboard.writeText(refLink());toast('Link copied!')">Copy</button></div>
     <span class="rc">Referrals: <b>${REV.mine}</b></span><a href="#/race">Leaderboard</a></div>`;
@@ -442,7 +448,7 @@ function pgPortfolio(){
 function pgBoard(){
   const mc = u => u === me.username ? ' class="mine"' : '';
   const rows = (FINAL.length ? FINAL : LB).map((r, i) => `<tr${mc(r.username)}><td>${i + 1}</td><td>${nm(r.username)}</td><td>${(+r.score).toFixed(1)}</td></tr>`).join('');
-  const srows = SBD.slice(0, 10).map((r, i) => `<tr${mc(r.username)}><td>${i + 1}</td><td>${nm(r.username)}</td><td>🔥 ${r.streak}</td></tr>`).join('');
+  const srows = SBD.slice(0, 8).map((r, i) => `<tr${mc(r.username)}><td>${i + 1}</td><td>${nm(r.username)}</td><td>🔥 ${r.streak}</td></tr>`).join('');
   return `<div class="boardwrap"><div><h1>${FINAL.length ? 'Final standings' : 'Leaderboard'}</h1><p class="mut">${FINAL.length ? 'Recorded when the season ended.' : 'Cash plus open stakes (at cost).'}</p>
     <div class="card"><table><tr><th>#</th><th>Player</th><th>Tokens</th></tr>${rows}</table></div></div>
     <div class="sm"><h1>Streaks</h1><p class="mut">5+ trades a day. +0.1% cash-out profit per day, max 10%.</p>
@@ -512,7 +518,7 @@ function pgShop(){
     return `<div class="card split"><div>${prev}<div class="mut" style="margin-top:4px">${esc(x.name)}${own ? ' · owned' : ''}</div></div>${btn}</div>`;
   };
   const by = k => SHOP.filter(x => x.kind === k).map(card).join('');
-  return `<h1>Shop</h1><p class="mut">Spend tokens on banners and icons. They show next to your name everywhere. You have <b>${(+me.balance).toFixed(1)}</b> tokens.</p>
+  return `<h1>Shop</h1>${SHOP.length ? '' : `<div class="card"><b>The shop is empty.</b><p class="mut">${esc(SHOPERR || 'No items were found in the database.')} If this mentions the schema cache or a missing table, supabase-fix-all.sql has not been applied to this project yet.</p></div>`}<p class="mut">Spend tokens on banners and icons. They show next to your name everywhere. You have <b>${(+me.balance).toFixed(1)}</b> tokens.</p>
     <h2>Banners</h2><div class="grid">${by('banner')}</div><h2>Icons</h2><div class="grid">${by('icon')}</div>`;
 }
 const buyItem = id => rpc('buy_item', {p_item:id}, 'Purchased!');
@@ -563,7 +569,7 @@ function uploadAvatar(inp){
     c.toBlob(async b => {
       const path = me.id + '/' + Date.now() + '.jpg', old = me.avatar_path;
       const up = await sb.storage.from('avatars').upload(path, b, {contentType:'image/jpeg'});
-      if (up.error) return toast(up.error.message);
+      if (up.error) return toast(/bucket not found/i.test(up.error.message) ? 'The latest SQL update has not been applied to this Supabase project yet. Run supabase-fix-all.sql in the SQL Editor of the project your site uses.' : up.error.message);
       await rpc('set_avatar_path', {p_path:path}, 'Picture updated');
       if (old) sb.storage.from('avatars').remove([old]);
     }, 'image/jpeg', .86);
@@ -620,7 +626,7 @@ function render(){
     ${staff ? link('create', 'Create market') + link('review', 'Review', pend || '') : link('suggest', 'Suggest a market')}
     ${owner ? link('admin', 'Admin tools') : ''}
     <a href="#/account" class="me${pg === 'account' ? ' on' : ''}">${avatar(me.username, 30)}<span style="min-width:0"><b style="display:block;overflow:hidden;text-overflow:ellipsis">${esc(me.username)}</b><span class="mut">${(+me.balance).toFixed(0)} tokens</span></span></a>
-    </nav><main><div class="card split"><b id="cd" style="font-weight:500">${cdText()}</b><a href="#/rules">Rules</a></div><div id="rb">${pg === 'race' ? '' : refBanner()}</div>${body}</main></div><div id="stkw">${streakBadge()}</div>`;
+    </nav><main><div class="card split"><span><span class="chip">SEASON</span> <b id="cd" style="font-weight:500">${cdText()}</b></span><a href="#/rules">Rules</a></div><div id="rb">${pg === 'race' ? '' : refBanner()}</div>${body}</main></div><div id="stkw">${streakBadge()}</div>`;
 
   for (const k in keep) { const el = document.getElementById(k); if (el) el.value = keep[k]; }
   if (pg === 'market' && staff && !MTok[+arg]) fetchTrades(+arg);
