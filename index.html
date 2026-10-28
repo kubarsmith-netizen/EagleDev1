@@ -85,7 +85,9 @@ th{color:var(--acc);font-weight:600;font-size:12px;border-bottom:2px solid var(-
 .av img{width:100%;height:100%;object-fit:cover}
 .nm{display:inline-flex;align-items:center;max-width:100%;border-radius:6px;padding:1px 8px 1px 2px;white-space:nowrap}
 .nm.bn{padding:2px 10px 2px 3px}
-.ic{width:1.35em;height:1.35em;object-fit:contain;vertical-align:middle;margin-right:4px}
+.ic{width:1.9em;height:1.9em;object-fit:contain;vertical-align:middle}
+.ice{font-size:1.7em;line-height:1}
+.nm .ic,.nm .ice{margin-left:7px}
 .prevbn{min-width:230px;padding:8px 14px 8px 8px!important}
 .avs{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-top:10px}
 .avs button{padding:5px;font-size:18px}
@@ -171,7 +173,7 @@ const svg = d => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" st
 const isImg = x => String(x.art).startsWith('img:');
 const imgUrl = x => SHOPURL + x.art.slice(4);
 const bannerStyle = x => isImg(x) ? `background:url('${imgUrl(x)}') center/cover no-repeat;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.9),0 0 2px rgba(0,0,0,.7)` : x.art;
-const iconHtml = (x, s) => isImg(x) ? `<img class="ic" src="${esc(imgUrl(x))}" alt=""${s ? ` style="width:${s}px;height:${s}px"` : ''}>` : esc(x.art);
+const iconHtml = (x, s) => isImg(x) ? `<img class="ic" src="${esc(imgUrl(x))}" alt=""${s ? ` style="width:${s}px;height:${s}px"` : ''}>` : `<span class="ice">${esc(x.art)}</span>`;
 
 // avatar + banner + icon + name, wherever a name appears
 const avatar = (u, s) => {
@@ -183,7 +185,7 @@ const avatar = (u, s) => {
 // s = avatar size, flat = skip the banner (used on leaderboards, where the whole row is the banner)
 const nm = (u, s, flat) => {
   const c = CO[u] || {}, ic = SHOP.find(x => x.id === c.icon), bn = flat ? null : SHOP.find(x => x.id === c.banner);
-  return `<span class="nm${bn ? ' bn' : ''}"${bn ? ` style="${esc(bannerStyle(bn))}"` : ''}>${avatar(u, s)}${ic ? iconHtml(ic) + (isImg(ic) ? '' : '&nbsp;') : ''}${esc(u)}</span>`;
+  return `<span class="nm${bn ? ' bn' : ''}"${bn ? ` style="${esc(bannerStyle(bn))}"` : ''}>${avatar(u, s)}${esc(u)}${ic ? iconHtml(ic) : ''}</span>`;
 };
 // one leaderboard row; the banner covers the entire row
 const lbRow = (i, u, val, s) => {
@@ -564,7 +566,7 @@ function showShopPreview(){
   if (!SHOPFILE_URL) { el.innerHTML = ''; return; }
   el.innerHTML = k.value === 'banner'
     ? `<div class="lbr" style="margin-top:12px;background:url('${SHOPFILE_URL}') center/cover no-repeat;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.9),0 0 2px rgba(0,0,0,.7)"><span class="rank">1</span><span><span class="nm">${avatar(me.username, 44)}${esc(me.username)}</span></span><span class="val">1000.0</span></div>`
-    : `<div class="row" style="margin-top:12px"><span class="nm" style="font-size:16px;font-weight:600">${avatar(me.username, 44)}<img class="ic" src="${SHOPFILE_URL}" alt="">${esc(me.username)}</span></div>`;
+    : `<div class="row" style="margin-top:12px"><span class="nm" style="font-size:16px;font-weight:600">${avatar(me.username, 44)}${esc(me.username)}<img class="ic" src="${SHOPFILE_URL}" alt="" style="margin-left:7px"></span></div>`;
 }
 function pickShopFile(inp){
   const f = inp.files[0]; inp.value = '';
