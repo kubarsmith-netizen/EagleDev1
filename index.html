@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://qwkmyncxomibcpmlguxj.supabase.co wss://qwkmyncxomibcpmlguxj.supabase.co; img-src 'self' data: blob: https://qwkmyncxomibcpmlguxj.supabase.co; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://lumsbvchmibxmvrzqtpt.supabase.co wss://lumsbvchmibxmvrzqtpt.supabase.co; img-src 'self' data: blob: https://lumsbvchmibxmvrzqtpt.supabase.co; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <title>EagleEye Market</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -162,7 +162,7 @@ nav a,.chip,.rc,.rank,.nm{border-radius:12px}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
 const SUPABASE_URL = 'https://lumsbvchmibxmvrzqtpt.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_2FD2bNN5kt9U954xwnfidg_HEZu7b2M';
+const SUPABASE_KEY = 'PASTE_YOUR_PUBLISHABLE_KEY_HERE'; // Supabase dashboard > Project Settings > API Keys > publishable key
 const ALLOWED_DOMAINS = ['headroyce.org'];
 const REFERRER_BONUS = 300, FRIEND_BONUS = 100; // keep equal to v_ref_bonus / v_new_bonus in the award_referral SQL function
 
@@ -488,10 +488,10 @@ function pgMarkets(){
   }).join('') || (motw ? '' : '<p class="mut">No markets here yet.</p>')}</div>`;
 }
 
-const stkLine = (m, p) => {
-  if (!STK) return '';
-  const b = Math.max(0, cashValue(m, p) - (+p.invested)) * (+STK.bonus_pct) / 100;
-  return b >= 0.005 ? `<br>Streak bonus: +${b.toFixed(2)}` : '';
+// total that lands in your account on cash-out: payout (2x profit on the Market of the Week) + streak bonus
+const cashTotal = (m, p) => {
+  const c = cashValue(m, p), b = STK ? Math.max(0, c - (+p.invested)) * (+STK.bonus_pct) / 100 : 0;
+  return c + b;
 };
 
 function pgMarket(id){
@@ -507,8 +507,8 @@ function pgMarket(id){
     <div class="row">${[10, 50, 100].map(n => `<button class="g" onclick="$('#a${id}').value=${n}">${n}</button>`).join('')}</div>
     <div class="row"><button class="y" onclick="buy(${id},'yes')">Buy YES</button><button class="n" onclick="buy(${id},'no')">Buy NO</button></div>`;
   const pos = mine.map(p => {
-    const v = cashValue(m, p);
-    return `<div class="row split"><span><b>${p.side.toUpperCase()}</b><br>Invested: ${(+p.invested).toFixed(1)}<br>Bought at: ${(boughtAtPrice(m, p) * 100).toFixed(0)}%<br>Now: ${(sidePrice(m, p.side) * 100).toFixed(0)}%<br>Cash out for: ${v.toFixed(1)}${stkLine(m, p)}</span>
+    const v = cashTotal(m, p);
+    return `<div class="row split"><span><b>${p.side.toUpperCase()}</b><br>Invested: ${(+p.invested).toFixed(1)}<br>Bought at: ${(boughtAtPrice(m, p) * 100).toFixed(0)}%<br>Now: ${(sidePrice(m, p.side) * 100).toFixed(0)}%<br>You receive: ${v.toFixed(1)}</span>
     <button class="g" ${i.locked || i.closed || !i.open ? 'disabled' : ''} onclick="sell(${id},'${p.side}')">Cash out</button></div>`;
   }).join('');
   const resolve = i.open && me.role !== 'user' ? `<div class="card"><b>Resolve this market</b><div class="row">
@@ -525,10 +525,10 @@ function pgPortfolio(){
   const rows = P.map(p => ({p, m: markets.find(x => x.id === p.market_id)})).filter(r => r.m && r.m.status === 'open' && +r.p.shares > 0);
   const tr = rows.map(({p, m}) => {
     const i = info(m);
-    return `<tr><td><a href="#/market/${m.id}">${esc(m.question)}</a></td><td>${p.side.toUpperCase()}</td><td>${(+p.invested).toFixed(1)}</td><td>${(boughtAtPrice(m, p) * 100).toFixed(0)}%</td><td>${(sidePrice(m, p.side) * 100).toFixed(0)}%</td><td>${cashValue(m, p).toFixed(1)}</td>
+    return `<tr><td><a href="#/market/${m.id}">${esc(m.question)}</a></td><td>${p.side.toUpperCase()}</td><td>${(+p.invested).toFixed(1)}</td><td>${(boughtAtPrice(m, p) * 100).toFixed(0)}%</td><td>${(sidePrice(m, p.side) * 100).toFixed(0)}%</td><td>${cashTotal(m, p).toFixed(1)}</td>
       <td><button class="g" ${i.locked || i.closed ? 'disabled' : ''} onclick="sell(${m.id},'${p.side}')">Cash out</button></td></tr>`;
   }).join('');
-  return `<h1>Portfolio</h1>${rows.length ? `<div class="card"><table><tr><th>Market</th><th>Side</th><th>Invested</th><th>Bought at</th><th>Now</th><th>Cash out for</th><th></th></tr>${tr}</table></div>` : '<p class="mut">No open positions yet. Pick a market to start.</p>'}`;
+  return `<h1>Portfolio</h1>${rows.length ? `<div class="card"><table><tr><th>Market</th><th>Side</th><th>Invested</th><th>Bought at</th><th>Now</th><th>You receive</th><th></th></tr>${tr}</table></div>` : '<p class="mut">No open positions yet. Pick a market to start.</p>'}`;
 }
 
 // Leaderboard + compact streak board, side by side
