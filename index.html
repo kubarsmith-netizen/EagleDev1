@@ -187,7 +187,7 @@ const AVURL = SUPABASE_URL + '/storage/v1/object/public/avatars/';
 const SHOPURL = SUPABASE_URL + '/storage/v1/object/public/shop-art/';
 const PATS = {none:'None', dots:'Dots', grid:'Grid', lines:'Lines'};
 const CRIT = {top_streak:'Highest daily streak (ties share it)', top_referrals:'Most referrals (ties share it)'};
-const IC = {race:'M5 21V4M5 4h11l-2 4 2 4H5', markets:'M3 17l6-6 4 4 8-8M15 7h6v6', portfolio:'M3 8h18v12H3zM8 8V5h8v3', leaderboard:'M6 20V10M12 20V4M18 20v-7', shop:'M5 7h14l-1 13H6zM9 7a3 3 0 016 0', rules:'M6 3h12v18H6zM9 8h6M9 12h6', suggest:'M12 5v14M5 12h14', create:'M12 5v14M5 12h14', review:'M5 12l5 5 9-10', admin:'M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z', ideas:'M9 18h6M10 21h4M12 3a6 6 0 00-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0012 3z'};
+const IC = {markets:'M3 17l6-6 4 4 8-8M15 7h6v6', portfolio:'M3 8h18v12H3zM8 8V5h8v3', leaderboard:'M6 20V10M12 20V4M18 20v-7', shop:'M5 7h14l-1 13H6zM9 7a3 3 0 016 0', rules:'M6 3h12v18H6zM9 8h6M9 12h6', suggest:'M12 5v14M5 12h14', create:'M12 5v14M5 12h14', review:'M5 12l5 5 9-10', admin:'M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z', ideas:'M9 18h6M10 21h4M12 3a6 6 0 00-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0012 3z'};
 const svg = d => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg>`;
 
 // shop art: built-in items store CSS/emoji, uploaded items store "img:<path>"
@@ -323,8 +323,8 @@ async function auth(login){
 // ---------- data ----------
 const AT = {}, LOADED = {};
 const TTL = {ev:60e3, act:60e3, pts:60e3, lb:30e3, final:300e3, staff:60e3, inv:60e3, pr:60e3, streak:60e3, sboard:60e3, co:60e3, shop:60e3, special:60e3, stats:30e3, hist:30e3, ideas:30e3};
-const EXTRAS = {markets:['act'], market:['pts'], leaderboard:['lb','final','sboard'], race:['ev'], admin:['staff','inv','final','special'], suggest:['pr'], review:['pr'], shop:['shop'], account:['stats','hist','shop'], inventory:['shop','special'], ideas:['ideas']};
-const BLOCKING = {leaderboard:1, race:1, admin:1, suggest:1, review:1, shop:1, account:1, inventory:1, ideas:1};
+const EXTRAS = {markets:['act'], market:['pts'], leaderboard:['lb','final','sboard'], admin:['staff','inv','final','special'], suggest:['pr'], review:['pr'], shop:['shop'], account:['stats','hist','shop'], inventory:['shop','special'], ideas:['ideas']};
+const BLOCKING = {leaderboard:1, admin:1, suggest:1, review:1, shop:1, account:1, inventory:1, ideas:1};
 
 const FETCH = {
   ev: async () => { const r = await sb.rpc('referral_event_info'); REV = r.data || null; return r; },
@@ -384,8 +384,7 @@ async function ensureExtras(){
     LOADED[k] = true;
   }));
   const cur = (location.hash.slice(2) || 'markets').split('/')[0];
-  if (stale.every(k => k === 'ev' || k === 'streak') && cur === page && page !== 'race') {
-    const rb = $('#rb'); if (rb) rb.innerHTML = refBanner();
+  if (stale.every(k => k === 'ev' || k === 'streak') && cur === page) {
     const sw = $('#stkw'); if (sw) sw.innerHTML = streakBadge();
     return;
   }
@@ -459,25 +458,9 @@ const sorters = {
   closing: (a, b) => (a.closes_at ? new Date(a.closes_at) : Infinity) - (b.closes_at ? new Date(b.closes_at) : Infinity) || 0
 };
 
-// ---------- Referral Race ----------
-const raceEnd = () => new Date(REV.ends_at).toLocaleString([], {dateStyle:'medium', timeStyle:'short'});
-// The race banner has been removed from every page. Kept as an empty function because render() and ensureExtras() call it.
-function refBanner(){ return ''; }
-
-function pgRace(){
-  if (!REV) return '<h1>Referral Race</h1><p class="mut">No race is running right now. Check back soon.</p>';
-  const ended = Date.now() >= new Date(REV.ends_at);
-  const lead = REV.leaders || [];
-  const at = lead.findIndex(r => r.username === me.username);
-  const rows = lead.map((r, i) => lbRow(i, r.username, r.n, 40)).join('');
-  const status = ended ? (REV.winner ? 'Winner: <b>' + esc(REV.winner) + '</b> (+' + REV.prize + ' tokens)' : 'The race has ended') : 'Ends ' + raceEnd();
-  const standing = at >= 0 ? 'You are #' + (at + 1) : (REV.mine > 0 ? 'Not in the top 10 yet' : 'No referrals yet');
-  return `<h1>Referral Race</h1><div class="card"><p style="margin-top:0">Share your link. When a friend signs up through it and confirms their email, you get ${REFERRER_BONUS} tokens and your friend gets ${FRIEND_BONUS}. The player with the most confirmed referrals wins a bonus ${REV.prize} tokens. Ties go to whoever reached the count first.</p>
-    <div class="lk" style="max-width:480px"><b>Your link</b><input readonly value="${esc(refLink())}" onclick="this.select()" aria-label="Your link">
-    <button onclick="navigator.clipboard.writeText(refLink());toast('Link copied!')">Copy</button></div>
-    <div class="race-stats"><span class="rc">${status}</span><span class="rc">Your referrals: <b>${REV.mine}</b></span><span class="rc">${standing}</span></div></div>
-  <div class="card"><b>Top 10</b>${rows ? `<div class="lb" style="margin-top:10px"><div class="lbh"><span>#</span><span>Player</span><span>Referrals</span></div>${rows}</div>` : '<p class="mut">No referrals yet. Be the first!</p>'}</div>`;
-}
+// ---------- Referral race payout ----------
+// The race page and banner are gone, but loading 'ev' (referral_event_info) is what pays the race winner
+// once the race's end time passes, so the fetch stays in FETCH.ev and ensureExtras().
 
 // full-width Market of the Week card shown at the top of the Markets page
 const motwCard = m => {
@@ -862,18 +845,18 @@ function render(){
   const pend = PR.filter(p => p.status === 'pending').length;
   const meBn = itemById(me.banner);
   const link = (id, label, badge) => `<a href="#/${id}" class="${id === pg || (id === 'markets' && pg === 'market') ? 'on' : ''}">${svg(IC[id])}${label}${badge ? `<span class="chip">${badge}</span>` : ''}</a>`;
-  const pages = {markets: pgMarkets, market: () => pgMarket(+arg), portfolio: pgPortfolio, leaderboard: pgBoard, race: pgRace, shop: pgShop, ideas: pgIdeas, rules: pgRules, suggest: pgSuggest, create: pgCreate, review: pgReview, admin: pgAdmin, account: pgAccount, inventory: pgInventory};
+  const pages = {markets: pgMarkets, market: () => pgMarket(+arg), portfolio: pgPortfolio, leaderboard: pgBoard, shop: pgShop, ideas: pgIdeas, rules: pgRules, suggest: pgSuggest, create: pgCreate, review: pgReview, admin: pgAdmin, account: pgAccount, inventory: pgInventory};
   const ok = {create: staff, review: staff, admin: owner, suggest: !staff};
   const waiting = BLOCKING[pg] && (EXTRAS[pg] || []).some(k => !LOADED[k]);
   const body = !pages[pg] ? '<p>Page not found.</p>' : (pg in ok && !ok[pg]) ? '<p class="mut">You do not have access to this page.</p>' : waiting ? '<p class="mut">Loading...</p>' : pages[pg]();
 
   $('#app').innerHTML = `<div id="shell"><nav><h2>EagleEye Market</h2>
-    ${link('race', 'Referral Race')}${link('markets', 'Markets')}${link('portfolio', 'Portfolio')}${link('leaderboard', 'Leaderboard')}${link('shop', 'Shop')}${link('ideas', 'Idea Box', ideaNew() || '')}${link('rules', 'Rules')}
+    ${link('markets', 'Markets')}${link('portfolio', 'Portfolio')}${link('leaderboard', 'Leaderboard')}${link('shop', 'Shop')}${link('ideas', 'Idea Box', ideaNew() || '')}${link('rules', 'Rules')}
     ${staff ? link('create', 'Create market') + link('review', 'Review', pend || '') : link('suggest', 'Suggest a market')}
     ${owner ? link('admin', 'Admin tools') : ''}
     <div class="navref"><span class="mut">Your referral link</span><input readonly value="${esc(refLink())}" onclick="this.select()" aria-label="Your referral link"><button onclick="navigator.clipboard.writeText(refLink());toast('Link copied!')">Copy link</button></div>
     <a href="#/account" class="me${pg === 'account' || pg === 'inventory' ? ' on' : ''}${meBn ? ' bn' : ''}"${meBn ? ` style="${esc(bannerStyle(meBn))}"` : ''}>${avatar(me.username, 30)}<span style="min-width:0"><b style="display:block;overflow:hidden;text-overflow:ellipsis">${esc(me.username)}</b><span class="mut">${(+me.balance).toFixed(0)} tokens</span></span></a>
-    </nav><main><div class="card split"><span><span class="chip">SEASON</span> <b id="cd" style="font-weight:500">${cdText()}</b></span><a href="#/rules">Rules</a></div><div id="rb">${pg === 'race' ? '' : refBanner()}</div>${body}</main></div><div id="stkw">${streakBadge()}</div>`;
+    </nav><main><div class="card split"><span><span class="chip">SEASON</span> <b id="cd" style="font-weight:500">${cdText()}</b></span><a href="#/rules">Rules</a></div>${body}</main></div><div id="stkw">${streakBadge()}</div>`;
 
   for (const k in keep) { const el = document.getElementById(k); if (el) el.value = keep[k]; }
   if (pg === 'admin') { showShopPreview(); showSpecialPreview(); }
