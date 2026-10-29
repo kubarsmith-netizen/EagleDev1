@@ -278,6 +278,8 @@ const py = m => +m.money_yes / (+m.money_yes + +m.money_no);
 const sidePrice = (m, side) => side === 'yes' ? py(m) : 1 - py(m);
 const boughtAtPrice = (m, p) => +p.shares > 0 ? +p.invested / +p.shares : sidePrice(m, p.side);
 const positionValue = (m, p) => +p.shares * sidePrice(m, p.side);
+// what a cash-out actually pays: on the Market of the Week, profit is doubled (losses are not)
+const cashValue = (m, p) => { const v = positionValue(m, p), inv = +p.invested; return m.is_motw && v > inv ? inv + 2 * (v - inv) : v; };
 const mState = m => m.status !== 'open' ? (m.outcome === 'void' ? 'Cancelled' : 'Resolved: ' + m.outcome.toUpperCase()) : ((m.closes_at && new Date(m.closes_at) <= Date.now()) || Date.now() >= SEASON_END ? 'Trading closed' : 'Open');
 
 // CD holds {market_id, until} where "until" was worked out from the SERVER's clock, so a wrong
@@ -488,7 +490,7 @@ function pgMarkets(){
 
 const stkLine = (m, p) => {
   if (!STK) return '';
-  const b = Math.max(0, positionValue(m, p) - (+p.invested)) * (+STK.bonus_pct) / 100;
+  const b = Math.max(0, cashValue(m, p) - (+p.invested)) * (+STK.bonus_pct) / 100;
   return b >= 0.005 ? `<br>Streak bonus: +${b.toFixed(2)}` : '';
 };
 
@@ -505,7 +507,7 @@ function pgMarket(id){
     <div class="row">${[10, 50, 100].map(n => `<button class="g" onclick="$('#a${id}').value=${n}">${n}</button>`).join('')}</div>
     <div class="row"><button class="y" onclick="buy(${id},'yes')">Buy YES</button><button class="n" onclick="buy(${id},'no')">Buy NO</button></div>`;
   const pos = mine.map(p => {
-    const v = positionValue(m, p);
+    const v = cashValue(m, p);
     return `<div class="row split"><span><b>${p.side.toUpperCase()}</b><br>Invested: ${(+p.invested).toFixed(1)}<br>Bought at: ${(boughtAtPrice(m, p) * 100).toFixed(0)}%<br>Now: ${(sidePrice(m, p.side) * 100).toFixed(0)}%<br>Cash out for: ${v.toFixed(1)}${stkLine(m, p)}</span>
     <button class="g" ${i.locked || i.closed || !i.open ? 'disabled' : ''} onclick="sell(${id},'${p.side}')">Cash out</button></div>`;
   }).join('');
@@ -523,7 +525,7 @@ function pgPortfolio(){
   const rows = P.map(p => ({p, m: markets.find(x => x.id === p.market_id)})).filter(r => r.m && r.m.status === 'open' && +r.p.shares > 0);
   const tr = rows.map(({p, m}) => {
     const i = info(m);
-    return `<tr><td><a href="#/market/${m.id}">${esc(m.question)}</a></td><td>${p.side.toUpperCase()}</td><td>${(+p.invested).toFixed(1)}</td><td>${(boughtAtPrice(m, p) * 100).toFixed(0)}%</td><td>${(sidePrice(m, p.side) * 100).toFixed(0)}%</td><td>${positionValue(m, p).toFixed(1)}</td>
+    return `<tr><td><a href="#/market/${m.id}">${esc(m.question)}</a></td><td>${p.side.toUpperCase()}</td><td>${(+p.invested).toFixed(1)}</td><td>${(boughtAtPrice(m, p) * 100).toFixed(0)}%</td><td>${(sidePrice(m, p.side) * 100).toFixed(0)}%</td><td>${cashValue(m, p).toFixed(1)}</td>
       <td><button class="g" ${i.locked || i.closed ? 'disabled' : ''} onclick="sell(${m.id},'${p.side}')">Cash out</button></td></tr>`;
   }).join('');
   return `<h1>Portfolio</h1>${rows.length ? `<div class="card"><table><tr><th>Market</th><th>Side</th><th>Invested</th><th>Bought at</th><th>Now</th><th>Cash out for</th><th></th></tr>${tr}</table></div>` : '<p class="mut">No open positions yet. Pick a market to start.</p>'}`;
@@ -560,7 +562,7 @@ const pgRules = () => `<h1>Rules</h1><div class="card" style="max-width:760px">
 <li>No love life markets.</li>
 <li>No insults of any kind and no comments about identity, about a specific person or any group of people.</li>
 </ul>
-  <h2>Market of the Week</h2><p>One featured market sits at the top of the Markets page each week and resolves on Friday. If you are on the winning side, you earn <b>2 times your profit</b>. If you are wrong, you lose your stake as usual, with no extra loss.</p>
+  <h2>Market of the Week</h2><p>One featured market sits at the top of the Markets page each week and resolves on Friday. If you win, or cash out at a profit, you earn <b>2 times your profit</b>. If you lose or cash out at a loss, it works as usual, with no extra loss.</p>
   <h2>Rewards</h2><p>You earn <b>100 tokens</b> for every market you suggest that gets approved. You earn <b>300 tokens</b> for every friend who signs up with your referral link and confirms their email (they get 100 too).</p>
   <h2>Daily streaks</h2><p>Make at least 5 trades in a day to build a streak. Buys and cash-outs both count, and days run midnight to midnight Pacific Time. Each streak day adds 0.1% to the profit on your cash-outs, up to 10%. Missing a day resets the bonus to 0%.</p>
   <h2>Usernames and profiles</h2><p>Keep usernames and profile choices appropriate. Names that imitate staff are not allowed.</p>
