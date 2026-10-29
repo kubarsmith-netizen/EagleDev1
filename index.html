@@ -33,8 +33,11 @@ nav a .chip{margin-left:auto}
 nav a:hover{background:var(--hov);color:var(--fg)}
 nav a.on{background:var(--hov);color:var(--fg);font-weight:600}
 nav a.on svg{color:var(--acc)}
-nav a.me{margin-top:auto;border:1.5px solid var(--bd);padding:8px;color:var(--fg);line-height:1.25}
+nav a.me{margin-top:10px;border:1.5px solid var(--bd);padding:8px;color:var(--fg);line-height:1.25}
 nav a.me:hover,nav a.me.on{border-color:var(--acc)}
+.navref{margin-top:auto;padding:10px;border:1.5px solid var(--bd);border-radius:12px}
+.navref input{margin:4px 0 0;padding:6px 8px;font-size:12px}
+.navref button{width:100%;margin-top:6px;padding:6px 8px;font-size:13px}
 nav a.me .av{width:30px;height:30px;font-size:16px;margin:0}
 nav a.me.bn .mut{color:inherit;opacity:.9}
 main{flex:1;padding:30px 38px;min-width:0}
@@ -139,7 +142,7 @@ main>.card.split:first-child{background:var(--card);border-top:3px solid var(--a
 .boardwrap>div{min-width:0}
 .sm h1{font-size:21px}
 @media(max-width:1000px){.boardwrap{grid-template-columns:1fr}}
-@media(max-width:860px){#shell{flex-direction:column}nav{width:auto;height:auto;position:static;flex-direction:row;flex-wrap:wrap}nav h2{width:100%}nav a.me{margin-top:0}main{padding:16px}.two,.stats{grid-template-columns:1fr 1fr}.two{grid-template-columns:1fr}#stk{top:auto;bottom:16px;right:12px}}
+@media(max-width:860px){#shell{flex-direction:column}nav{width:auto;height:auto;position:static;flex-direction:row;flex-wrap:wrap}nav h2{width:100%}nav a.me{margin-top:0}.navref{margin-top:0;width:100%}main{padding:16px}.two,.stats{grid-template-columns:1fr 1fr}.two{grid-template-columns:1fr}#stk{top:auto;bottom:16px;right:12px}}
 /* rounder corners */
 .card,.race-bar,.stk-panel{border-radius:18px}
 .lbr{border-radius:16px}
@@ -868,6 +871,7 @@ function render(){
     ${link('race', 'Referral Race')}${link('markets', 'Markets')}${link('portfolio', 'Portfolio')}${link('leaderboard', 'Leaderboard')}${link('shop', 'Shop')}${link('ideas', 'Idea Box', ideaNew() || '')}${link('rules', 'Rules')}
     ${staff ? link('create', 'Create market') + link('review', 'Review', pend || '') : link('suggest', 'Suggest a market')}
     ${owner ? link('admin', 'Admin tools') : ''}
+    <div class="navref"><span class="mut">Your referral link</span><input readonly value="${esc(refLink())}" onclick="this.select()" aria-label="Your referral link"><button onclick="navigator.clipboard.writeText(refLink());toast('Link copied!')">Copy link</button></div>
     <a href="#/account" class="me${pg === 'account' || pg === 'inventory' ? ' on' : ''}${meBn ? ' bn' : ''}"${meBn ? ` style="${esc(bannerStyle(meBn))}"` : ''}>${avatar(me.username, 30)}<span style="min-width:0"><b style="display:block;overflow:hidden;text-overflow:ellipsis">${esc(me.username)}</b><span class="mut">${(+me.balance).toFixed(0)} tokens</span></span></a>
     </nav><main><div class="card split"><span><span class="chip">SEASON</span> <b id="cd" style="font-weight:500">${cdText()}</b></span><a href="#/rules">Rules</a></div><div id="rb">${pg === 'race' ? '' : refBanner()}</div>${body}</main></div><div id="stkw">${streakBadge()}</div>`;
 
