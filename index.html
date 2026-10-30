@@ -151,17 +151,6 @@ nav a,.chip,.rc,.rank,.nm{border-radius:12px}
 .tag{border-radius:8px}
 .bar{border-radius:999px}
 #t{border-radius:14px}
-/* School Calendar */
-.cal-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0}
-.cal-toolbar button{padding:7px 12px}
-.cal-event{display:grid;grid-template-columns:112px minmax(0,1fr);gap:16px;padding:14px 16px;border-bottom:1px solid var(--line)}
-.cal-event:last-child{border-bottom:0}
-.cal-date{font-weight:600;color:var(--acc)}
-.cal-date small{display:block;color:var(--mut);font-weight:400}
-.cal-event h3{font-size:15px;margin:0 0 4px}
-.cal-event p{margin:4px 0;color:var(--mut);font-size:13px;white-space:pre-wrap}
-.cal-day{font-size:13px;color:var(--mut);font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:12px 16px 4px}
-@media(max-width:600px){.cal-event{grid-template-columns:1fr;gap:4px;padding:12px 4px}}
 /* inventory: earned items you do not hold yet */
 .dim{opacity:.6}
 </style>
@@ -198,7 +187,7 @@ const AVURL = SUPABASE_URL + '/storage/v1/object/public/avatars/';
 const SHOPURL = SUPABASE_URL + '/storage/v1/object/public/shop-art/';
 const PATS = {none:'None', dots:'Dots', grid:'Grid', lines:'Lines'};
 const CRIT = {top_streak:'Highest daily streak (ties share it)', top_referrals:'Most referrals (ties share it)'};
-const IC = {markets:'M3 17l6-6 4 4 8-8M15 7h6v6', portfolio:'M3 8h18v12H3zM8 8V5h8v3', leaderboard:'M6 20V10M12 20V4M18 20v-7', shop:'M5 7h14l-1 13H6zM9 7a3 3 0 016 0', rules:'M6 3h12v18H6zM9 8h6M9 12h6', suggest:'M12 5v14M5 12h14', create:'M12 5v14M5 12h14', review:'M5 12l5 5 9-10', admin:'M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z', ideas:'M9 18h6M10 21h4M12 3a6 6 0 00-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0012 3z', calendar:'M7 3v4m10-4v4M4 9h16M5 5h14a1 1 0 011 1v14H4V6a1 1 0 011-1z'};
+const IC = {markets:'M3 17l6-6 4 4 8-8M15 7h6v6', portfolio:'M3 8h18v12H3zM8 8V5h8v3', leaderboard:'M6 20V10M12 20V4M18 20v-7', shop:'M5 7h14l-1 13H6zM9 7a3 3 0 016 0', rules:'M6 3h12v18H6zM9 8h6M9 12h6', suggest:'M12 5v14M5 12h14', create:'M12 5v14M5 12h14', review:'M5 12l5 5 9-10', admin:'M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z', ideas:'M9 18h6M10 21h4M12 3a6 6 0 00-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0012 3z'};
 const svg = d => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg>`;
 
 // shop art: built-in items store CSS/emoji, uploaded items store "img:<path>"
@@ -847,30 +836,6 @@ function streakBadge(){
   return `<div id="stk">${panel}<button class="stk-btn${n ? '' : ' off'}" onclick="toggleStk()" aria-label="Streak details" title="Daily trading streak">🔥 <b>${n}</b></button></div>`;
 }
 
-// ---------- School Calendar ----------
-let CAL_EVENTS = [], CAL_LOADED = false, CAL_LOADING = false, CAL_ERROR = '', CAL_SHOW_PAST = false;
-const calDate = (iso, opts) => new Date(iso).toLocaleDateString([], opts || {weekday:'short', month:'short', day:'numeric'});
-const calTime = (e) => e.all_day ? 'All day' : `${new Date(e.starts_at).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})}${e.ends_at ? ' – ' + new Date(e.ends_at).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}) : ''}`;
-async function loadCalendar(force=false){
-  if (CAL_LOADING || (CAL_LOADED && !force)) return;
-  CAL_LOADING = true; CAL_LOADED = false; CAL_ERROR = '';
-  const {data,error} = await sb.from('school_calendar_events').select('uid,recurrence_id,title,description,location,starts_at,ends_at,all_day,url').order('starts_at',{ascending:true}).limit(1500);
-  if (error) { CAL_ERROR = error.message; CAL_EVENTS = []; }
-  else { CAL_EVENTS = data || []; CAL_LOADED = true; }
-  CAL_LOADING = false;
-  if ((location.hash.slice(2)||'markets').split('/')[0] === 'calendar') render();
-}
-function pgCalendar(){
-  if (!CAL_LOADED && !CAL_ERROR) { loadCalendar(); return `<h1>School Calendar</h1><div class="card mut">Loading school events…</div>`; }
-  const now = Date.now(), list = CAL_EVENTS.filter(e => CAL_SHOW_PAST || new Date(e.ends_at || e.starts_at).getTime() >= now - 86400000);
-  const grouped = new Map();
-  for (const e of list) { const k = new Date(e.starts_at).toLocaleDateString([], {weekday:'long',month:'long',day:'numeric',year:'numeric'}); if (!grouped.has(k)) grouped.set(k,[]); grouped.get(k).push(e); }
-  const body = [...grouped.entries()].map(([day,events]) => `<div class="cal-day">${esc(day)}</div>${events.map(e => `<div class="cal-event"><div class="cal-date">${esc(calTime(e))}<small>${e.all_day ? ' ' : esc(calDate(e.starts_at,{month:'short',day:'numeric'}))}</small></div><div><h3>${esc(e.title || 'Untitled event')}</h3>${e.location ? `<p>📍 ${esc(e.location)}</p>` : ''}${e.description ? `<p>${esc(e.description.slice(0,1200))}</p>` : ''}${e.url ? `<p><a href="${esc(e.url)}" target="_blank" rel="noopener noreferrer">Event details</a></p>` : ''}</div></div>`).join('')}`).join('');
-  return `<h1>School Calendar</h1><p class="mut">Head-Royce events, synced automatically from the school calendar.</p>
-    <div class="cal-toolbar"><button class="g" onclick="loadCalendar(true)">↻ Refresh</button><button class="g" onclick="CAL_SHOW_PAST=!CAL_SHOW_PAST;render()">${CAL_SHOW_PAST ? 'Hide past events' : 'Show past events'}</button><span class="mut">${CAL_EVENTS.length} events · Last synced automatically</span></div>
-    ${CAL_ERROR ? `<div class="card"><b>Could not load the calendar.</b><p class="mut">${esc(CAL_ERROR)}. Make sure the calendar SQL and sync function have been installed.</p></div>` : body ? `<div class="card" style="padding:0 16px">${body}</div>` : `<div class="card">No ${CAL_SHOW_PAST ? '' : 'upcoming '}events found.</div>`}`;
-}
-
 // ---------- shell + router ----------
 function render(){
   lastRender = Date.now();
@@ -882,13 +847,13 @@ function render(){
   const pend = PR.filter(p => p.status === 'pending').length;
   const meBn = itemById(me.banner);
   const link = (id, label, badge) => `<a href="#/${id}" class="${id === pg || (id === 'markets' && pg === 'market') ? 'on' : ''}">${svg(IC[id])}${label}${badge ? `<span class="chip">${badge}</span>` : ''}</a>`;
-  const pages = {markets: pgMarkets, market: () => pgMarket(+arg), portfolio: pgPortfolio, leaderboard: pgBoard, shop: pgShop, ideas: pgIdeas, rules: pgRules, suggest: pgSuggest, create: pgCreate, review: pgReview, admin: pgAdmin, account: pgAccount, inventory: pgInventory, calendar: pgCalendar};
+  const pages = {markets: pgMarkets, market: () => pgMarket(+arg), portfolio: pgPortfolio, leaderboard: pgBoard, shop: pgShop, ideas: pgIdeas, rules: pgRules, suggest: pgSuggest, create: pgCreate, review: pgReview, admin: pgAdmin, account: pgAccount, inventory: pgInventory};
   const ok = {create: staff, review: staff, admin: owner, suggest: !staff};
   const waiting = BLOCKING[pg] && (EXTRAS[pg] || []).some(k => !LOADED[k]);
   const body = !pages[pg] ? '<p>Page not found.</p>' : (pg in ok && !ok[pg]) ? '<p class="mut">You do not have access to this page.</p>' : waiting ? '<p class="mut">Loading...</p>' : pages[pg]();
 
   $('#app').innerHTML = `<div id="shell"><nav><h2>EagleEye Market</h2>
-    ${link('markets', 'Markets')}${link('calendar', 'School Calendar')}${link('portfolio', 'Portfolio')}${link('leaderboard', 'Leaderboard')}${link('shop', 'Shop')}${link('ideas', 'Idea Box', ideaNew() || '')}${link('rules', 'Rules')}
+    ${link('markets', 'Markets')}${link('portfolio', 'Portfolio')}${link('leaderboard', 'Leaderboard')}${link('shop', 'Shop')}${link('ideas', 'Idea Box', ideaNew() || '')}${link('rules', 'Rules')}
     ${staff ? link('create', 'Create market') + link('review', 'Review', pend || '') : link('suggest', 'Suggest a market')}
     ${owner ? link('admin', 'Admin tools') : ''}
     <div class="navref"><span class="mut">Your referral link</span><input readonly value="${esc(refLink())}" onclick="this.select()" aria-label="Your referral link"><button onclick="navigator.clipboard.writeText(refLink());toast('Link copied!')">Copy link</button></div>
@@ -900,7 +865,7 @@ function render(){
   if (pg === 'market' && staff && !MTok[+arg]) fetchTrades(+arg);
 }
 
-addEventListener('hashchange', () => { render(); scrollTo(0, 0); ensureExtras(); if ((location.hash.slice(2)||'markets').split('/')[0] === 'calendar') loadCalendar(); });
+addEventListener('hashchange', () => { render(); scrollTo(0, 0); ensureExtras(); });
 
 const tradesCard = id => {
   if (me.role === 'user') return '';
@@ -983,7 +948,185 @@ async function checkReferralAlerts(){
 }
 setInterval(() => { if (!document.hidden) checkReferralAlerts(); }, 30000);
 
-load().then(() => { checkReferralAlerts(); if ((location.hash.slice(2)||'markets').split('/')[0] === 'calendar') loadCalendar(); });
+load().then(checkReferralAlerts);
 </script>
+<style>
+.s2bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 14px}.s2bar .rc{font-weight:600}
+.s2t{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}.s2t .card{margin:0;padding:12px}
+.s2t .card.mine{border-color:var(--acc)}.s2t .card.neu{border-style:dashed}.s2t .card.gone{opacity:.55}
+.s2tag{font-size:12px;color:var(--mut)}.s2w{overflow-x:auto}.s2w input,.s2w select{min-width:90px;margin:0;padding:6px 8px}
+.s2m{padding:6px 0;border-bottom:1px solid var(--line)}.s2m.pin{background:var(--hov);padding:6px 8px;border-radius:10px}
+</style>
+<script>
+(() => {
+const E = {map:[], ex:{inv:[],ref:{},listings:[],sales:[],nw:0}, cats:[], res:[], chat:[], tasks:[], board:[], atasks:[], t:0, busy:false, pg:'', area:'All', cat:'', reply:null, err:''};
+const PG = ['hub','empire','exchange','board','chat','rooms'];
+const staff = () => me && me.role !== 'user';
+const em = (l, id) => { const x = l.find(y => y.id === id); return x ? x.emoji : ''; };
+const rn = id => { const x = E.res.find(y => y.id === id); return x ? x.emoji + ' ' + x.name : ''; };
+const opts = (l, v, blank) => (blank !== undefined ? `<option value="">${blank}</option>` : '') + l.map(x => `<option value="${esc(x.id)}"${x.id === v ? ' selected' : ''}>${esc((x.emoji || '') + ' ' + x.name)}</option>`).join('');
+const mine = () => E.map.filter(d => d.mine);
+const claimPrice = d => Math.min(1000, Math.round(d.price * Math.min(2, 1 + .1 * Math.max(0, mine().length - 2)) / 5) * 5);
+const AREAS = ['Lower School', 'Middle School', 'Upper School', 'South Campus', 'Athletics'];
+
+async function eFetch(pg) {
+  if (E.busy) return;
+  E.busy = true; E.t = Date.now(); E.pg = pg;
+  const q = [sb.rpc('empire_map'), sb.rpc('empire_exchange'), sb.from('empire_categories').select().order('sort'), sb.from('empire_resources').select().order('sort'), sb.rpc('empire_tasks_list')];
+  if (pg === 'chat') q.push(sb.rpc('chat_list'));
+  if (pg === 'board') q.push(sb.rpc('empire_board'));
+  if (pg === 'rooms' && staff()) q.push(sb.rpc('empire_admin_tasks'));
+  const r = await Promise.all(q);
+  E.err = (r.find(x => x.error) || {error: {message: ''}}).error.message;
+  if (!E.err) {
+    E.map = r[0].data || []; E.ex = r[1].data || E.ex; E.cats = r[2].data || []; E.res = r[3].data || []; E.tasks = r[4].data || [];
+    if (pg === 'chat') E.chat = r[5].data || [];
+    if (pg === 'board') E.board = r[5].data || [];
+    if (pg === 'rooms') E.atasks = r[5] ? r[5].data || [] : [];
+  }
+  E.busy = false; render();
+}
+const act = async (fn, args, ok) => {
+  const {error} = await sb.rpc(fn, args);
+  if (error) toast(/schema cache|could not find/i.test(error.message) ? 'Run season2.sql in the Supabase SQL Editor first.' : error.message); else if (ok) toast(ok);
+  E.t = 0; await load();
+};
+const v = id => document.getElementById(id).value;
+window.act = act; window.v = v;
+
+// ---------- pages ----------
+const topbar = () => `<div class="s2bar"><button class="g" onclick="go('hub')">🏠 Home</button><span class="rc">💰 ${(+me.balance).toFixed(0)} tokens</span><span class="rc">📊 Net worth ${Math.round(E.ex.nw || me.balance)}</span></div>`;
+const err = () => E.err ? `<div class="card"><b>Season 2 data could not load.</b><p class="mut">${esc(E.err)} If this mentions the schema cache or a missing function, run season2.sql in the Supabase SQL Editor.</p></div>` : '';
+
+function pgHub() {
+  const open = markets.filter(m => m.status === 'open').length, my = mine(), pend = my.reduce((s, d) => s + (+d.pend || 0), 0);
+  const card = (h, ic, t, s) => `<a class="card mk" href="#/${h}"><div class="big">${ic}</div><b>${t}</b><div class="mut" style="margin-top:6px">${s}</div></a>`;
+  return `<h1>Home</h1>${err()}<div class="grid">
+  ${card('markets', '📈', 'Markets', open + ' open markets')}
+  ${card('empire', '🏫', 'Empire', my.length + '/12 rooms · ' + Math.floor(pend) + ' units ready to collect')}
+  ${card('exchange', '🔁', 'Exchange', E.ex.listings.length + ' resource listings · ' + E.map.filter(d => d.listed).length + ' rooms for sale')}
+  ${card('board', '🏆', 'Net worth', 'Yours: ' + Math.round(E.ex.nw || me.balance))}
+  ${card('chat', '💬', 'Chat', 'Talk with everyone')}
+  ${card('shop', '🛍️', 'Shop', 'Banners and icons')}</div>`;
+}
+
+function pgEmpire() {
+  const my = mine(), pend = my.reduce((s, d) => s + Math.floor(+d.pend || 0), 0);
+  const areas = ['All', ...AREAS.filter(a => E.map.some(d => d.area === a)), ...[...new Set(E.map.map(d => d.area))].filter(a => !AREAS.includes(a))];
+  const list = E.map.filter(d => d.active && (E.area === 'All' || d.area === E.area) && (!E.cat || d.cat === E.cat));
+  const tile = d => {
+    const price = d.price ? claimPrice(d) : 0; let st = '', btn = '';
+    if (d.tier === 'neutral') st = '<span class="chip">NEUTRAL ZONE</span>';
+    else if (d.mine) { st = '<b>Yours</b>' + (d.res ? ` · ${(+d.pend || 0).toFixed(2)} ${em(E.res, d.res)} ready` : ''); btn = `<button class="g" onclick="S2.listRoom(${d.id},${d.listed || 0})">${d.listed ? 'Listed ' + d.listed + ' · change' : 'List for sale'}</button>` + (d.listed ? `<button class="g" onclick="S2.unlist(${d.id})">Unlist</button>` : ''); }
+    else if (d.owner) { st = 'Owner ' + nm(d.owner, 18); if (d.listed) btn = `<button onclick="S2.buyRoom(${d.id})" ${+me.balance < d.listed ? 'disabled' : ''}>Buy · ${d.listed}</button>`; }
+    else btn = `<button onclick="S2.claim(${d.id})" ${+me.balance < price ? 'disabled' : ''}>Claim · ${price}</button>`;
+    return `<div class="card ${d.mine ? 'mine' : ''} ${d.tier === 'neutral' ? 'neu' : ''}"><b>${em(E.cats, d.cat)} ${esc(d.name)}</b>
+      <div class="s2tag">${esc(d.area)} · ${esc((E.cats.find(c => c.id === d.cat) || {}).name || 'Unlabeled')}${d.tag ? ' · Market: ' + esc(d.tag) : ''}</div>
+      <div class="s2tag">${d.res ? `Makes ${rn(d.res)} · ${d.rate}/day` : d.tier === 'neutral' ? 'Hosts tasks and events' : 'No production'}${d.price ? ' · base ' + d.price : ''}</div>
+      <div style="margin-top:6px">${st}</div><div class="row">${btn}</div></div>`;
+  };
+  const tasks = E.tasks.map(t => `<tr><td><b>${esc(t.title)}</b><div class="mut">${esc(t.zone || '')} ${esc(t.desc || '')}</div></td><td>${t.tokens ? t.tokens + ' tokens ' : ''}${t.res ? t.qty + ' ' + rn(t.res) : ''}</td>
+    <td>${t.done ? '✅ Done' : `<input id="tc${t.id}" placeholder="Code" style="margin:0;width:110px"> <button onclick="S2.task(${t.id})">Submit</button>`}</td></tr>`).join('');
+  return `<h1>Empire</h1>${err()}<p class="mut">Claim campus rooms. Each one is a real place, labeled by subject or purpose. Producer rooms make resources you collect and trade. You own ${my.length}/12 rooms.</p>
+  <div class="tabs">${areas.map(a => `<button class="${E.area === a ? '' : 'g'}" onclick="S2.area('${esc(a)}')">${esc(a)}</button>`).join('')}
+  <select onchange="S2.cat(this.value)"><option value="">All categories</option>${opts(E.cats, E.cat)}</select>
+  <button style="margin-left:auto" onclick="act('empire_collect',{},'Collected')" ${pend ? '' : 'disabled'}>Collect ${pend} units</button></div>
+  <div class="s2t">${list.map(tile).join('') || '<p class="mut">No rooms here.</p>'}</div>
+  <h2>Tasks at neutral zones</h2>${tasks ? `<div class="card"><table><tr><th>Task</th><th>Reward</th><th></th></tr>${tasks}</table></div>` : '<p class="mut">No tasks right now. Check the Middle School Patio for events.</p>'}`;
+}
+
+function pgExchange() {
+  const x = E.ex, listed = E.map.filter(d => d.listed && !d.mine);
+  const inv = x.inv.map(i => `<span class="rc">${rn(i.res)} × ${i.qty} <span class="mut">(ref ${(+x.ref[i.res] || 100).toFixed(0)})</span></span>`).join(' ') || '<span class="mut">Nothing yet. Collect from your producer rooms.</span>';
+  const rows = x.listings.map(l => `<tr><td>${rn(l.res)} × ${l.qty}</td><td>${nm(l.seller, 18)}</td><td>${l.price} <span class="mut">(${(l.price / l.qty).toFixed(1)} each)</span></td>
+    <td>${l.mine ? `<button class="g" onclick="act('empire_cancel_listing',{p_id:'${l.id}'},'Listing removed')">Cancel</button>` : `<button onclick="act('empire_buy_listing',{p_id:'${l.id}'},'Bought')" ${+me.balance < l.price ? 'disabled' : ''}>Buy</button>`}</td></tr>`).join('');
+  return `<h1>Exchange</h1>${err()}<div class="card"><b>Your inventory</b> <span class="mut">(max 100 of each)</span><div class="row">${inv}</div></div>
+  <div class="card narrow"><b>Sell resources</b><div class="row"><label class="mut">Resource<select id="xr">${opts(E.res.filter(r => x.inv.some(i => i.res === r.id)), '')}</select></label>
+  <label class="mut">Quantity<input id="xq" type="number" min="1" value="1"></label><label class="mut">Total price<input id="xp" type="number" min="1" value="100"></label></div>
+  <p class="mut">Unit price must stay between 25 and 400 tokens. The reference price is the median of the last 5 sales.</p><button onclick="act('empire_list_resource',{p_res:v('xr'),p_qty:+v('xq'),p_price:+v('xp')},'Listed')">List for sale</button></div>
+  <h2>Resource listings</h2>${rows ? `<div class="card"><table><tr><th>Item</th><th>Seller</th><th>Price</th><th></th></tr>${rows}</table></div>` : '<p class="mut">No listings.</p>'}
+  <h2>Rooms for sale</h2>${listed.length ? `<div class="s2t">${listed.map(d => `<div class="card"><b>${esc(d.name)}</b><div class="s2tag">${esc(d.area)} · ${d.res ? rn(d.res) : 'no production'}</div><div class="row">${nm(d.owner, 18)}<button onclick="S2.buyRoom(${d.id})" ${+me.balance < d.listed ? 'disabled' : ''}>Buy · ${d.listed}</button></div></div>`).join('')}</div>` : '<p class="mut">No rooms listed.</p>'}
+  <h2>Recent sales</h2>${x.sales.length ? `<div class="card"><table>${x.sales.map(s => `<tr><td>${rn(s.res)} × ${s.qty}</td><td>${s.price} tokens</td><td class="mut">${new Date(s.at).toLocaleString()}</td></tr>`).join('')}</table></div>` : '<p class="mut">No sales yet.</p>'}`;
+}
+
+const pgBoardS2 = () => `<h1>Net worth</h1><p class="mut">Tokens + open market stakes + resources (at reference price) + rooms (last price, clamped to 75-125% of base).</p>${err()}
+  <div class="card"><div class="lb"><div class="lbh"><span>#</span><span>Player</span><span>Net worth</span></div>${E.board.map((r, i) => lbRow(i, r.username, Math.round(r.worth) + ' · ' + r.rooms + ' rooms', 40)).join('')}</div></div>`;
+
+function pgChat() {
+  const msg = m => `<div class="s2m ${m.pinned ? 'pin' : ''}">${m.pinned ? '📌 ' : ''}${nm(m.username, 20)} <span class="mut">${new Date(m.at).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}</span>
+    ${m.reply_to ? `<div class="mut">↪ ${esc(((E.chat.find(x => x.id === m.reply_to) || {}).body || 'earlier message').slice(0, 60))}</div>` : ''}<div>${esc(m.body)}</div>
+    <a href="#/chat" onclick="S2.reply(${m.id});return false" class="mut">Reply</a>${staff() ? ` · <a href="#/chat" class="mut" onclick="act('admin_chat_mod',{p_id:${m.id},p_action:'${m.pinned ? 'unpin' : 'pin'}'});return false">${m.pinned ? 'Unpin' : 'Pin'}</a> · <a href="#/chat" class="mut" onclick="act('admin_chat_mod',{p_id:${m.id},p_action:'delete'});return false">Delete</a>` : ''}</div>`;
+  return `<h1>Chat</h1>${err()}<p class="mut">Be kind. Messages are filtered, rate limited, and deleted after 72 hours. No files or links to private info.</p>
+  <div class="card">${E.chat.map(msg).join('') || '<p class="mut">No messages yet.</p>'}
+  <div class="row">${E.reply ? `<span class="mut">Replying to #${E.reply} <a href="#/chat" onclick="S2.reply(null);return false">cancel</a></span>` : ''}<input id="cm" maxlength="280" placeholder="Say something..." onkeydown="if(event.key==='Enter')S2.send()" style="flex:1"><button onclick="S2.send()">Send</button></div></div>`;
+}
+
+function pgRooms() {
+  if (!staff()) return '<p class="mut">You do not have access to this page.</p>';
+  const TI = ['neutral', 'standard', 'producer', 'prime', 'outdoor'].map(t => ({id: t, name: t}));
+  const row = d => { const k = d ? d.id : 'new', f = x => `r${k}_${x}`; d = d || {name: '', area: 'Upper School', cat: '', tier: 'standard', price: 250, res: '', rate: 0, tag: '', active: true};
+    return `<tr><td><input id="${f('n')}" value="${esc(d.name)}"></td><td><input id="${f('a')}" value="${esc(d.area)}"></td><td><select id="${f('c')}">${opts(E.cats, d.cat, '(none)')}</select></td>
+    <td><select id="${f('t')}">${opts(TI, d.tier)}</select></td><td><input id="${f('p')}" type="number" value="${d.price || ''}" style="width:80px"></td><td><select id="${f('r')}">${opts(E.res, d.res, '(none)')}</select></td>
+    <td><input id="${f('q')}" type="number" step="0.05" value="${d.rate}" style="width:70px"></td><td><input id="${f('g')}" value="${esc(d.tag || '')}" placeholder="Market label"></td>
+    <td><input id="${f('x')}" type="checkbox" ${d.active ? 'checked' : ''} style="width:auto"></td><td><button onclick="S2.saveRoom('${k}')">${d.id ? 'Save' : 'Add'}</button></td></tr>`; };
+  const zones = E.map.filter(d => d.tier === 'neutral');
+  const tk = E.atasks.map(t => `<tr><td>${esc(t.title)}</td><td><code>${esc(t.code)}</code></td><td>${t.reward_tokens} tokens ${t.reward_resource ? t.reward_qty + ' ' + rn(t.reward_resource) : ''}</td><td>${t.ends_at ? new Date(t.ends_at).toLocaleString() : 'no end'}</td><td><button class="g" onclick="act('admin_task_delete',{p_id:${t.id}},'Deleted')">Delete</button></td></tr>`).join('');
+  return `<h1>Admin: Rooms and Season 2</h1>${err()}
+  <div class="card"><b>Rooms</b><p class="mut">Label every room with a category and the market it relates to, set what it produces, and set its price (200 to 1,000). Switching a room to "neutral" releases its owner.</p>
+  <div class="s2w"><table><tr><th>Name</th><th>Area</th><th>Category</th><th>Type</th><th>Price</th><th>Makes</th><th>Per day</th><th>Market label</th><th>On</th><th></th></tr>${row(null)}${E.map.map(row).join('')}</table></div></div>
+  <div class="grid"><div class="card"><b>New task (neutral zones)</b>
+  <label class="mut">Where<select id="tz">${zones.map(z => `<option value="${z.id}">${esc(z.name)}</option>`).join('')}</select></label>
+  <input id="tt" placeholder="Title"><input id="td" placeholder="Description"><input id="tk" placeholder="Secret code players type in">
+  <div class="row"><label class="mut">Tokens<input id="tm" type="number" value="50"></label><label class="mut">Resource<select id="tr">${opts(E.res, '', '(none)')}</select></label><label class="mut">Qty<input id="tq" type="number" value="0"></label></div>
+  <label class="mut">Ends (optional)<input id="te" type="datetime-local"></label><div class="row"><button onclick="S2.saveTask()">Create task</button></div></div>
+  <div class="card"><b>Market details (resolution info)</b><label class="mut">Market<select id="mi">${markets.map(m => `<option value="${m.id}">${esc(m.question.slice(0, 60))}</option>`).join('')}</select></label>
+  <input id="mc" placeholder="Resolution criteria"><input id="ms" placeholder="Source (who confirms it)"><div class="row"><button onclick="act('admin_market_info',{p_market:+v('mi'),p_criteria:v('mc'),p_source:v('ms')},'Saved')">Save</button></div></div>
+  <div class="card"><b>Net-worth snapshot</b><p class="mut">Saves everyone's net worth for today. Run it daily, and once at the end of the season.</p><button onclick="act('admin_snapshot',{},'Snapshot saved')">Take snapshot</button></div>
+  ${me.role === 'owner' ? `<div class="card"><b>Start Season 2</b><p class="mut">Sets everyone to 1,000 tokens and clears all rooms, inventories and chat. Blocked while any market position is open. Usernames and profiles stay.</p><input id="rs" placeholder="Type RESET"><div class="row"><button class="n" onclick="confirm('Reset everything for Season 2?')&&act('empire_reset_season',{p_confirm:v('rs')},'Season 2 started')">Reset</button></div></div>` : ''}</div>
+  <h2>Active tasks</h2>${tk ? `<div class="card"><table><tr><th>Task</th><th>Code</th><th>Reward</th><th>Ends</th><th></th></tr>${tk}</table></div>` : '<p class="mut">None.</p>'}`;
+}
+
+// ---------- actions ----------
+window.S2 = {
+  area: a => { E.area = a; render(); }, cat: c => { E.cat = c; render(); }, reply: id => { E.reply = id; render(); },
+  claim: id => act('empire_claim', {p_id: id}, 'Room claimed!'), buyRoom: id => act('empire_buy_room', {p_id: id}, 'Room bought!'),
+  listRoom: (id, cur) => { const p = prompt('Asking price (50 to 5,000):', cur || ''); if (p) act('empire_list_room', {p_id: id, p_price: +p}, 'Listed'); },
+  unlist: id => act('empire_list_room', {p_id: id, p_price: null}, 'Unlisted'),
+  task: id => act('empire_task_claim', {p_id: id, p_code: v('tc' + id)}, 'Reward received!'),
+  send: async () => { const b = v('cm'); if (!b.trim()) return; const {error} = await sb.rpc('chat_send', {p_body: b, p_reply: E.reply}); if (error) return toast(error.message); E.reply = null; E.t = 0; E.busy = false; eFetch('chat'); },
+  saveRoom: k => { const g = x => document.getElementById('r' + k + '_' + x); act('admin_district_save', {p_id: k === 'new' ? null : +k, p_name: g('n').value, p_area: g('a').value, p_cat: g('c').value, p_tier: g('t').value, p_price: +g('p').value || null, p_res: g('r').value, p_rate: +g('q').value || 0, p_tag: g('g').value, p_active: g('x').checked}, 'Saved'); },
+  saveTask: () => act('admin_task_save', {p_id: null, p_zone: +v('tz') || null, p_title: v('tt'), p_desc: v('td'), p_code: v('tk'), p_tokens: +v('tm') || 0, p_res: v('tr'), p_qty: +v('tq') || 0, p_ends: v('te') ? new Date(v('te')).toISOString() : null, p_active: true}, 'Task created')
+};
+
+// ---------- hook into the existing shell ----------
+const _render = render;
+render = function () {
+  try {
+  const keep = {}; document.querySelectorAll('main [id]').forEach(i => { if (/^(INPUT|SELECT|TEXTAREA)$/.test(i.tagName) && i.closest('.s2pg')) keep[i.id] = i.value; });
+  _render();
+  if (!me) return;
+  const [pg, arg] = (location.hash.slice(2) || 'markets').split('/');
+  const nav = document.querySelector('nav'), ref = document.querySelector('.navref'), main = document.querySelector('main');
+  if (nav && ref) { const L = (h, t) => `<a href="#/${h}" class="${pg === h ? 'on' : ''}">${t}</a>`;
+    ref.insertAdjacentHTML('beforebegin', L('hub', '🏠 Home') + L('empire', '🏫 Empire') + L('exchange', '🔁 Exchange') + L('board', '🏆 Net worth') + L('chat', '💬 Chat') + (staff() ? L('rooms', '🗺️ Rooms admin') : '')); }
+  if (main && PG.includes(pg)) {
+    while (main.children.length > 1) main.removeChild(main.lastChild);
+    const body = {hub: pgHub, empire: pgEmpire, exchange: pgExchange, board: pgBoardS2, chat: pgChat, rooms: pgRooms}[pg]();
+    main.insertAdjacentHTML('beforeend', `<div class="s2pg">${E.t ? body : '<p class="mut">Loading...</p>'}</div>`);
+    for (const k in keep) { const el = document.getElementById(k); if (el) el.value = keep[k]; }
+  }
+  if (main) main.firstElementChild.insertAdjacentHTML('afterend', topbar());
+  if (pg === 'market' && main) { const m = markets.find(x => x.id === +arg), h = main.querySelector('h1');
+    if (m && h && (m.resolution_criteria || m.source)) h.insertAdjacentHTML('afterend', `<div class="card"><b>How this resolves</b><p>${esc(m.resolution_criteria || 'See the market question.')}</p><p class="mut">Source: ${esc(m.source || 'admin decision')} · Status: ${esc(mState(m))}${m.status !== 'open' && m.outcome !== 'void' ? ' · Closing value: YES ' + (py(m) * 100).toFixed(0) + '%' : ''}</p></div>`); }
+  const want = PG.includes(pg) ? pg : 'hub';
+  if ((PG.includes(pg) || pg === 'market') && !E.busy && (want !== E.pg || Date.now() - E.t > 20000)) eFetch(want);
+  } catch (e) { console.error(e); toast('Season 2 error: ' + e.message); }
+};
+if (!location.hash) location.hash = '#/hub';
+setInterval(() => { const a = document.activeElement; if (me && !document.hidden && location.hash === '#/chat' && !(a && a.tagName === 'INPUT') && !E.busy) { E.t = 0; eFetch('chat'); } }, 8000);
+if (me) render();
+})();
+</script>
+
 </body>
 </html>
