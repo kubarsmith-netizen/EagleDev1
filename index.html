@@ -959,7 +959,8 @@ load().then(checkReferralAlerts);
 </style>
 <script>
 (() => {
-const E = {map:[], ex:{inv:[],ref:{},listings:[],sales:[],nw:0}, cats:[], res:[], chat:[], tasks:[], board:[], atasks:[], t:0, busy:false, pg:'', area:'All', cat:'', reply:null, err:''};
+const E = {map:[], ex:{inv:[],ref:{},listings:[],sales:[],nw:0}, cats:[], res:[], chat:[], tasks:[], board:[], atasks:[], t:0, view:(typeof THREE!=='undefined'?'3d':'list'), busy:false, pg:'', area:'All', cat:'', reply:null, err:''};
+window.S2E = E;
 const PG = ['hub','empire','exchange','board','chat','rooms'];
 const staff = () => me && me.role !== 'user';
 const em = (l, id) => { const x = l.find(y => y.id === id); return x ? x.emoji : ''; };
@@ -1025,13 +1026,16 @@ function pgEmpire() {
       <div class="s2tag">${d.res ? `Makes ${rn(d.res)} · ${d.rate}/day` : d.tier === 'neutral' ? 'Hosts tasks and events' : 'No production'}${d.price ? ' · base ' + d.price : ''}</div>
       <div style="margin-top:6px">${st}</div><div class="row">${btn}</div></div>`;
   };
+  window.S2tile = tile;
   const tasks = E.tasks.map(t => `<tr><td><b>${esc(t.title)}</b><div class="mut">${esc(t.zone || '')} ${esc(t.desc || '')}</div></td><td>${t.tokens ? t.tokens + ' tokens ' : ''}${t.res ? t.qty + ' ' + rn(t.res) : ''}</td>
     <td>${t.done ? '✅ Done' : `<input id="tc${t.id}" placeholder="Code" style="margin:0;width:110px"> <button onclick="S2.task(${t.id})">Submit</button>`}</td></tr>`).join('');
   return `<h1>Empire</h1>${err()}<p class="mut">Claim campus rooms. Each one is a real place, labeled by subject or purpose. Producer rooms make resources you collect and trade. You own ${my.length}/12 rooms.</p>
   <div class="tabs">${areas.map(a => `<button class="${E.area === a ? '' : 'g'}" onclick="S2.area('${esc(a)}')">${esc(a)}</button>`).join('')}
   <select onchange="S2.cat(this.value)"><option value="">All categories</option>${opts(E.cats, E.cat)}</select>
   <button style="margin-left:auto" onclick="act('empire_collect',{},'Collected')" ${pend ? '' : 'disabled'}>Collect ${pend} units</button></div>
-  <div class="s2t">${list.map(tile).join('') || '<p class="mut">No rooms here.</p>'}</div>
+  <div class="row"><button class="${E.view === 'list' ? 'g' : ''}" onclick="S2.view('3d')" ${typeof THREE === 'undefined' ? 'disabled' : ''}>🗺️ 3D map</button><button class="${E.view === 'list' ? '' : 'g'}" onclick="S2.view('list')">▦ List</button>
+  ${E.view === 'list' ? '' : '<button class="g" onclick="S3.rot(-1)">⟲ Rotate</button><button class="g" onclick="S3.rot(1)">⟳ Rotate</button><button class="g" onclick="S3.zoom(.8)">＋</button><button class="g" onclick="S3.zoom(1.25)">－</button>'}</div>
+  ${E.view === 'list' ? `<div class="s2t">${list.map(tile).join('') || '<p class="mut">No rooms here.</p>'}</div>` : '<div id="s2map" class="s2map"></div><div id="s2sel"></div>'}
   <h2>Tasks at neutral zones</h2>${tasks ? `<div class="card"><table><tr><th>Task</th><th>Reward</th><th></th></tr>${tasks}</table></div>` : '<p class="mut">No tasks right now. Check the Middle School Patio for events.</p>'}`;
 }
 
@@ -1088,7 +1092,7 @@ function pgRooms() {
 
 // ---------- actions ----------
 window.S2 = {
-  area: a => { E.area = a; render(); }, cat: c => { E.cat = c; render(); }, reply: id => { E.reply = id; render(); },
+  view: x => { E.view = x; render(); }, area: a => { E.area = a; render(); }, cat: c => { E.cat = c; render(); }, reply: id => { E.reply = id; render(); },
   claim: id => act('empire_claim', {p_id: id}, 'Room claimed!'), buyRoom: id => act('empire_buy_room', {p_id: id}, 'Room bought!'),
   listRoom: (id, cur) => { const p = prompt('Asking price (50 to 5,000):', cur || ''); if (p) act('empire_list_room', {p_id: id, p_price: +p}, 'Listed'); },
   unlist: id => act('empire_list_room', {p_id: id, p_price: null}, 'Unlisted'),
@@ -1125,6 +1129,82 @@ render = function () {
 if (!location.hash) location.hash = '#/hub';
 setInterval(() => { const a = document.activeElement; if (me && !document.hidden && location.hash === '#/chat' && !(a && a.tagName === 'INPUT') && !E.busy) { E.t = 0; eFetch('chat'); } }, 8000);
 if (me) render();
+})();
+</script>
+<style>.s2map{height:520px;border-radius:18px;border:1.5px solid var(--bd);overflow:hidden;background:var(--card);touch-action:none;cursor:grab;margin-top:10px}.s2map canvas{display:block}</style>
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+<script>
+(() => {
+const E = window.S2E;
+if (!E || typeof THREE === 'undefined') return;
+E.view = '3d';
+const S = {sig:'', yaw:Math.PI / 4, zoom:26, tx:0, tz:0, meshes:[], sel:null, w:0, h:0};
+const rc = new THREE.Raycaster(), mv = new THREE.Vector2(), box = new THREE.BoxGeometry(4, .8, 4);
+const hue = s => { let h = 0; for (const c of s) h = (h * 31 + c.charCodeAt(0)) % 360; return h / 360; };
+const col = d => d.tier === 'neutral' ? 0x8b93a1 : d.mine ? 0x5b9bff : d.owner ? new THREE.Color().setHSL(hue(d.owner), .45, .5).getHex() : ({producer:0x4fae82, prime:0xd9a441, outdoor:0x6fbf73}[d.tier] || 0x6f86b3);
+const lbl = (t, x, y, z) => { const c = document.createElement('canvas'); c.width = 256; c.height = 48; const g = c.getContext('2d'); if (!g) return new THREE.Object3D();
+  g.font = 'bold 26px sans-serif'; g.textAlign = 'center'; g.lineWidth = 5; g.strokeStyle = '#000'; g.fillStyle = '#fff'; g.strokeText(t.slice(0, 18), 128, 34); g.fillText(t.slice(0, 18), 128, 34);
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c), transparent:true, depthTest:false})); s.scale.set(9, 1.7, 1); s.position.set(x, y, z); return s; };
+const pick = e => { const c = S.r.domElement, r = c.getBoundingClientRect(); mv.set((e.clientX - r.left) / r.width * 2 - 1, -(e.clientY - r.top) / r.height * 2 + 1); rc.setFromCamera(mv, S.cam); const h = rc.intersectObjects(S.meshes)[0]; return h && h.object.userData; };
+function init() {
+  try { S.r = new THREE.WebGLRenderer({antialias:true}); } catch (e) { E.view = 'list'; setTimeout(render, 0); return false; }
+  S.r.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5));
+  S.scene = new THREE.Scene(); S.scene.add(new THREE.AmbientLight(0xffffff, .75));
+  const L = new THREE.DirectionalLight(0xffffff, .6); L.position.set(10, 30, 20); S.scene.add(L);
+  S.cam = new THREE.OrthographicCamera(-1, 1, 1, -1, .1, 400);
+  const c = S.r.domElement;
+  c.addEventListener('pointerdown', e => { S.drag = {x:e.clientX, y:e.clientY, m:0}; c.setPointerCapture && c.setPointerCapture(e.pointerId); });
+  c.addEventListener('pointermove', e => {
+    if (S.drag) { const dx = e.clientX - S.drag.x, dy = e.clientY - S.drag.y, k = 2 * S.zoom / c.clientHeight;
+      S.drag.m += Math.abs(dx) + Math.abs(dy); S.drag.x = e.clientX; S.drag.y = e.clientY;
+      S.tx += -Math.cos(S.yaw) * dx * k - Math.sin(S.yaw) * dy * k; S.tz += Math.sin(S.yaw) * dx * k - Math.cos(S.yaw) * dy * k; draw();
+    } else { const d = pick(e); c.title = d ? `${d.name} (${d.bld}, floor ${d.fl})` : ''; }
+  });
+  c.addEventListener('pointerup', e => { const m = S.drag && S.drag.m; S.drag = null; if (m < 6) { const d = pick(e); if (d) { S.sel = d.id; sync(); showSel(); draw(); } } });
+  c.addEventListener('wheel', e => { e.preventDefault(); window.S3.zoom(e.deltaY > 0 ? 1.1 : .9); }, {passive:false});
+  addEventListener('resize', () => { S.w = 0; draw(); });
+  return true;
+}
+function sync() {
+  const rooms = E.map.filter(d => d.active), sig = rooms.map(d => d.id + d.bld + d.fl).join('|');
+  if (sig !== S.sig) {
+    S.sig = sig; S.scene.children.filter(o => o.isMesh || o.isSprite).forEach(o => S.scene.remove(o)); S.meshes = [];
+    const bs = [...new Set(rooms.map(d => d.bld))]; let x0 = 1e9, x1 = -1e9, z0 = 1e9, z1 = -1e9;
+    bs.forEach((b, i) => {
+      const ox = (i % 3) * 18, oz = Math.floor(i / 3) * 18, rs = rooms.filter(d => d.bld === b), top = Math.max(...rs.map(d => d.fl));
+      rs.forEach(d => { const k = rs.filter(y => y.fl === d.fl && y.id < d.id).length, m = new THREE.Mesh(box, new THREE.MeshLambertMaterial({color:col(d)}));
+        m.position.set(ox + (k % 3) * 4.2, (d.fl - 1) * 1.1 + .4, oz + Math.floor(k / 3) * 4.2); m.userData = d; S.scene.add(m); S.meshes.push(m);
+        x0 = Math.min(x0, m.position.x); x1 = Math.max(x1, m.position.x); z0 = Math.min(z0, m.position.z); z1 = Math.max(z1, m.position.z); });
+      S.scene.add(lbl(b, ox + 4.2, top * 1.1 + 1.8, oz + 2.1));
+    });
+    S.tx = (x0 + x1) / 2; S.tz = (z0 + z1) / 2;
+  } else S.meshes.forEach(m => { const d = rooms.find(x => x.id === m.userData.id); if (d) { m.userData = d; m.material.color.setHex(col(d)); } });
+  S.meshes.forEach(m => m.material.emissive.setHex(m.userData.id === S.sel ? 0x444444 : 0));
+}
+function draw() {
+  if (!S.r || !S.el) return;
+  const w = S.el.clientWidth, h = S.el.clientHeight, a = w / h;
+  if (w !== S.w || h !== S.h) { S.w = w; S.h = h; S.r.setSize(w, h); }
+  Object.assign(S.cam, {left:-S.zoom * a, right:S.zoom * a, top:S.zoom, bottom:-S.zoom}); S.cam.updateProjectionMatrix();
+  S.cam.position.set(S.tx + Math.sin(S.yaw) * 49, 34, S.tz + Math.cos(S.yaw) * 49); S.cam.lookAt(S.tx, 0, S.tz);
+  S.r.render(S.scene, S.cam);
+}
+function showSel() {
+  const el = document.getElementById('s2sel'); if (!el) return;
+  const d = E.map.find(x => x.id === S.sel);
+  if (!d || !window.S2tile) { el.innerHTML = '<p class="mut">Click a room to see its floor, label and price. Drag to look around.</p>'; return; }
+  const plan = E.map.filter(x => x.active && x.bld === d.bld && x.fl === d.fl).map(x => `<button class="${x.id === d.id ? '' : 'g'}" onclick="S3.pick(${x.id})">${esc(x.name)}</button>`).join('');
+  const adm = me.role !== 'user' ? `<div class="row"><input id="s3b" value="${esc(d.bld)}" style="width:170px"><input id="s3f" type="number" min="1" max="12" value="${d.fl}" style="width:80px"><button class="g" onclick="act('admin_district_place',{p_id:${d.id},p_building:v('s3b'),p_floor:+v('s3f')},'Moved')">Move room</button></div>` : '';
+  el.innerHTML = `<div class="card" style="margin-top:12px"><b>${esc(d.bld)} · Floor ${d.fl}</b><div class="s2tag">Floor plan: rooms on this floor</div><div class="row">${plan}</div></div><div style="max-width:340px">${window.S2tile(d)}</div>${adm}`;
+}
+window.S3 = {rot: d => { S.yaw += d * Math.PI / 2; draw(); }, zoom: f => { S.zoom = Math.min(45, Math.max(6, S.zoom * f)); draw(); }, pick: id => { S.sel = id; sync(); showSel(); draw(); }};
+function mount() {
+  if (!me || location.hash.slice(2).split('/')[0] !== 'empire' || E.view !== '3d' || !E.map.length) return;
+  const el = document.getElementById('s2map'); if (!el || (!S.r && !init())) return;
+  S.el = el; el.appendChild(S.r.domElement); S.w = 0; sync(); showSel(); draw();
+}
+const _r = render;
+render = function () { _r(); try { mount(); } catch (e) { console.error(e); toast('3D map error: ' + e.message); } };
 })();
 </script>
 
