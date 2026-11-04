@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://qwkmyncxomibcpmlguxj.supabase.co wss://qwkmyncxomibcpmlguxj.supabase.co; img-src 'self' data: blob: https://qwkmyncxomibcpmlguxj.supabase.co; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://lumsbvchmibxmvrzqtpt.supabase.co wss://qwkmyncxomibcpmlguxj.supabase.co; img-src 'self' data: blob: https://lumsbvchmibxmvrzqtpt.supabase.co; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <title>EagleEye Market</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--bw:1.5px;--onacc:#fff;--onyn:#fff}
-/* ---------- Fall palette (LOCKED, bright pumpkin orange). Nobody can switch color themes. ---------- */
-:root{--bg:#ffab48;--fg:#2b1000;--card:#fff6e8;--mut:#6b3408;--line:#f6cf9a;--bd:#d9731a;--yes:#3f7d1f;--no:#b42318;--acc:#d9480f;--side:#ffe2bb;--hov:#ffe8c9;--onacc:#fff;--onyn:#fff;--stk:drop-shadow(1.5px 0 0 #fffaf0) drop-shadow(-1.5px 0 0 #fffaf0) drop-shadow(0 1.5px 0 #fffaf0) drop-shadow(0 -1.5px 0 #fffaf0) drop-shadow(0 3px 4px #5a2a0a88)}
+/* ---------- Fall palette (LOCKED, Espresso). Nobody can switch color themes. ---------- */
+:root{--bg:#241710;--fg:#f8ebd8;--card:#33231a;--mut:#c4ab92;--line:#4a3321;--bd:#7d5a3b;--yes:#9bc04e;--no:#e8705b;--acc:#f28c28;--side:#1e140d;--hov:#41301f;--onacc:#2a1204;--onyn:#1a0e05;--stk:drop-shadow(1.5px 0 0 #fffaf0) drop-shadow(-1.5px 0 0 #fffaf0) drop-shadow(0 1.5px 0 #fffaf0) drop-shadow(0 -1.5px 0 #fffaf0) drop-shadow(0 3px 4px #5a2a0a88)}
 :root{--grad:linear-gradient(120deg,color-mix(in srgb,var(--acc) 22%,var(--card)),color-mix(in srgb,var(--acc) 5%,var(--card)))}
 /* Background pattern lives on a fixed layer, so it stays put while the page scrolls */
 body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none}
@@ -205,7 +205,7 @@ nav a,.chip,.rc,.rank,.nm{border-radius:12px}
 .feast-bar .meter{height:20px;margin:10px 0 0;background:#7c2d1255;border-color:#ffffff88}
 .feast-bar .meter .tgm{font-size:22px}
 .feast-bar::after{content:'🍁 🍂 🍁';position:absolute;right:14px;top:4px;font-size:13px;opacity:.5;letter-spacing:4px}
-.feast-hero{background:linear-gradient(135deg,#ffdcae,var(--card));border-color:var(--acc)}
+.feast-hero{background:linear-gradient(135deg,color-mix(in srgb,var(--acc) 26%,var(--card)),var(--card));border-color:var(--acc)}
 .feast-hero .pts{font-size:34px;font-weight:700;font-family:Fraunces,Georgia,serif}
 .feast-fab{position:fixed;top:26px;right:152px;z-index:8;display:flex;align-items:center;gap:6px;border:0;border-radius:999px;padding:10px 18px;font-size:18px;font-weight:700;color:#fff;text-decoration:none;background:linear-gradient(135deg,#fbbf24,#c2410c 60%,#7c2d12);box-shadow:0 6px 22px #c2410cbb,inset 0 0 0 var(--bw) #ffffff77;text-shadow:0 1px 3px #3b1204aa}
 .feast-fab:hover{filter:brightness(1.1)}
@@ -260,10 +260,10 @@ nav a{white-space:nowrap;gap:9px}
 .navstick span{font-size:28px;line-height:1;filter:var(--stk);transform:rotate(var(--r,0deg))}
 .navstick span:nth-child(1){--r:-14deg}.navstick span:nth-child(2){--r:8deg}.navstick span:nth-child(3){--r:-6deg}.navstick span:nth-child(4){--r:16deg}
 /* the Turkey Market: highlighted in place, with the only turkey sticker on the page */
-.turkey-hl{border-color:#e8590c!important;box-shadow:0 0 0 3px #ffb347,0 8px 26px #e8590c66;background:linear-gradient(135deg,#ffe1b0,var(--card))}
+.turkey-hl{border-color:#e8590c!important;box-shadow:0 0 0 3px #ffb347,0 8px 26px #e8590c66;background:linear-gradient(135deg,color-mix(in srgb,var(--acc) 28%,var(--card)),var(--card))}
 .tkstk{position:absolute;right:-12px;top:-20px;font-size:46px;line-height:1;transform:rotate(14deg);filter:var(--stk);z-index:3;pointer-events:none}
 /* Thanksgiving event banner (links to Favors and the Turkey Raffle) */
-.event-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:12px 18px;margin:0 0 16px;border-radius:18px;border:var(--bw) solid var(--acc);background:linear-gradient(110deg,#fff3dc,#ffd9a1);color:var(--fg);position:relative}
+.event-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:12px 18px;margin:0 0 16px;border-radius:18px;border:var(--bw) solid var(--acc);background:linear-gradient(110deg,color-mix(in srgb,var(--acc) 30%,var(--card)),var(--card));color:var(--fg);position:relative}
 .event-bar .ev-txt{flex:1 1 260px;min-width:0}
 .event-bar .ev-txt a{color:var(--acc);font-weight:700}
 .event-bar .links{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
@@ -278,8 +278,8 @@ nav a{white-space:nowrap;gap:9px}
 <div id="t"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
-const SUPABASE_URL = 'https://qwkmyncxomibcpmlguxj.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_mwgMhSwlsfRnOtu3h8-hUA_F7xjnxAV';
+const SUPABASE_URL = 'https://lumsbvchmibxmvrzqtpt.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_2FD2bNN5kt9U954xwnfidg_HEZu7b2M';
 const ALLOWED_DOMAINS = ['headroyce.org'];
 const REFERRER_BONUS = 300, FRIEND_BONUS = 100; // keep equal to v_ref_bonus / v_new_bonus in the award_referral SQL function
 
