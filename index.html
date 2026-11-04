@@ -3,29 +3,32 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://lumsbvchmibxmvrzqtpt.supabase.co wss://lumsbvchmibxmvrzqtpt.supabase.co; img-src 'self' data: blob: https://lumsbvchmibxmvrzqtpt.supabase.co; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://qwkmyncxomibcpmlguxj.supabase.co wss://qwkmyncxomibcpmlguxj.supabase.co; img-src 'self' data: blob: https://qwkmyncxomibcpmlguxj.supabase.co; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <title>EagleEye Market</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+:root{--bw:1.5px}
 :root,[data-theme=light]{--bg:#f3f6fb;--fg:#0f172a;--card:#fff;--mut:#5b6678;--line:#dde3ee;--bd:#a9b6cc;--yes:#2a8a62;--no:#bb4d43;--acc:#2f6bd8;--side:#fff;--hov:#eaf1fd}
 [data-theme=dark]{--bg:#050506;--fg:#ececf0;--card:#0e0f12;--mut:#9aa1ae;--line:#1c1f26;--bd:#3a4458;--yes:#38b886;--no:#d96a63;--acc:#5b9bff;--side:#09090b;--hov:#161a24}
 [data-theme=slate]{--bg:#1e2228;--fg:#e8eaee;--card:#272c34;--mut:#9ba3b0;--line:#363c47;--bd:#566073;--yes:#38b886;--no:#d96a63;--acc:#6aa0f5;--side:#191c21;--hov:#303642}
 [data-theme=midnight]{--bg:#081022;--fg:#e6ecf8;--card:#0f1a33;--mut:#8d9bb8;--line:#1b2a4a;--bd:#35508a;--yes:#38b886;--no:#d96a63;--acc:#4d9cff;--side:#0a1429;--hov:#15244a}
 [data-theme=custom]{--side:var(--card);--line:color-mix(in srgb,var(--fg) 16%,var(--bg));--bd:color-mix(in srgb,var(--fg) 34%,var(--bg));--hov:color-mix(in srgb,var(--acc) 12%,var(--card));--mut:color-mix(in srgb,var(--fg) 58%,var(--bg))}
 :root{--grad:linear-gradient(120deg,color-mix(in srgb,var(--acc) 22%,var(--card)),color-mix(in srgb,var(--acc) 5%,var(--card)))}
+/* Pattern look: its own color (--patc, defaults to the theme line color) and prominence (--patp, 0-100%) */
+:root{--patc:var(--line);--patp:100%;--pat:color-mix(in srgb,var(--patc) var(--patp),transparent)}
 /* Background pattern lives on a fixed layer, so it stays put while the page scrolls */
 body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none}
-[data-pat=dots] body::before{background-image:radial-gradient(var(--line) 1px,transparent 1px);background-size:16px 16px}
-[data-pat=grid] body::before{background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:28px 28px}
-[data-pat=lines] body::before{background-image:repeating-linear-gradient(45deg,var(--line) 0 1px,transparent 1px 14px)}
+[data-pat=dots] body::before{background-image:radial-gradient(var(--pat) 1px,transparent 1px);background-size:16px 16px}
+[data-pat=grid] body::before{background-image:linear-gradient(var(--pat) 1px,transparent 1px),linear-gradient(90deg,var(--pat) 1px,transparent 1px);background-size:28px 28px}
+[data-pat=lines] body::before{background-image:repeating-linear-gradient(45deg,var(--pat) 0 1px,transparent 1px 14px)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
 h1{margin:0 0 8px;font-size:25px;font-weight:600;letter-spacing:-.01em}
 h2{font-size:16px;font-weight:600;margin:26px 0 10px}
 #shell{display:flex;min-height:100vh}
-nav{width:196px;flex-shrink:0;background:var(--side);border-right:1.5px solid var(--bd);padding:16px 10px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:1px;font-size:14px}
+nav{width:196px;flex-shrink:0;background:var(--side);border-right:var(--bw) solid var(--bd);padding:16px 10px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:1px;font-size:14px}
 nav h2{margin:0 10px 14px;font-size:14px;letter-spacing:.02em}
 nav a{padding:7px 10px;border-radius:6px;color:var(--mut);text-decoration:none;display:flex;gap:10px;align-items:center;font-weight:500}
 nav a svg{flex-shrink:0}
@@ -33,21 +36,21 @@ nav a .chip{margin-left:auto}
 nav a:hover{background:var(--hov);color:var(--fg)}
 nav a.on{background:var(--hov);color:var(--fg);font-weight:600}
 nav a.on svg{color:var(--acc)}
-nav a.me{margin-top:10px;border:1.5px solid var(--bd);padding:8px;color:var(--fg);line-height:1.25}
+nav a.me{margin-top:10px;border:var(--bw) solid var(--bd);padding:8px;color:var(--fg);line-height:1.25}
 nav a.me:hover,nav a.me.on{border-color:var(--acc)}
-.navref{margin-top:auto;padding:10px;border:1.5px solid var(--bd);border-radius:12px}
+.navref{margin-top:auto;padding:10px;border:var(--bw) solid var(--bd);border-radius:12px}
 .navref input{margin:4px 0 0;padding:6px 8px;font-size:12px}
 .navref button{width:100%;margin-top:6px;padding:6px 8px;font-size:13px}
 nav a.me .av{width:30px;height:30px;font-size:16px;margin:0}
 nav a.me.bn .mut{color:inherit;opacity:.9}
 main{flex:1;padding:30px 38px;min-width:0}
-.card{background:var(--card);border:1.5px solid var(--bd);border-radius:8px;padding:16px;margin:0 0 16px}
+.card{background:var(--card);border:var(--bw) solid var(--bd);border-radius:8px;padding:16px;margin:0 0 16px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
 .grid .card{margin:0}
 .two{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin-top:16px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:16px 0}
-.stats .card{margin:0;border-top:3px solid var(--acc)}
-.mk{color:inherit;text-decoration:none;display:block;padding:22px;border-width:2px;transition:transform .12s,box-shadow .12s,border-color .12s}
+.stats .card{margin:0;border-top:var(--bw) solid var(--acc)}
+.mk{color:inherit;text-decoration:none;display:block;padding:22px;border-width:var(--bw);transition:transform .12s,box-shadow .12s,border-color .12s}
 .mk:hover{border-color:var(--acc);transform:translateY(-2px);box-shadow:0 6px 18px color-mix(in srgb,var(--acc) 15%,transparent)}
 .mk b{display:block;font-size:18px;line-height:1.35}
 .mk .bar{height:12px;margin:14px 0}
@@ -63,32 +66,34 @@ main{flex:1;padding:30px 38px;min-width:0}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
 .mut{color:var(--mut);font-size:13.5px}
 a{color:var(--acc)}
-.chip{background:var(--hov);color:var(--acc);border:1px solid var(--bd);border-radius:6px;padding:0 7px;font-size:11px;font-weight:600}
+.chip{background:var(--hov);color:var(--acc);border:var(--bw) solid var(--bd);border-radius:6px;padding:0 7px;font-size:11px;font-weight:600}
 .tags{margin:0 0 10px}
 .tag{display:inline-block;padding:2px 10px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,#5b9be8,#2f63c8);border-radius:4px}
-input,button,select,textarea{font:inherit;padding:9px 12px;border-radius:6px;border:1.5px solid var(--bd);background:var(--bg);color:var(--fg)}
+input,button,select,textarea{font:inherit;padding:9px 12px;border-radius:6px;border:var(--bw) solid var(--bd);background:var(--bg);color:var(--fg)}
 input,textarea{width:100%;margin-top:8px}
 textarea{resize:vertical}
 input:focus,textarea:focus,select:focus{outline:0;border-color:var(--acc);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 25%,transparent)}
 label{display:block;flex:1;min-width:140px}
 label input{margin-top:4px}
-button{cursor:pointer;background:var(--acc);color:#fff;border:1.5px solid var(--acc);font-weight:500}
+button{cursor:pointer;background:var(--acc);color:#fff;border:var(--bw) solid var(--acc);font-weight:500}
 button:disabled{opacity:.4;cursor:default}
 button.y{background:var(--yes);border-color:var(--yes)}button.n{background:var(--no);border-color:var(--no)}
-button.g{background:none;color:var(--fg);border:1.5px solid var(--bd)}
+button.g{background:none;color:var(--fg);border:var(--bw) solid var(--bd)}
 button.g:hover:not(:disabled){border-color:var(--acc);color:var(--acc)}
 .btn{display:inline-block;padding:9px 14px;border-radius:6px;background:var(--acc);color:#fff;cursor:pointer;font-weight:500}
 label.up{flex:none;min-width:0}
 .clr input{padding:2px;height:38px;cursor:pointer}
-.sel{outline:2px solid var(--acc);outline-offset:1px}
+input[type=range]{padding:0;height:24px;border:0;background:none;accent-color:var(--acc);cursor:pointer}
+.sel{outline:var(--bw) solid var(--acc);outline-offset:1px}
 table{width:100%;border-collapse:collapse}
-th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line)}
-th{color:var(--acc);font-weight:600;font-size:12px;border-bottom:2px solid var(--bd);text-transform:uppercase;letter-spacing:.04em}
+th,td{text-align:left;padding:9px 10px;border-bottom:var(--bw) solid var(--line)}
+th{color:var(--acc);font-weight:600;font-size:12px;border-bottom:var(--bw) solid var(--bd);text-transform:uppercase;letter-spacing:.04em}
 .mine td{font-weight:600;background:var(--hov)}
+.search{max-width:420px;margin:6px 0 4px}
 .tabs{display:flex;gap:8px;margin:12px 0 18px;align-items:center}
 .tabs button,.tabs select{height:40px;padding:0 16px;margin:0}
 #t{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--acc);color:#fff;padding:10px 18px;border-radius:8px;display:none;max-width:90%;z-index:9}
-.av{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--hov);border:1px solid var(--bd);font-size:12px;font-weight:600;flex-shrink:0;margin-right:6px;vertical-align:middle;color:var(--fg);overflow:hidden}
+.av{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--hov);border:var(--bw) solid var(--bd);font-size:12px;font-weight:600;flex-shrink:0;margin-right:6px;vertical-align:middle;color:var(--fg);overflow:hidden}
 .av img{width:100%;height:100%;object-fit:cover}
 .nm{display:inline-flex;align-items:center;max-width:100%;border-radius:6px;padding:1px 8px 1px 2px;white-space:nowrap}
 .nm.bn{padding:2px 10px 2px 3px}
@@ -98,44 +103,43 @@ th{color:var(--acc);font-weight:600;font-size:12px;border-bottom:2px solid var(-
 .prevbn{min-width:230px;padding:8px 14px 8px 8px!important}
 .avs{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-top:10px}
 .avs button{padding:5px;font-size:18px}
-main>.card.split:first-child{background:var(--card);border-top:3px solid var(--acc)}
-.race-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:14px 18px;margin:0 0 16px;border-radius:8px;border:1.5px solid #5b8fe0;background:linear-gradient(110deg,#1b3a9e,#2459b8 55%,#2f7fc9);color:#fff}
-.race-bar a{color:#fff;font-weight:600}
-.race-bar .rc{background:#ffffff22;border-color:#ffffff44;color:#fff}
-.race-bar .lk input{background:#ffffff1f;border-color:#ffffff55;color:#fff}
-.race-bar .lk button{background:#fff;color:#1b3a9e;border-color:#fff}
-.chip.ev{background:#fff;color:#1b3a9e;border-color:#fff}
-.race-bar .blurb{flex:2 1 280px}
+main>.card.split:first-child{background:var(--card);border-top:var(--bw) solid var(--acc)}
 .lk{display:flex;align-items:center;gap:8px;flex:1 1 300px;min-width:0}
 .lk b{white-space:nowrap}
 .lk input{flex:1 1 120px;max-width:260px;width:auto;min-width:0;margin:0;padding:6px 9px;font-size:13px}
 .lk button{padding:6px 11px;white-space:nowrap}
-.rc{display:inline-block;background:var(--card);border:1px solid var(--bd);border-radius:6px;padding:3px 10px;white-space:nowrap}
-.race-stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.rank{display:inline-block;min-width:26px;height:26px;line-height:24px;text-align:center;border-radius:6px;background:var(--hov);border:1px solid var(--bd);font-weight:600;font-size:12px;color:var(--fg)}
+.rc{display:inline-block;background:var(--card);border:var(--bw) solid var(--bd);border-radius:6px;padding:3px 10px;white-space:nowrap}
+.ev-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:14px 18px;margin:0 0 16px;border-radius:18px;border:var(--bw) solid #5b8fe0;background:linear-gradient(110deg,#1b3a9e,#2459b8 55%,#2f7fc9);color:#fff}
+.ev-bar a{color:#fff;font-weight:600}
+.ev-bar .rc{background:#ffffff22;border-color:#ffffff44;color:#fff}
+.ev-bar .blurb{flex:2 1 280px}
+.chip.ev{background:#fff;color:#1b3a9e;border-color:#fff}
+.ev-stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.rank{display:inline-block;min-width:26px;height:26px;line-height:24px;text-align:center;border-radius:6px;background:var(--hov);border:var(--bw) solid var(--bd);font-weight:600;font-size:12px;color:var(--fg)}
 .rank.r1{background:var(--acc);border-color:var(--acc);color:#fff}
 /* Leaderboard rows: the whole row wears the banner */
 .lb{display:flex;flex-direction:column;gap:6px}
 .lbh,.lbr{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;padding:6px 14px}
-.lbh{color:var(--acc);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em;border-bottom:2px solid var(--bd);padding-bottom:8px;margin-bottom:2px}
+.lbh{color:var(--acc);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em;border-bottom:var(--bw) solid var(--bd);padding-bottom:8px;margin-bottom:2px}
 .lbh span:last-child,.lbr .val{text-align:right}
-.lbr{border:1px solid var(--line);border-radius:8px;min-height:58px}
+.lbr{color:inherit;text-decoration:none;cursor:pointer;border:var(--bw) solid var(--line);border-radius:8px;min-height:58px}
 .lbr .nm{font-size:16px;font-weight:600;padding:0}
 .lbr .av{margin-right:12px}
 .lbr .val{font-weight:600}
-.lbr.mine{outline:2px solid var(--acc);outline-offset:-1px;background-color:var(--hov)}
+.lbr:hover{border-color:var(--acc)}
+.lbr.mine{outline:var(--bw) solid var(--acc);outline-offset:-1px;background-color:var(--hov)}
 .sm .lbh,.sm .lbr{grid-template-columns:34px 1fr auto;padding:5px 10px}
 .sm .lbr{min-height:46px}
 .sm .lbr .nm{font-size:14px}
 #stk{position:fixed;top:26px;right:36px;z-index:8;display:flex;flex-direction:column-reverse;align-items:flex-end;gap:10px}
-.stk-btn{display:flex;align-items:center;gap:8px;color:#fff;border:0;border-radius:999px;padding:10px 22px;font-size:22px;line-height:1;font-weight:700;background:linear-gradient(135deg,#7dd3fc,#3b82f6 55%,#1d4ed8);box-shadow:0 6px 22px #3b82f6bb,inset 0 0 0 2px #ffffff77;text-shadow:0 1px 3px #0b2a6a88}
+.stk-btn{display:flex;align-items:center;gap:8px;color:#fff;border:0;border-radius:999px;padding:10px 22px;font-size:22px;line-height:1;font-weight:700;background:linear-gradient(135deg,#7dd3fc,#3b82f6 55%,#1d4ed8);box-shadow:0 6px 22px #3b82f6bb,inset 0 0 0 var(--bw) #ffffff77;text-shadow:0 1px 3px #0b2a6a88}
 .stk-btn b{font-size:24px}
 .stk-btn:hover{filter:brightness(1.1)}
-.stk-btn.off{background:linear-gradient(135deg,#bae6fd,#60a5fa);box-shadow:0 4px 14px #60a5fa88,inset 0 0 0 2px #ffffff77}
+.stk-btn.off{background:linear-gradient(135deg,#bae6fd,#60a5fa);box-shadow:0 4px 14px #60a5fa88,inset 0 0 0 var(--bw) #ffffff77}
 @keyframes stkpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
 .stk-btn:not(.off){animation:stkpulse 2.6s ease-in-out infinite}
 @media(prefers-reduced-motion:reduce){.stk-btn{animation:none!important}}
-.stk-panel{background:var(--card);border:2px solid var(--acc);border-radius:8px;padding:14px 16px;width:280px}
+.stk-panel{background:var(--card);border:var(--bw) solid var(--acc);border-radius:8px;padding:14px 16px;width:280px}
 .stk-panel p{margin:6px 0 0}
 @media(min-width:861px){main>.card.split:first-child{margin-right:120px}}
 .boardwrap{display:grid;grid-template-columns:7fr 4fr;gap:20px;align-items:start}
@@ -144,7 +148,7 @@ main>.card.split:first-child{background:var(--card);border-top:3px solid var(--a
 @media(max-width:1000px){.boardwrap{grid-template-columns:1fr}}
 @media(max-width:860px){#shell{flex-direction:column}nav{width:auto;height:auto;position:static;flex-direction:row;flex-wrap:wrap}nav h2{width:100%}nav a.me{margin-top:0}.navref{margin-top:0;width:100%}main{padding:16px}.two,.stats{grid-template-columns:1fr 1fr}.two{grid-template-columns:1fr}#stk{top:auto;bottom:16px;right:12px}}
 /* rounder corners */
-.card,.race-bar,.stk-panel{border-radius:18px}
+.card,.stk-panel{border-radius:18px}
 .lbr{border-radius:16px}
 input,button,select,textarea,.btn{border-radius:12px}
 nav a,.chip,.rc,.rank,.nm{border-radius:12px}
@@ -153,6 +157,20 @@ nav a,.chip,.rc,.rank,.nm{border-radius:12px}
 #t{border-radius:14px}
 /* inventory: earned items you do not hold yet */
 .dim{opacity:.6}
+/* markets: tabs + search + sort on one row */
+.tabs{flex-wrap:wrap}
+.tabs .search{flex:0 1 260px;width:auto;min-width:150px;max-width:none;height:40px;margin:0 0 0 auto}
+/* leaderboard: both columns share the same rows, so headings, controls and lists line up and match in height */
+.boardwrap{grid-template-rows:auto auto auto 1fr;column-gap:20px;row-gap:0;align-items:stretch}
+.boardwrap>div{display:grid;grid-template-rows:subgrid;grid-row:span 4}
+.boardwrap h1{font-size:25px;margin:0 0 8px}
+.boardwrap>div>p{margin:0 0 12px}
+.boardwrap .card{margin:0}
+.boardwrap .sm .card{align-self:start}
+.lbtools{display:flex;align-items:center;gap:8px;height:40px;margin:0 0 12px}
+.lbtools .search{flex:1 1 auto;width:auto;max-width:none;height:40px;margin:0}
+.lbtools select{height:40px;margin:0;padding:0 12px}
+@media(max-width:1000px){.boardwrap,.boardwrap>div{display:block}.boardwrap .card{margin:0 0 16px}}
 </style>
 <link rel="icon" href="/favicon.ico">
 </head>
@@ -161,8 +179,8 @@ nav a,.chip,.rc,.rank,.nm{border-radius:12px}
 <div id="t"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
-const SUPABASE_URL = 'https://lumsbvchmibxmvrzqtpt.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_2FD2bNN5kt9U954xwnfidg_HEZu7b2M'; // Supabase dashboard > Project Settings > API Keys > publishable key
+const SUPABASE_URL = 'https://qwkmyncxomibcpmlguxj.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_mwgMhSwlsfRnOtu3h8-hUA_F7xjnxAV';
 const ALLOWED_DOMAINS = ['headroyce.org'];
 const REFERRER_BONUS = 300, FRIEND_BONUS = 100; // keep equal to v_ref_bonus / v_new_bonus in the award_referral SQL function
 
@@ -174,11 +192,15 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>'
 const root = document.documentElement;
 let REV = null, me = null, markets = [], P = [], CD = [], T = [], LB = [], STAFF = [], INV = [], PR = [], FINAL = [], ACT = {}, MT = {}, MTok = {}, FILTER = 'open';
 let STK = null, SBD = [], STK_OPEN = false;
+let TE = null, UP = {}, UPtok = {};
 let SHOPERR = '', CO = {}, SHOP = [], OWN = [], STAT = null, HIST = [], IDEAS = [];
 let SHOPFILE = null, SHOPFILE_URL = '';
 // special (earned) banners and icons
 let SPECIAL = [], SHELD = [], SHOLD = [], SPFILE = null, SPFILE_URL = '';
 let lastRender = 0;
+let LBX = true, LBSORT = 'tokens_desc';
+const LBSORTS = {tokens_desc:'Most tokens', tokens_asc:'Fewest tokens', trades_desc:'Most trades', trades_asc:'Fewest trades', profit_desc:'Biggest profit', profit_asc:'Biggest loss'};
+const LBCOL = {tokens:'Tokens', trades:'Trades', profit:'Profit'};
 
 const AV = ['🦅','🐺','🦊','🐼','🐯','🦁','🐸','🐙','🦉','🐧','🦄','🐲','🚀','⚡','🌙','🔥','🎯','🎲','🎸','📈','🧠','👾','🎨','🏀'];
 const THEMES = {light:'Light', dark:'Dark', slate:'Slate', midnight:'Midnight', custom:'Custom'};
@@ -186,8 +208,8 @@ const CK = {bg:'--bg', card:'--card', fg:'--fg', acc:'--acc'};
 const AVURL = SUPABASE_URL + '/storage/v1/object/public/avatars/';
 const SHOPURL = SUPABASE_URL + '/storage/v1/object/public/shop-art/';
 const PATS = {none:'None', dots:'Dots', grid:'Grid', lines:'Lines'};
-const CRIT = {top_streak:'Highest daily streak (ties share it)', top_referrals:'Most referrals (ties share it)'};
-const IC = {markets:'M3 17l6-6 4 4 8-8M15 7h6v6', portfolio:'M3 8h18v12H3zM8 8V5h8v3', leaderboard:'M6 20V10M12 20V4M18 20v-7', shop:'M5 7h14l-1 13H6zM9 7a3 3 0 016 0', rules:'M6 3h12v18H6zM9 8h6M9 12h6', suggest:'M12 5v14M5 12h14', create:'M12 5v14M5 12h14', review:'M5 12l5 5 9-10', admin:'M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z', ideas:'M9 18h6M10 21h4M12 3a6 6 0 00-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0012 3z'};
+const CRIT = {top_streak:'Highest daily streak (ties share it)', top_referrals:'Most referrals (ties share it)', top_trades:'Most trades in the Trading Frenzy (ties share it)'};
+const IC = {markets:'M3 17l6-6 4 4 8-8M15 7h6v6', portfolio:'M3 8h18v12H3zM8 8V5h8v3', leaderboard:'M6 20V10M12 20V4M18 20v-7', shop:'M5 7h14l-1 13H6zM9 7a3 3 0 016 0', rules:'M6 3h12v18H6zM9 8h6M9 12h6', suggest:'M12 5v14M5 12h14', create:'M12 5v14M5 12h14', review:'M5 12l5 5 9-10', admin:'M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z', frenzy:'M13 2L4 14h7l-1 8 9-12h-7z', ideas:'M9 18h6M10 21h4M12 3a6 6 0 00-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0012 3z'};
 const svg = d => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg>`;
 
 // shop art: built-in items store CSS/emoji, uploaded items store "img:<path>"
@@ -218,7 +240,7 @@ const nm = (u, s, flat) => {
 // one leaderboard row; the banner covers the entire row
 const lbRow = (i, u, val, s) => {
   const c = CO[u] || {}, bn = itemById(c.banner);
-  return `<div class="lbr${me && u === me.username ? ' mine' : ''}"${bn ? ` style="${esc(bannerStyle(bn))}"` : ''}><span class="rank r${i < 3 ? i + 1 : 0}">${i + 1}</span><span>${nm(u, s, true)}</span><span class="val">${val}</span></div>`;
+  return `<a class="lbr${me && u === me.username ? ' mine' : ''}" href="#/user/${encodeURIComponent(u)}"${bn ? ` style="${esc(bannerStyle(bn))}"` : ''}><span class="rank r${i < 3 ? i + 1 : 0}">${i + 1}</span><span>${nm(u, s, true)}</span><span class="val">${val}</span></a>`;
 };
 
 const SEASON_END = new Date('2026-12-18T15:20:00-08:00');
@@ -250,11 +272,18 @@ function setTheme(t){
   setTheme(THEMES[t] ? t : 'dark');
 })();
 const toggleTheme = () => { setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark'); render(); };
+const applyPat = (c, s) => {
+  if (/^#[0-9a-f]{6}$/i.test(c || '')) root.style.setProperty('--patc', c); else root.style.removeProperty('--patc');
+  const n = s == null ? 100 : Math.min(100, Math.max(0, +s || 0));
+  root.style.setProperty('--patp', n + '%');
+};
+const patStr = () => me.pattern_strength == null ? 100 : +me.pattern_strength;
 const applyLook = () => {
   if (me.theme && THEMES[me.theme]) setTheme(me.theme);
   for (const k in CK) root.style.removeProperty(CK[k]);
   if (me.theme === 'custom' && me.colors) for (const k in CK) if (/^#[0-9a-f]{6}$/i.test(me.colors[k] || '')) root.style.setProperty(CK[k], me.colors[k]);
   root.dataset.pat = me.pattern || 'none';
+  applyPat(me.pattern_color, me.pattern_strength);
 };
 
 const go = h => { location.hash = '#/' + h; };
@@ -324,15 +353,20 @@ async function auth(login){
 
 // ---------- data ----------
 const AT = {}, LOADED = {};
-const TTL = {ev:60e3, act:60e3, pts:60e3, lb:30e3, final:300e3, staff:60e3, inv:60e3, pr:60e3, streak:60e3, sboard:60e3, co:60e3, shop:60e3, special:60e3, stats:30e3, hist:30e3, ideas:30e3};
-const EXTRAS = {markets:['act'], market:['pts'], leaderboard:['lb','final','sboard'], admin:['staff','inv','final','special'], suggest:['pr'], review:['pr'], shop:['shop'], account:['stats','hist','shop'], inventory:['shop','special'], ideas:['ideas']};
-const BLOCKING = {leaderboard:1, admin:1, suggest:1, review:1, shop:1, account:1, inventory:1, ideas:1};
+const TTL = {ev:60e3, act:60e3, pts:60e3, lb:30e3, final:300e3, staff:60e3, inv:60e3, pr:60e3, streak:60e3, sboard:60e3, co:60e3, shop:60e3, special:60e3, te:30e3, stats:30e3, hist:30e3, ideas:30e3};
+const EXTRAS = {markets:['act'], market:['pts'], leaderboard:['lb','final','sboard'], admin:['staff','inv','final','special'], suggest:['pr'], review:['pr'], shop:['shop'], account:['stats','hist','shop'], inventory:['shop','special'], ideas:['ideas'], frenzy:['te']};
+const BLOCKING = {frenzy:1, leaderboard:1, admin:1, suggest:1, review:1, shop:1, account:1, inventory:1, ideas:1};
 
 const FETCH = {
+  te: async () => { const r = await sb.rpc('trade_event_info'); TE = r.data || null; return r; },
   ev: async () => { const r = await sb.rpc('referral_event_info'); REV = r.data || null; return r; },
   act: async () => { const r = await sb.rpc('market_activity'); ACT = {}; (r.data || []).forEach(x => { ACT[x.market_id] = x.recent; }); return r; },
   pts: async () => { const r = await sb.rpc('price_points'); T = r.data || []; return r; },
-  lb: async () => { const r = await sb.rpc('leaderboard'); LB = r.data || []; return r; },
+  lb: async () => {
+    let r = await sb.rpc('leaderboard_plus');
+    if (r.error) { r = await sb.rpc('leaderboard'); LBX = false; } else LBX = true;
+    LB = r.data || []; return r;
+  },
   final: async () => { const r = await sb.from('season_final').select('place,username,score').order('place'); FINAL = r.data || []; return r; },
   staff: async () => { const r = await sb.from('profiles').select('username,role').neq('role','user'); STAFF = r.data || []; return r; },
   inv: async () => { const r = await sb.from('invite_codes').select('code,used_by'); INV = r.data || []; return r; },
@@ -374,7 +408,7 @@ async function ensureExtras(){
   if (!me) return;
   const page = (location.hash.slice(2) || 'markets').split('/')[0];
   const keys = new Set(EXTRAS[page] || []);
-  ['ev', 'streak', 'co', 'shop', 'special'].forEach(k => keys.add(k));
+  ['ev', 'te', 'streak', 'co', 'shop', 'special'].forEach(k => keys.add(k));
   if (me.role !== 'user') keys.add('pr');
   if (me.role === 'owner') keys.add('ideas');
   const stale = [...keys].filter(k => !AT[k] || Date.now() - AT[k] > TTL[k]);
@@ -386,7 +420,8 @@ async function ensureExtras(){
     LOADED[k] = true;
   }));
   const cur = (location.hash.slice(2) || 'markets').split('/')[0];
-  if (stale.every(k => k === 'ev' || k === 'streak') && cur === page) {
+  if (stale.every(k => k === 'ev' || k === 'te' || k === 'streak') && cur === page && page !== 'frenzy') {
+    const rb = $('#rb'); if (rb) rb.innerHTML = frenzyBanner();
     const sw = $('#stkw'); if (sw) sw.innerHTML = streakBadge();
     return;
   }
@@ -396,7 +431,7 @@ async function ensureExtras(){
 function resetCaches(){
   for (const k in AT) delete AT[k];
   for (const k in LOADED) delete LOADED[k];
-  STK = null; SBD = []; STK_OPEN = false; CO = {}; SHOP = []; OWN = []; STAT = null; HIST = []; IDEAS = [];
+  STK = null; SBD = []; STK_OPEN = false; TE = null; UP = {}; UPtok = {}; CO = {}; SHOP = []; OWN = []; STAT = null; HIST = []; IDEAS = [];
   SPECIAL = []; SHELD = []; SHOLD = [];
 }
 
@@ -416,7 +451,7 @@ async function load(){
   P = c.data || [];
   const t0 = Date.now();
   CD = (d.data || []).map(x => ({market_id: x.market_id, until: t0 + Math.round(+x.secs_left * 1000)}));
-  MTok = {};
+  MTok = {}; UPtok = {};
   render();
   ensureExtras();
 }
@@ -475,17 +510,85 @@ const motwCard = m => {
     <div class="mut" style="margin-top:6px">${mState(m)}${m.closes_at ? ' · Closes ' + new Date(m.closes_at).toLocaleString() : ''}${mine ? ' · you have a position' : ''}</div></a>`;
 };
 
-function pgMarkets(){
-  const motw = FILTER === 'resolved' ? null : markets.find(m => m.is_motw && m.status === 'open');
-  const list = markets.filter(m => m !== motw && (FILTER === 'all' || (FILTER === 'open') === (m.status === 'open'))).sort(sorters[SORT]);
-  return `<h1>Markets</h1><div class="tabs">${['open','resolved','all'].map(f => `<button class="${FILTER === f ? '' : 'g'}" onclick="setFilter('${f}')">${f[0].toUpperCase() + f.slice(1)}</button>`).join('')}<select style="margin-left:auto" onchange="setSort(this.value)">${Object.entries(SORTS).map(([k, v]) => `<option value="${k}"${SORT === k ? ' selected' : ''}>${v}</option>`).join('')}</select></div>
-  <div class="grid">${motw ? motwCard(motw) : ''}${list.map(m => {
+// ---------- Trading Frenzy (event) ----------
+// banner shown at the top of every page (hidden on the Frenzy page itself, and 2 days after the event ends)
+function frenzyBanner(){
+  if (!TE || Date.now() > new Date(TE.ends_at).getTime() + 2 * 864e5) return '';
+  const ended = Date.now() >= new Date(TE.ends_at);
+  const end = new Date(TE.ends_at).toLocaleString([], {dateStyle:'medium', timeStyle:'short'});
+  const lead = (TE.leaders || [])[0];
+  const blurb = ended
+    ? 'The Trading Frenzy is over!' + (TE.winner ? ' Congrats to <b>' + esc(TE.winner) + '</b>!' : '')
+    : '<b>Trading Frenzy!</b> Every buy and cash-out counts. Most trades by ' + end + ' wins ' + TE.prize + ' bonus tokens and a special banner.' + (lead ? ' Leading now: <b>' + esc(lead.username) + '</b> (' + lead.n + ').' : '');
+  return `<div class="ev-bar"><div class="blurb"><span class="chip ev">EVENT</span> ${blurb}</div><span class="rc">Your trades: <b>${TE.mine}</b></span><a href="#/frenzy">Leaderboard</a></div>`;
+}
+
+function pgFrenzy(){
+  if (!TE) return '<h1>Trading Frenzy</h1><p class="mut">No event is running right now. Check back soon.</p>';
+  const ended = Date.now() >= new Date(TE.ends_at);
+  const lead = TE.leaders || [];
+  const at = lead.findIndex(r => r.username === me.username);
+  const rows = lead.map((r, i) => lbRow(i, r.username, r.n, 40)).join('');
+  const end = new Date(TE.ends_at).toLocaleString([], {dateStyle:'medium', timeStyle:'short'});
+  const status = ended ? (TE.winner ? 'Winner: <b>' + esc(TE.winner) + '</b> (+' + TE.prize + ' tokens)' : 'The event has ended') : 'Ends ' + end;
+  const standing = at >= 0 ? 'You are #' + (at + 1) : (TE.mine > 0 ? 'Not in the top 10 yet' : 'No trades yet');
+  return `<h1>${esc(TE.title || 'Trading Frenzy')}</h1><div class="card"><p style="margin-top:0">Every buy and every cash-out counts as a trade. The player with the most trades during the event wins a bonus <b>${TE.prize} tokens</b>, and while they lead they wear the special banner. Ties go to whoever reached the count first.</p>
+    <div class="ev-stats"><span class="rc">${status}</span><span class="rc">Your trades: <b>${TE.mine}</b></span><span class="rc">${standing}</span></div></div>
+  <div class="card"><b>Top 10</b>${rows ? `<div class="lb" style="margin-top:10px"><div class="lbh"><span>#</span><span>Player</span><span>Trades</span></div>${rows}</div>` : '<p class="mut">No trades yet. Be the first!</p>'}</div>`;
+}
+
+// ---------- Player profile (opened from the leaderboards) ----------
+const setVisible = on => rpc('set_activity_visibility', {p_show:on}, on ? 'Your portfolio and trades are visible' : 'Your portfolio and trades are hidden');
+function pgUser(name){
+  const d = UP[name];
+  const back = '<a href="#/leaderboard" class="mut">← Leaderboard</a>';
+  if (!d) return back + '<p class="mut">Loading...</p>';
+  if (d.missing) return back + '<h1>Player not found</h1>';
+  const self = name === me.username, vis = me.show_activity !== false;
+  const head = `${back}<h1 style="margin-top:8px">${nm(name, 34)}</h1>`;
+  const toggle = self ? `<div class="card split"><span class="mut">${vis ? 'Everyone can see your portfolio and trade history.' : 'Your portfolio and trade history are hidden from everyone else.'}</span><button class="g" onclick="setVisible(${!vis})">${vis ? 'Hide from others' : 'Show to others'}</button></div>` : '';
+  if (d.hidden) return head + '<div class="card"><b>Private</b><p class="mut" style="margin-bottom:0">This player keeps their portfolio and trade history hidden.</p></div>';
+  const pos = (d.positions || []).map(p => ({p, m: markets.find(x => x.id === p.market_id)})).filter(r => r.m);
+  const ptab = pos.length ? `<table><tr><th>Market</th><th>Side</th><th>Invested</th><th>Bought at</th><th>Now</th><th>Value</th></tr>${pos.map(({p, m}) =>
+    `<tr><td><a href="#/market/${m.id}">${esc(m.question)}</a></td><td>${p.side.toUpperCase()}</td><td>${(+p.invested).toFixed(1)}</td><td>${(boughtAtPrice(m, p) * 100).toFixed(0)}%</td><td>${(sidePrice(m, p.side) * 100).toFixed(0)}%</td><td>${positionValue(m, p).toFixed(1)}</td></tr>`).join('')}</table>` : '<p class="mut">No open positions.</p>';
+  const trs = d.trades || [];
+  const ttab = trs.length ? `<table><tr><th>Time</th><th>Market</th><th>Action</th><th>Tokens</th><th>YES after</th></tr>${trs.map(r =>
+    `<tr><td>${new Date(r.ts).toLocaleString()}</td><td><a href="#/market/${r.market_id}">${esc(r.question)}</a></td><td>${r.kind === 'buy' ? 'Bought' : 'Cashed out'} ${r.side.toUpperCase()}</td><td>${(+r.tokens).toFixed(1)}</td><td>${(+r.price_yes * 100).toFixed(0)}%</td></tr>`).join('')}</table>` : '<p class="mut">No trades yet.</p>';
+  return `${head}${toggle}<div class="stats" style="grid-template-columns:repeat(2,1fr)"><div class="card"><div class="mut">Total trades</div><div class="big">${d.trade_count}</div></div><div class="card"><div class="mut">Open positions</div><div class="big">${pos.length}</div></div></div>
+  <div class="card"><b>Portfolio</b>${ptab}</div><div class="card"><b>Trade history</b> <span class="mut">(last 100)</span>${ttab}</div>`;
+}
+async function fetchUser(name){
+  UPtok[name] = true;
+  const {data, error} = await sb.rpc('user_profile', {p_username:name});
+  if (error) toast(error.message);
+  UP[name] = data || {missing:true};
+  render();
+}
+
+// search boxes (markets page and leaderboard)
+let QM = '', QU = '';
+const matchQ = (q, ...fields) => { q = q.trim().toLowerCase(); return !q || fields.some(f => String(f || '').toLowerCase().includes(q)); };
+
+// the grid of market cards; while searching, only open (active) markets are searched
+function marketGrid(){
+  const searching = QM.trim() !== '';
+  const ok = m => matchQ(QM, m.question, m.proposed_by);
+  const m0 = (searching || FILTER !== 'resolved') ? markets.find(m => m.is_motw && m.status === 'open') : null;
+  const motw = m0 && ok(m0) ? m0 : null;
+  const list = markets.filter(m => m !== motw && ok(m) && (searching ? m.status === 'open' : (FILTER === 'all' || (FILTER === 'open') === (m.status === 'open')))).sort(sorters[SORT]);
+  return (motw ? motwCard(motw) : '') + (list.map(m => {
     const y = py(m), mine = P.some(p => p.market_id === m.id);
     return `<a class="card mk" href="#/market/${m.id}">${tags(m)}<b>${esc(m.question)}</b>${m.proposed_by ? `<div class="mut" style="margin-top:4px">Suggested by ${nm(m.proposed_by)}</div>` : ''}
     <div class="bar"><i style="width:${y*100}%"></i></div>
     <div class="split"><span style="color:var(--yes)">YES ${(y*100).toFixed(0)}%</span><span style="color:var(--no)">NO ${((1-y)*100).toFixed(0)}%</span></div>
     <div class="mut" style="margin-top:6px">${mState(m)}${mine ? ' · you have a position' : ''}</div></a>`;
-  }).join('') || (motw ? '' : '<p class="mut">No markets here yet.</p>')}</div>`;
+  }).join('') || (motw ? '' : `<p class="mut">${searching ? 'No active markets match your search.' : 'No markets here yet.'}</p>`));
+}
+
+function pgMarkets(){
+  return `<h1>Markets</h1>
+  <div class="tabs">${['open','resolved','all'].map(f => `<button class="${FILTER === f ? '' : 'g'}" onclick="setFilter('${f}')">${f[0].toUpperCase() + f.slice(1)}</button>`).join('')}<input id="qm" class="search" type="search" placeholder="Search active markets" value="${esc(QM)}" autocomplete="off" oninput="QM=this.value;$('#mg').innerHTML=marketGrid()"><select onchange="setSort(this.value)">${Object.entries(SORTS).map(([k, v]) => `<option value="${k}"${SORT === k ? ' selected' : ''}>${v}</option>`).join('')}</select></div>
+  <div class="grid" id="mg">${marketGrid()}</div>`;
 }
 
 // total that lands in your account on cash-out: payout (2x profit on the Market of the Week) + streak bonus
@@ -532,13 +635,28 @@ function pgPortfolio(){
 }
 
 // Leaderboard + compact streak board, side by side
+// leaderboard rows: sorted by the chosen option, then filtered by the search box (ranks follow the sort)
+function boardRows(){
+  const mode = LBX ? LBSORT : 'tokens_desc', [key, dir] = mode.split('_'), by = {};
+  LB.forEach(r => { by[r.username] = r; });
+  const rows = (FINAL.length ? FINAL : LB).map(r => ({u: r.username, score: +r.score, trades: +(by[r.username] || {}).trades || 0, profit: +(by[r.username] || {}).profit || 0}));
+  const v = r => key === 'tokens' ? r.score : r[key];
+  rows.sort((a, b) => (dir === 'asc' ? v(a) - v(b) : v(b) - v(a)) || b.score - a.score || a.u.localeCompare(b.u));
+  const fmt = r => key === 'trades' ? r.trades : key === 'profit' ? (r.profit >= 0 ? '+' : '') + r.profit.toFixed(1) : r.score.toFixed(1);
+  const html = rows.map((r, i) => ({r, i})).filter(x => matchQ(QU, x.r.u)).map(x => lbRow(x.i, x.r.u, fmt(x.r), 44)).join('');
+  return html || '<p class="mut">No players match your search.</p>';
+}
 function pgBoard(){
-  const rows = (FINAL.length ? FINAL : LB).map((r, i) => lbRow(i, r.username, (+r.score).toFixed(1), 44)).join('');
-  const srows = SBD.slice(0, 8).map((r, i) => lbRow(i, r.username, '🔥 ' + r.streak, 34)).join('');
-  return `<div class="boardwrap"><div><h1>${FINAL.length ? 'Final standings' : 'Leaderboard'}</h1><p class="mut">${FINAL.length ? 'Recorded when the season ended.' : 'Cash plus open stakes (at cost).'}</p>
-    <div class="card"><div class="lb"><div class="lbh"><span>#</span><span>Player</span><span>Tokens</span></div>${rows}</div></div></div>
+  const mode = LBX ? LBSORT : 'tokens_desc', key = mode.split('_')[0];
+  const opts = Object.entries(LBSORTS).filter(([k]) => LBX || k.startsWith('tokens')).map(([k, v]) => `<option value="${k}"${mode === k ? ' selected' : ''}>${v}</option>`).join('');
+  const srows = SBD.map((r, i) => lbRow(i, r.username, '🔥 ' + r.streak, 34)).join('');
+  return `<div class="boardwrap">
+    <div><h1>${FINAL.length ? 'Final standings' : 'Leaderboard'}</h1><p class="mut">${FINAL.length ? 'Recorded when the season ended.' : 'Cash plus open stakes (at cost).'}</p>
+      <div class="lbtools"><input id="qu" class="search" type="search" placeholder="Search players" value="${esc(QU)}" autocomplete="off" oninput="QU=this.value;$('#lres').innerHTML=boardRows()"><select onchange="LBSORT=this.value;render()" aria-label="Sort leaderboard">${opts}</select></div>
+      <div class="card"><div class="lb"><div class="lbh"><span>#</span><span>Player</span><span>${LBCOL[key]}</span></div><div class="lb" id="lres">${boardRows()}</div></div></div></div>
     <div class="sm"><h1>Streaks</h1><p class="mut">5+ trades a day. +0.1% cash-out profit per day, max 10%.</p>
-    <div class="card">${SBD.length ? `<div class="lb"><div class="lbh"><span>#</span><span>Player</span><span>Streak</span></div>${srows}</div>` : '<p class="mut">No streaks yet.</p>'}</div></div></div>`;
+      <div class="lbtools"><span class="mut">Current streaks</span></div>
+      <div class="card">${SBD.length ? `<div class="lb"><div class="lbh"><span>#</span><span>Player</span><span>Streak</span></div>${srows}</div>` : '<p class="mut">No streaks yet.</p>'}</div></div></div>`;
 }
 
 const hrs = s => +((+s || 3600) / 3600).toFixed(2) + 'h';
@@ -563,7 +681,9 @@ const pgRules = () => `<h1>Rules</h1><div class="card" style="max-width:760px">
 <li>No insults of any kind and no comments about identity, about a specific person or any group of people.</li>
 </ul>
   <h2>Market of the Week</h2><p>One featured market sits at the top of the Markets page each week and resolves on Friday. If you win, or cash out at a profit, you earn <b>2 times your profit</b>. If you lose or cash out at a loss, it works as usual, with no extra loss.</p>
-  <h2>Rewards</h2><p>You earn <b>100 tokens</b> for every market you suggest that gets approved. You earn <b>300 tokens</b> for every friend who signs up with your referral link and confirms their email (they get 100 too).</p>
+  <h2>Rewards</h2><p>You earn <b>300 tokens</b> for every market you suggest that gets approved. You earn <b>300 tokens</b> for every friend who signs up with your referral link and confirms their email (they get 100 too).</p>
+  <h2>Trading Frenzy</h2><p>During the Trading Frenzy event, every buy and cash-out counts. The player with the most trades wins bonus tokens, and the current leader wears a special banner. See the <a href="#/frenzy">Trading Frenzy</a> page.</p>
+  <h2>Player profiles</h2><p>Click any player on a leaderboard to see their portfolio and trade history. You can hide yours from other players on your Account page.</p>
   <h2>Daily streaks</h2><p>Make at least 5 trades in a day to build a streak. Buys and cash-outs both count, and days run midnight to midnight Pacific Time. Each streak day adds 0.1% to the profit on your cash-outs, up to 10%. Missing a day resets the bonus to 0%.</p>
   <h2>Usernames and profiles</h2><p>Keep usernames and profile choices appropriate. Names that imitate staff are not allowed.</p>
   <h2>Fair play</h2><p>One account per person. Duplicate accounts or cheating can lead to disqualification. Collusion with other users is highly prohibited, though influencing the results of a market is encouraged. Automated trading programs will result in immediate disqualification.</p></div>`;
@@ -667,7 +787,7 @@ const specialAdminCard = () => `<div class="card" style="grid-column:1/-1"><b>Sp
   <p class="mut">These are earned, not bought. The player who qualifies gets the item equipped automatically (they can still unequip it), and it moves to the next player as soon as someone else takes the lead. Ties share it. Banners work best around 10:1 (like 1000 × 100); transparent PNGs work well for icons.</p>
   <div class="row"><label class="mut">Type<select id="spk" onchange="showSpecialPreview()"><option value="banner">Banner</option><option value="icon">Icon</option></select></label>
   <label class="mut">Name<input id="spn" maxlength="30" placeholder="e.g. Streak Champion"></label>
-  <label class="mut">Given to<select id="spc"><option value="top_streak">${CRIT.top_streak}</option><option value="top_referrals">${CRIT.top_referrals}</option></select></label></div>
+  <label class="mut">Given to<select id="spc"><option value="top_streak">${CRIT.top_streak}</option><option value="top_referrals">${CRIT.top_referrals}</option><option value="top_trades">${CRIT.top_trades}</option></select></label></div>
   <div class="row"><label class="up"><input type="file" accept="image/png,image/jpeg,image/webp,image/gif" onchange="pickSpecialFile(this)" hidden><span class="btn">Choose image</span></label>
   <span class="mut">${SPFILE ? esc(SPFILE.name) : 'No image chosen'}</span>
   <button onclick="uploadSpecialItem()" ${SPFILE ? '' : 'disabled'}>Upload and create</button></div>
@@ -746,10 +866,15 @@ function pgAccount(){
     <div class="card"><b>Profile picture</b><div class="row">${avatar(me.username, 56)}<label class="up"><input type="file" accept="image/jpeg,image/png,image/webp" onchange="uploadAvatar(this)" hidden><span class="btn">Upload image</span></label>${me.avatar_path ? '<button class="g" onclick="rmAvatar()">Remove</button>' : ''}</div>
       <p class="mut">Or pick an emoji:</p><div class="avs">${AV.map((e, i) => `<button class="g${me.avatar === 'a' + i && !me.avatar_path ? ' sel' : ''}" onclick="look({avatar:'a${i}'})">${e}</button>`).join('')}</div></div>
     <div class="card"><b>Username</b><input id="nu" value="${esc(me.username)}" maxlength="20"><div class="row"><button onclick="rpc('change_username',{p_name:$('#nu').value},'Username updated')">Save username</button></div><p class="mut" style="margin-bottom:0">3-20 letters, numbers, . _ - · once every 24 hours.</p></div>
+    <div class="card"><b>Privacy</b><p class="mut">Other players can open your profile from the leaderboards. Choose whether they can see your portfolio and trade history.</p>
+      <div class="row"><button class="g${me.show_activity !== false ? ' sel' : ''}" onclick="setVisible(true)">Visible</button><button class="g${me.show_activity === false ? ' sel' : ''}" onclick="setVisible(false)">Hidden</button></div></div>
     <div class="card"><b>Color theme</b>${pick(THEMES, 'theme')}
       <div style="margin-top:14px"><b>Make your own</b><div class="row">${col('cbg', 'Background', 'bg', '#f3f6fb')}${col('ccard', 'Cards', 'card', '#ffffff')}${col('cfg', 'Text', 'fg', '#0f172a')}${col('cacc', 'Highlight', 'acc', '#2f6bd8')}</div>
       <div class="row"><button onclick="saveColors()">Save custom colors</button></div></div>
-      <div style="margin-top:14px"><b>Background pattern</b></div>${pick(PATS, 'pattern')}</div>
+      <div style="margin-top:14px"><b>Background pattern</b></div>${pick(PATS, 'pattern')}
+      <div class="row"><label class="mut clr">Pattern color<input id="cpat" type="color" value="${esc(me.pattern_color || '#5b6678')}" oninput="this.dataset.t=1;prevPat()"></label>
+      <label class="mut">Prominence: <b id="patv">${patStr()}</b>%<input id="cpps" type="range" min="0" max="100" step="5" value="${patStr()}" oninput="prevPat()"></label></div>
+      <div class="row"><button onclick="savePat()">Save pattern look</button><button class="g" onclick="patReset()">Reset</button></div></div>
     <div class="card"><b>Banner and icon</b><p class="mut">Buy them in the <a href="#/shop">Shop</a>, then equip them from your <a href="#/inventory">Inventory</a>.</p></div>
     <div class="card"><b>Your referral link</b><p class="mut">Earn ${REFERRER_BONUS} tokens for every friend who signs up and confirms their email. They get ${FRIEND_BONUS} too.</p><input readonly value="${esc(refLink())}" onclick="this.select()"><div class="row"><button onclick="navigator.clipboard.writeText(refLink());toast('Link copied!')">Copy link</button></div></div>
     ${me.role === 'user' ? `<div class="card"><b>Have an admin invite code?</b><input id="ic" placeholder="Code"><div class="row"><button onclick="redeem()">Redeem</button></div></div>` : ''}
@@ -782,6 +907,14 @@ function pgInventory(){
 const look = o => rpc('set_look', {p_avatar:o.avatar || null, p_theme:o.theme || null, p_pattern:o.pattern || null}, 'Saved');
 const prevC = () => { root.dataset.theme = 'custom'; [['bg','cbg'],['card','ccard'],['fg','cfg'],['acc','cacc']].forEach(([k, i]) => root.style.setProperty(CK[k], $('#' + i).value)); };
 const saveColors = () => rpc('set_colors', {p_bg:$('#cbg').value, p_card:$('#ccard').value, p_fg:$('#cfg').value, p_acc:$('#cacc').value}, 'Colors saved');
+const prevPat = () => {
+  const c = $('#cpat'), n = +$('#cpps').value;
+  if (c.dataset.t || me.pattern_color) root.style.setProperty('--patc', c.value);
+  root.style.setProperty('--patp', n + '%');
+  $('#patv').textContent = n;
+};
+const savePat = () => { const c = $('#cpat'); rpc('set_pattern_look', {p_color:(c.dataset.t || me.pattern_color) ? c.value : null, p_strength:+$('#cpps').value}, 'Pattern look saved'); };
+const patReset = () => rpc('set_pattern_look', {p_color:null, p_strength:100}, 'Pattern look reset');
 const rmAvatar = async () => { const old = me.avatar_path; await rpc('set_avatar_path', {p_path:null}, 'Picture removed'); if (old) sb.storage.from('avatars').remove([old]); };
 function uploadAvatar(inp){
   const f = inp.files[0]; inp.value = '';
@@ -846,26 +979,27 @@ function render(){
   const staff = me.role !== 'user', owner = me.role === 'owner';
   const pend = PR.filter(p => p.status === 'pending').length;
   const meBn = itemById(me.banner);
-  const link = (id, label, badge) => `<a href="#/${id}" class="${id === pg || (id === 'markets' && pg === 'market') ? 'on' : ''}">${svg(IC[id])}${label}${badge ? `<span class="chip">${badge}</span>` : ''}</a>`;
-  const pages = {markets: pgMarkets, market: () => pgMarket(+arg), portfolio: pgPortfolio, leaderboard: pgBoard, shop: pgShop, ideas: pgIdeas, rules: pgRules, suggest: pgSuggest, create: pgCreate, review: pgReview, admin: pgAdmin, account: pgAccount, inventory: pgInventory};
+  const link = (id, label, badge) => `<a href="#/${id}" class="${id === pg || (id === 'markets' && pg === 'market') || (id === 'leaderboard' && pg === 'user') ? 'on' : ''}">${svg(IC[id])}${label}${badge ? `<span class="chip">${badge}</span>` : ''}</a>`;
+  const pages = {markets: pgMarkets, market: () => pgMarket(+arg), portfolio: pgPortfolio, leaderboard: pgBoard, frenzy: pgFrenzy, user: () => pgUser(decodeURIComponent(arg || '')), shop: pgShop, ideas: pgIdeas, rules: pgRules, suggest: pgSuggest, create: pgCreate, review: pgReview, admin: pgAdmin, account: pgAccount, inventory: pgInventory};
   const ok = {create: staff, review: staff, admin: owner, suggest: !staff};
   const waiting = BLOCKING[pg] && (EXTRAS[pg] || []).some(k => !LOADED[k]);
   const body = !pages[pg] ? '<p>Page not found.</p>' : (pg in ok && !ok[pg]) ? '<p class="mut">You do not have access to this page.</p>' : waiting ? '<p class="mut">Loading...</p>' : pages[pg]();
 
   $('#app').innerHTML = `<div id="shell"><nav><h2>EagleEye Market</h2>
-    ${link('markets', 'Markets')}${link('portfolio', 'Portfolio')}${link('leaderboard', 'Leaderboard')}${link('shop', 'Shop')}${link('ideas', 'Idea Box', ideaNew() || '')}${link('rules', 'Rules')}
+    ${link('frenzy', 'Trading Frenzy')}${link('markets', 'Markets')}${link('portfolio', 'Portfolio')}${link('leaderboard', 'Leaderboard')}${link('shop', 'Shop')}${link('ideas', 'Idea Box', ideaNew() || '')}${link('rules', 'Rules')}
     ${staff ? link('create', 'Create market') + link('review', 'Review', pend || '') : link('suggest', 'Suggest a market')}
     ${owner ? link('admin', 'Admin tools') : ''}
     <div class="navref"><span class="mut">Your referral link</span><input readonly value="${esc(refLink())}" onclick="this.select()" aria-label="Your referral link"><button onclick="navigator.clipboard.writeText(refLink());toast('Link copied!')">Copy link</button></div>
     <a href="#/account" class="me${pg === 'account' || pg === 'inventory' ? ' on' : ''}${meBn ? ' bn' : ''}"${meBn ? ` style="${esc(bannerStyle(meBn))}"` : ''}>${avatar(me.username, 30)}<span style="min-width:0"><b style="display:block;overflow:hidden;text-overflow:ellipsis">${esc(me.username)}</b><span class="mut">${(+me.balance).toFixed(0)} tokens</span></span></a>
-    </nav><main><div class="card split"><span><span class="chip">SEASON</span> <b id="cd" style="font-weight:500">${cdText()}</b></span><a href="#/rules">Rules</a></div>${body}</main></div><div id="stkw">${streakBadge()}</div>`;
+    </nav><main><div class="card split"><span><span class="chip">SEASON</span> <b id="cd" style="font-weight:500">${cdText()}</b></span><a href="#/rules">Rules</a></div><div id="rb">${pg === 'frenzy' ? '' : frenzyBanner()}</div>${body}</main></div><div id="stkw">${streakBadge()}</div>`;
 
   for (const k in keep) { const el = document.getElementById(k); if (el) el.value = keep[k]; }
   if (pg === 'admin') { showShopPreview(); showSpecialPreview(); }
   if (pg === 'market' && staff && !MTok[+arg]) fetchTrades(+arg);
+  if (pg === 'user' && arg && !UPtok[decodeURIComponent(arg)]) fetchUser(decodeURIComponent(arg));
 }
 
-addEventListener('hashchange', () => { render(); scrollTo(0, 0); ensureExtras(); });
+addEventListener('hashchange', () => { UPtok = {}; render(); scrollTo(0, 0); ensureExtras(); });
 
 const tradesCard = id => {
   if (me.role === 'user') return '';
@@ -950,263 +1084,5 @@ setInterval(() => { if (!document.hidden) checkReferralAlerts(); }, 30000);
 
 load().then(checkReferralAlerts);
 </script>
-<style>
-.s2bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 14px}.s2bar .rc{font-weight:600}
-.s2t{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}.s2t .card{margin:0;padding:12px}
-.s2t .card.mine{border-color:var(--acc)}.s2t .card.neu{border-style:dashed}.s2t .card.gone{opacity:.55}
-.s2tag{font-size:12px;color:var(--mut)}.s2w{overflow-x:auto}.s2w input,.s2w select{min-width:90px;margin:0;padding:6px 8px}
-.s2m{padding:6px 0;border-bottom:1px solid var(--line)}.s2m.pin{background:var(--hov);padding:6px 8px;border-radius:10px}
-</style>
-<script>
-(() => {
-const E = {map:[], ex:{inv:[],ref:{},listings:[],sales:[],nw:0}, cats:[], res:[], chat:[], tasks:[], board:[], atasks:[], t:0, view:(typeof THREE!=='undefined'?'3d':'list'), busy:false, pg:'', area:'All', cat:'', reply:null, err:''};
-window.S2E = E;
-const PG = ['hub','empire','exchange','board','chat','rooms'];
-const staff = () => me && me.role !== 'user';
-const em = (l, id) => { const x = l.find(y => y.id === id); return x ? x.emoji : ''; };
-const rn = id => { const x = E.res.find(y => y.id === id); return x ? x.emoji + ' ' + x.name : ''; };
-const opts = (l, v, blank) => (blank !== undefined ? `<option value="">${blank}</option>` : '') + l.map(x => `<option value="${esc(x.id)}"${x.id === v ? ' selected' : ''}>${esc((x.emoji || '') + ' ' + x.name)}</option>`).join('');
-const mine = () => E.map.filter(d => d.mine);
-const claimPrice = d => Math.min(1000, Math.round(d.price * Math.min(2, 1 + .1 * Math.max(0, mine().length - 2)) / 5) * 5);
-const AREAS = ['Lower School', 'Middle School', 'Upper School', 'South Campus', 'Athletics'];
-
-async function eFetch(pg) {
-  if (E.busy) return;
-  E.busy = true; E.t = Date.now(); E.pg = pg;
-  const q = [sb.rpc('empire_map'), sb.rpc('empire_exchange'), sb.from('empire_categories').select().order('sort'), sb.from('empire_resources').select().order('sort'), sb.rpc('empire_tasks_list')];
-  if (pg === 'chat') q.push(sb.rpc('chat_list'));
-  if (pg === 'board') q.push(sb.rpc('empire_board'));
-  if (pg === 'rooms' && staff()) q.push(sb.rpc('empire_admin_tasks'));
-  const r = await Promise.all(q);
-  E.err = (r.find(x => x.error) || {error: {message: ''}}).error.message;
-  if (!E.err) {
-    E.map = r[0].data || []; E.ex = r[1].data || E.ex; E.cats = r[2].data || []; E.res = r[3].data || []; E.tasks = r[4].data || [];
-    if (pg === 'chat') E.chat = r[5].data || [];
-    if (pg === 'board') E.board = r[5].data || [];
-    if (pg === 'rooms') E.atasks = r[5] ? r[5].data || [] : [];
-  }
-  E.busy = false; render();
-}
-const act = async (fn, args, ok) => {
-  const {error} = await sb.rpc(fn, args);
-  if (error) toast(/schema cache|could not find/i.test(error.message) ? 'Run season2.sql in the Supabase SQL Editor first.' : error.message); else if (ok) toast(ok);
-  E.t = 0; await load();
-};
-const v = id => document.getElementById(id).value;
-window.act = act; window.v = v;
-
-// ---------- pages ----------
-const topbar = () => `<div class="s2bar"><button class="g" onclick="go('hub')">🏠 Home</button><span class="rc">💰 ${(+me.balance).toFixed(0)} tokens</span><span class="rc">📊 Net worth ${Math.round(E.ex.nw || me.balance)}</span></div>`;
-const err = () => E.err ? `<div class="card"><b>Season 2 data could not load.</b><p class="mut">${esc(E.err)} If this mentions the schema cache or a missing function, run season2.sql in the Supabase SQL Editor.</p></div>` : '';
-
-function pgHub() {
-  const open = markets.filter(m => m.status === 'open').length, my = mine(), pend = my.reduce((s, d) => s + (+d.pend || 0), 0);
-  const card = (h, ic, t, s) => `<a class="card mk" href="#/${h}"><div class="big">${ic}</div><b>${t}</b><div class="mut" style="margin-top:6px">${s}</div></a>`;
-  return `<h1>Home</h1>${err()}<div class="grid">
-  ${card('markets', '📈', 'Markets', open + ' open markets')}
-  ${card('empire', '🏫', 'Empire', my.length + '/12 rooms · ' + Math.floor(pend) + ' units ready to collect')}
-  ${card('exchange', '🔁', 'Exchange', E.ex.listings.length + ' resource listings · ' + E.map.filter(d => d.listed).length + ' rooms for sale')}
-  ${card('board', '🏆', 'Net worth', 'Yours: ' + Math.round(E.ex.nw || me.balance))}
-  ${card('chat', '💬', 'Chat', 'Talk with everyone')}
-  ${card('shop', '🛍️', 'Shop', 'Banners and icons')}</div>`;
-}
-
-function pgEmpire() {
-  const my = mine(), pend = my.reduce((s, d) => s + Math.floor(+d.pend || 0), 0);
-  const areas = ['All', ...AREAS.filter(a => E.map.some(d => d.area === a)), ...[...new Set(E.map.map(d => d.area))].filter(a => !AREAS.includes(a))];
-  const list = E.map.filter(d => d.active && (E.area === 'All' || d.area === E.area) && (!E.cat || d.cat === E.cat));
-  const tile = d => {
-    const price = d.price ? claimPrice(d) : 0; let st = '', btn = '';
-    if (d.tier === 'neutral') st = '<span class="chip">NEUTRAL ZONE</span>';
-    else if (d.mine) { st = '<b>Yours</b>' + (d.res ? ` · ${(+d.pend || 0).toFixed(2)} ${em(E.res, d.res)} ready` : ''); btn = `<button class="g" onclick="S2.listRoom(${d.id},${d.listed || 0})">${d.listed ? 'Listed ' + d.listed + ' · change' : 'List for sale'}</button>` + (d.listed ? `<button class="g" onclick="S2.unlist(${d.id})">Unlist</button>` : ''); }
-    else if (d.owner) { st = 'Owner ' + nm(d.owner, 18); if (d.listed) btn = `<button onclick="S2.buyRoom(${d.id})" ${+me.balance < d.listed ? 'disabled' : ''}>Buy · ${d.listed}</button>`; }
-    else btn = `<button onclick="S2.claim(${d.id})" ${+me.balance < price ? 'disabled' : ''}>Claim · ${price}</button>`;
-    return `<div class="card ${d.mine ? 'mine' : ''} ${d.tier === 'neutral' ? 'neu' : ''}"><b>${em(E.cats, d.cat)} ${esc(d.name)}</b>
-      <div class="s2tag">${esc(d.area)} · ${esc((E.cats.find(c => c.id === d.cat) || {}).name || 'Unlabeled')}${d.tag ? ' · Market: ' + esc(d.tag) : ''}</div>
-      <div class="s2tag">${d.res ? `Makes ${rn(d.res)} · ${d.rate}/day` : d.tier === 'neutral' ? 'Hosts tasks and events' : 'No production'}${d.price ? ' · base ' + d.price : ''}</div>
-      <div style="margin-top:6px">${st}</div><div class="row">${btn}</div></div>`;
-  };
-  window.S2tile = tile;
-  const tasks = E.tasks.map(t => `<tr><td><b>${esc(t.title)}</b><div class="mut">${esc(t.zone || '')} ${esc(t.desc || '')}</div></td><td>${t.tokens ? t.tokens + ' tokens ' : ''}${t.res ? t.qty + ' ' + rn(t.res) : ''}</td>
-    <td>${t.done ? '✅ Done' : `<input id="tc${t.id}" placeholder="Code" style="margin:0;width:110px"> <button onclick="S2.task(${t.id})">Submit</button>`}</td></tr>`).join('');
-  return `<h1>Empire</h1>${err()}<p class="mut">Claim campus rooms. Each one is a real place, labeled by subject or purpose. Producer rooms make resources you collect and trade. You own ${my.length}/12 rooms.</p>
-  <div class="tabs">${areas.map(a => `<button class="${E.area === a ? '' : 'g'}" onclick="S2.area('${esc(a)}')">${esc(a)}</button>`).join('')}
-  <select onchange="S2.cat(this.value)"><option value="">All categories</option>${opts(E.cats, E.cat)}</select>
-  <button style="margin-left:auto" onclick="act('empire_collect',{},'Collected')" ${pend ? '' : 'disabled'}>Collect ${pend} units</button></div>
-  <div class="row"><button class="${E.view === 'list' ? 'g' : ''}" onclick="S2.view('3d')" ${typeof THREE === 'undefined' ? 'disabled' : ''}>🗺️ 3D map</button><button class="${E.view === 'list' ? '' : 'g'}" onclick="S2.view('list')">▦ List</button>
-  ${E.view === 'list' ? '' : '<button class="g" onclick="S3.rot(-1)">⟲ Rotate</button><button class="g" onclick="S3.rot(1)">⟳ Rotate</button><button class="g" onclick="S3.zoom(.8)">＋</button><button class="g" onclick="S3.zoom(1.25)">－</button>'}</div>
-  ${E.view === 'list' ? `<div class="s2t">${list.map(tile).join('') || '<p class="mut">No rooms here.</p>'}</div>` : '<div id="s2map" class="s2map"></div><div id="s2sel"></div>'}
-  <h2>Tasks at neutral zones</h2>${tasks ? `<div class="card"><table><tr><th>Task</th><th>Reward</th><th></th></tr>${tasks}</table></div>` : '<p class="mut">No tasks right now. Check the Middle School Patio for events.</p>'}`;
-}
-
-function pgExchange() {
-  const x = E.ex, listed = E.map.filter(d => d.listed && !d.mine);
-  const inv = x.inv.map(i => `<span class="rc">${rn(i.res)} × ${i.qty} <span class="mut">(ref ${(+x.ref[i.res] || 100).toFixed(0)})</span></span>`).join(' ') || '<span class="mut">Nothing yet. Collect from your producer rooms.</span>';
-  const rows = x.listings.map(l => `<tr><td>${rn(l.res)} × ${l.qty}</td><td>${nm(l.seller, 18)}</td><td>${l.price} <span class="mut">(${(l.price / l.qty).toFixed(1)} each)</span></td>
-    <td>${l.mine ? `<button class="g" onclick="act('empire_cancel_listing',{p_id:'${l.id}'},'Listing removed')">Cancel</button>` : `<button onclick="act('empire_buy_listing',{p_id:'${l.id}'},'Bought')" ${+me.balance < l.price ? 'disabled' : ''}>Buy</button>`}</td></tr>`).join('');
-  return `<h1>Exchange</h1>${err()}<div class="card"><b>Your inventory</b> <span class="mut">(max 100 of each)</span><div class="row">${inv}</div></div>
-  <div class="card narrow"><b>Sell resources</b><div class="row"><label class="mut">Resource<select id="xr">${opts(E.res.filter(r => x.inv.some(i => i.res === r.id)), '')}</select></label>
-  <label class="mut">Quantity<input id="xq" type="number" min="1" value="1"></label><label class="mut">Total price<input id="xp" type="number" min="1" value="100"></label></div>
-  <p class="mut">Unit price must stay between 25 and 400 tokens. The reference price is the median of the last 5 sales.</p><button onclick="act('empire_list_resource',{p_res:v('xr'),p_qty:+v('xq'),p_price:+v('xp')},'Listed')">List for sale</button></div>
-  <h2>Resource listings</h2>${rows ? `<div class="card"><table><tr><th>Item</th><th>Seller</th><th>Price</th><th></th></tr>${rows}</table></div>` : '<p class="mut">No listings.</p>'}
-  <h2>Rooms for sale</h2>${listed.length ? `<div class="s2t">${listed.map(d => `<div class="card"><b>${esc(d.name)}</b><div class="s2tag">${esc(d.area)} · ${d.res ? rn(d.res) : 'no production'}</div><div class="row">${nm(d.owner, 18)}<button onclick="S2.buyRoom(${d.id})" ${+me.balance < d.listed ? 'disabled' : ''}>Buy · ${d.listed}</button></div></div>`).join('')}</div>` : '<p class="mut">No rooms listed.</p>'}
-  <h2>Recent sales</h2>${x.sales.length ? `<div class="card"><table>${x.sales.map(s => `<tr><td>${rn(s.res)} × ${s.qty}</td><td>${s.price} tokens</td><td class="mut">${new Date(s.at).toLocaleString()}</td></tr>`).join('')}</table></div>` : '<p class="mut">No sales yet.</p>'}`;
-}
-
-const pgBoardS2 = () => `<h1>Net worth</h1><p class="mut">Tokens + open market stakes + resources (at reference price) + rooms (last price, clamped to 75-125% of base).</p>${err()}
-  <div class="card"><div class="lb"><div class="lbh"><span>#</span><span>Player</span><span>Net worth</span></div>${E.board.map((r, i) => lbRow(i, r.username, Math.round(r.worth) + ' · ' + r.rooms + ' rooms', 40)).join('')}</div></div>`;
-
-function pgChat() {
-  const msg = m => `<div class="s2m ${m.pinned ? 'pin' : ''}">${m.pinned ? '📌 ' : ''}${nm(m.username, 20)} <span class="mut">${new Date(m.at).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}</span>
-    ${m.reply_to ? `<div class="mut">↪ ${esc(((E.chat.find(x => x.id === m.reply_to) || {}).body || 'earlier message').slice(0, 60))}</div>` : ''}<div>${esc(m.body)}</div>
-    <a href="#/chat" onclick="S2.reply(${m.id});return false" class="mut">Reply</a>${staff() ? ` · <a href="#/chat" class="mut" onclick="act('admin_chat_mod',{p_id:${m.id},p_action:'${m.pinned ? 'unpin' : 'pin'}'});return false">${m.pinned ? 'Unpin' : 'Pin'}</a> · <a href="#/chat" class="mut" onclick="act('admin_chat_mod',{p_id:${m.id},p_action:'delete'});return false">Delete</a>` : ''}</div>`;
-  return `<h1>Chat</h1>${err()}<p class="mut">Be kind. Messages are filtered, rate limited, and deleted after 72 hours. No files or links to private info.</p>
-  <div class="card">${E.chat.map(msg).join('') || '<p class="mut">No messages yet.</p>'}
-  <div class="row">${E.reply ? `<span class="mut">Replying to #${E.reply} <a href="#/chat" onclick="S2.reply(null);return false">cancel</a></span>` : ''}<input id="cm" maxlength="280" placeholder="Say something..." onkeydown="if(event.key==='Enter')S2.send()" style="flex:1"><button onclick="S2.send()">Send</button></div></div>`;
-}
-
-function pgRooms() {
-  if (!staff()) return '<p class="mut">You do not have access to this page.</p>';
-  const TI = ['neutral', 'standard', 'producer', 'prime', 'outdoor'].map(t => ({id: t, name: t}));
-  const row = d => { const k = d ? d.id : 'new', f = x => `r${k}_${x}`; d = d || {name: '', area: 'Upper School', cat: '', tier: 'standard', price: 250, res: '', rate: 0, tag: '', active: true};
-    return `<tr><td><input id="${f('n')}" value="${esc(d.name)}"></td><td><input id="${f('a')}" value="${esc(d.area)}"></td><td><select id="${f('c')}">${opts(E.cats, d.cat, '(none)')}</select></td>
-    <td><select id="${f('t')}">${opts(TI, d.tier)}</select></td><td><input id="${f('p')}" type="number" value="${d.price || ''}" style="width:80px"></td><td><select id="${f('r')}">${opts(E.res, d.res, '(none)')}</select></td>
-    <td><input id="${f('q')}" type="number" step="0.05" value="${d.rate}" style="width:70px"></td><td><input id="${f('g')}" value="${esc(d.tag || '')}" placeholder="Market label"></td>
-    <td><input id="${f('x')}" type="checkbox" ${d.active ? 'checked' : ''} style="width:auto"></td><td><button onclick="S2.saveRoom('${k}')">${d.id ? 'Save' : 'Add'}</button></td></tr>`; };
-  const zones = E.map.filter(d => d.tier === 'neutral');
-  const tk = E.atasks.map(t => `<tr><td>${esc(t.title)}</td><td><code>${esc(t.code)}</code></td><td>${t.reward_tokens} tokens ${t.reward_resource ? t.reward_qty + ' ' + rn(t.reward_resource) : ''}</td><td>${t.ends_at ? new Date(t.ends_at).toLocaleString() : 'no end'}</td><td><button class="g" onclick="act('admin_task_delete',{p_id:${t.id}},'Deleted')">Delete</button></td></tr>`).join('');
-  return `<h1>Admin: Rooms and Season 2</h1>${err()}
-  <div class="card"><b>Rooms</b><p class="mut">Label every room with a category and the market it relates to, set what it produces, and set its price (200 to 1,000). Switching a room to "neutral" releases its owner.</p>
-  <div class="s2w"><table><tr><th>Name</th><th>Area</th><th>Category</th><th>Type</th><th>Price</th><th>Makes</th><th>Per day</th><th>Market label</th><th>On</th><th></th></tr>${row(null)}${E.map.map(row).join('')}</table></div></div>
-  <div class="grid"><div class="card"><b>New task (neutral zones)</b>
-  <label class="mut">Where<select id="tz">${zones.map(z => `<option value="${z.id}">${esc(z.name)}</option>`).join('')}</select></label>
-  <input id="tt" placeholder="Title"><input id="td" placeholder="Description"><input id="tk" placeholder="Secret code players type in">
-  <div class="row"><label class="mut">Tokens<input id="tm" type="number" value="50"></label><label class="mut">Resource<select id="tr">${opts(E.res, '', '(none)')}</select></label><label class="mut">Qty<input id="tq" type="number" value="0"></label></div>
-  <label class="mut">Ends (optional)<input id="te" type="datetime-local"></label><div class="row"><button onclick="S2.saveTask()">Create task</button></div></div>
-  <div class="card"><b>Market details (resolution info)</b><label class="mut">Market<select id="mi">${markets.map(m => `<option value="${m.id}">${esc(m.question.slice(0, 60))}</option>`).join('')}</select></label>
-  <input id="mc" placeholder="Resolution criteria"><input id="ms" placeholder="Source (who confirms it)"><div class="row"><button onclick="act('admin_market_info',{p_market:+v('mi'),p_criteria:v('mc'),p_source:v('ms')},'Saved')">Save</button></div></div>
-  <div class="card"><b>Net-worth snapshot</b><p class="mut">Saves everyone's net worth for today. Run it daily, and once at the end of the season.</p><button onclick="act('admin_snapshot',{},'Snapshot saved')">Take snapshot</button></div>
-  ${me.role === 'owner' ? `<div class="card"><b>Start Season 2</b><p class="mut">Sets everyone to 1,000 tokens and clears all rooms, inventories and chat. Blocked while any market position is open. Usernames and profiles stay.</p><input id="rs" placeholder="Type RESET"><div class="row"><button class="n" onclick="confirm('Reset everything for Season 2?')&&act('empire_reset_season',{p_confirm:v('rs')},'Season 2 started')">Reset</button></div></div>` : ''}</div>
-  <h2>Active tasks</h2>${tk ? `<div class="card"><table><tr><th>Task</th><th>Code</th><th>Reward</th><th>Ends</th><th></th></tr>${tk}</table></div>` : '<p class="mut">None.</p>'}`;
-}
-
-// ---------- actions ----------
-window.S2 = {
-  view: x => { E.view = x; render(); }, area: a => { E.area = a; render(); }, cat: c => { E.cat = c; render(); }, reply: id => { E.reply = id; render(); },
-  claim: id => act('empire_claim', {p_id: id}, 'Room claimed!'), buyRoom: id => act('empire_buy_room', {p_id: id}, 'Room bought!'),
-  listRoom: (id, cur) => { const p = prompt('Asking price (50 to 5,000):', cur || ''); if (p) act('empire_list_room', {p_id: id, p_price: +p}, 'Listed'); },
-  unlist: id => act('empire_list_room', {p_id: id, p_price: null}, 'Unlisted'),
-  task: id => act('empire_task_claim', {p_id: id, p_code: v('tc' + id)}, 'Reward received!'),
-  send: async () => { const b = v('cm'); if (!b.trim()) return; const {error} = await sb.rpc('chat_send', {p_body: b, p_reply: E.reply}); if (error) return toast(error.message); E.reply = null; E.t = 0; E.busy = false; eFetch('chat'); },
-  saveRoom: k => { const g = x => document.getElementById('r' + k + '_' + x); act('admin_district_save', {p_id: k === 'new' ? null : +k, p_name: g('n').value, p_area: g('a').value, p_cat: g('c').value, p_tier: g('t').value, p_price: +g('p').value || null, p_res: g('r').value, p_rate: +g('q').value || 0, p_tag: g('g').value, p_active: g('x').checked}, 'Saved'); },
-  saveTask: () => act('admin_task_save', {p_id: null, p_zone: +v('tz') || null, p_title: v('tt'), p_desc: v('td'), p_code: v('tk'), p_tokens: +v('tm') || 0, p_res: v('tr'), p_qty: +v('tq') || 0, p_ends: v('te') ? new Date(v('te')).toISOString() : null, p_active: true}, 'Task created')
-};
-
-// ---------- hook into the existing shell ----------
-const _render = render;
-render = function () {
-  try {
-  const keep = {}; document.querySelectorAll('main [id]').forEach(i => { if (/^(INPUT|SELECT|TEXTAREA)$/.test(i.tagName) && i.closest('.s2pg')) keep[i.id] = i.value; });
-  _render();
-  if (!me) return;
-  const [pg, arg] = (location.hash.slice(2) || 'markets').split('/');
-  const nav = document.querySelector('nav'), ref = document.querySelector('.navref'), main = document.querySelector('main');
-  if (nav && ref) { const L = (h, t) => `<a href="#/${h}" class="${pg === h ? 'on' : ''}">${t}</a>`;
-    ref.insertAdjacentHTML('beforebegin', L('hub', '🏠 Home') + L('empire', '🏫 Empire') + L('exchange', '🔁 Exchange') + L('board', '🏆 Net worth') + L('chat', '💬 Chat') + (staff() ? L('rooms', '🗺️ Rooms admin') : '')); }
-  if (main && PG.includes(pg)) {
-    while (main.children.length > 1) main.removeChild(main.lastChild);
-    const body = {hub: pgHub, empire: pgEmpire, exchange: pgExchange, board: pgBoardS2, chat: pgChat, rooms: pgRooms}[pg]();
-    main.insertAdjacentHTML('beforeend', `<div class="s2pg">${E.t ? body : '<p class="mut">Loading...</p>'}</div>`);
-    for (const k in keep) { const el = document.getElementById(k); if (el) el.value = keep[k]; }
-  }
-  if (main) main.firstElementChild.insertAdjacentHTML('afterend', topbar());
-  if (pg === 'market' && main) { const m = markets.find(x => x.id === +arg), h = main.querySelector('h1');
-    if (m && h && (m.resolution_criteria || m.source)) h.insertAdjacentHTML('afterend', `<div class="card"><b>How this resolves</b><p>${esc(m.resolution_criteria || 'See the market question.')}</p><p class="mut">Source: ${esc(m.source || 'admin decision')} · Status: ${esc(mState(m))}${m.status !== 'open' && m.outcome !== 'void' ? ' · Closing value: YES ' + (py(m) * 100).toFixed(0) + '%' : ''}</p></div>`); }
-  const want = PG.includes(pg) ? pg : 'hub';
-  if ((PG.includes(pg) || pg === 'market') && !E.busy && (want !== E.pg || Date.now() - E.t > 20000)) eFetch(want);
-  } catch (e) { console.error(e); toast('Season 2 error: ' + e.message); }
-};
-if (!location.hash) location.hash = '#/hub';
-setInterval(() => { const a = document.activeElement; if (me && !document.hidden && location.hash === '#/chat' && !(a && a.tagName === 'INPUT') && !E.busy) { E.t = 0; eFetch('chat'); } }, 8000);
-if (me) render();
-})();
-</script>
-<style>.s2map{height:520px;border-radius:18px;border:1.5px solid var(--bd);overflow:hidden;background:var(--card);touch-action:none;cursor:grab;margin-top:10px}.s2map canvas{display:block}</style>
-<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
-<script>
-(() => {
-const E = window.S2E;
-if (!E || typeof THREE === 'undefined') return;
-E.view = '3d';
-const S = {sig:'', yaw:Math.PI / 4, zoom:26, tx:0, tz:0, meshes:[], sel:null, w:0, h:0};
-const rc = new THREE.Raycaster(), mv = new THREE.Vector2(), box = new THREE.BoxGeometry(4, .8, 4);
-const hue = s => { let h = 0; for (const c of s) h = (h * 31 + c.charCodeAt(0)) % 360; return h / 360; };
-const col = d => d.tier === 'neutral' ? 0x8b93a1 : d.mine ? 0x5b9bff : d.owner ? new THREE.Color().setHSL(hue(d.owner), .45, .5).getHex() : ({producer:0x4fae82, prime:0xd9a441, outdoor:0x6fbf73}[d.tier] || 0x6f86b3);
-const lbl = (t, x, y, z) => { const c = document.createElement('canvas'); c.width = 256; c.height = 48; const g = c.getContext('2d'); if (!g) return new THREE.Object3D();
-  g.font = 'bold 26px sans-serif'; g.textAlign = 'center'; g.lineWidth = 5; g.strokeStyle = '#000'; g.fillStyle = '#fff'; g.strokeText(t.slice(0, 18), 128, 34); g.fillText(t.slice(0, 18), 128, 34);
-  const s = new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c), transparent:true, depthTest:false})); s.scale.set(9, 1.7, 1); s.position.set(x, y, z); return s; };
-const pick = e => { const c = S.r.domElement, r = c.getBoundingClientRect(); mv.set((e.clientX - r.left) / r.width * 2 - 1, -(e.clientY - r.top) / r.height * 2 + 1); rc.setFromCamera(mv, S.cam); const h = rc.intersectObjects(S.meshes)[0]; return h && h.object.userData; };
-function init() {
-  try { S.r = new THREE.WebGLRenderer({antialias:true}); } catch (e) { E.view = 'list'; setTimeout(render, 0); return false; }
-  S.r.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5));
-  S.scene = new THREE.Scene(); S.scene.add(new THREE.AmbientLight(0xffffff, .75));
-  const L = new THREE.DirectionalLight(0xffffff, .6); L.position.set(10, 30, 20); S.scene.add(L);
-  S.cam = new THREE.OrthographicCamera(-1, 1, 1, -1, .1, 400);
-  const c = S.r.domElement;
-  c.addEventListener('pointerdown', e => { S.drag = {x:e.clientX, y:e.clientY, m:0}; c.setPointerCapture && c.setPointerCapture(e.pointerId); });
-  c.addEventListener('pointermove', e => {
-    if (S.drag) { const dx = e.clientX - S.drag.x, dy = e.clientY - S.drag.y, k = 2 * S.zoom / c.clientHeight;
-      S.drag.m += Math.abs(dx) + Math.abs(dy); S.drag.x = e.clientX; S.drag.y = e.clientY;
-      S.tx += -Math.cos(S.yaw) * dx * k - Math.sin(S.yaw) * dy * k; S.tz += Math.sin(S.yaw) * dx * k - Math.cos(S.yaw) * dy * k; draw();
-    } else { const d = pick(e); c.title = d ? `${d.name} (${d.bld}, floor ${d.fl})` : ''; }
-  });
-  c.addEventListener('pointerup', e => { const m = S.drag && S.drag.m; S.drag = null; if (m < 6) { const d = pick(e); if (d) { S.sel = d.id; sync(); showSel(); draw(); } } });
-  c.addEventListener('wheel', e => { e.preventDefault(); window.S3.zoom(e.deltaY > 0 ? 1.1 : .9); }, {passive:false});
-  addEventListener('resize', () => { S.w = 0; draw(); });
-  return true;
-}
-function sync() {
-  const rooms = E.map.filter(d => d.active), sig = rooms.map(d => d.id + d.bld + d.fl).join('|');
-  if (sig !== S.sig) {
-    S.sig = sig; S.scene.children.filter(o => o.isMesh || o.isSprite).forEach(o => S.scene.remove(o)); S.meshes = [];
-    const bs = [...new Set(rooms.map(d => d.bld))]; let x0 = 1e9, x1 = -1e9, z0 = 1e9, z1 = -1e9;
-    bs.forEach((b, i) => {
-      const ox = (i % 3) * 18, oz = Math.floor(i / 3) * 18, rs = rooms.filter(d => d.bld === b), top = Math.max(...rs.map(d => d.fl));
-      rs.forEach(d => { const k = rs.filter(y => y.fl === d.fl && y.id < d.id).length, m = new THREE.Mesh(box, new THREE.MeshLambertMaterial({color:col(d)}));
-        m.position.set(ox + (k % 3) * 4.2, (d.fl - 1) * 1.1 + .4, oz + Math.floor(k / 3) * 4.2); m.userData = d; S.scene.add(m); S.meshes.push(m);
-        x0 = Math.min(x0, m.position.x); x1 = Math.max(x1, m.position.x); z0 = Math.min(z0, m.position.z); z1 = Math.max(z1, m.position.z); });
-      S.scene.add(lbl(b, ox + 4.2, top * 1.1 + 1.8, oz + 2.1));
-    });
-    S.tx = (x0 + x1) / 2; S.tz = (z0 + z1) / 2;
-  } else S.meshes.forEach(m => { const d = rooms.find(x => x.id === m.userData.id); if (d) { m.userData = d; m.material.color.setHex(col(d)); } });
-  S.meshes.forEach(m => m.material.emissive.setHex(m.userData.id === S.sel ? 0x444444 : 0));
-}
-function draw() {
-  if (!S.r || !S.el) return;
-  const w = S.el.clientWidth, h = S.el.clientHeight, a = w / h;
-  if (w !== S.w || h !== S.h) { S.w = w; S.h = h; S.r.setSize(w, h); }
-  Object.assign(S.cam, {left:-S.zoom * a, right:S.zoom * a, top:S.zoom, bottom:-S.zoom}); S.cam.updateProjectionMatrix();
-  S.cam.position.set(S.tx + Math.sin(S.yaw) * 49, 34, S.tz + Math.cos(S.yaw) * 49); S.cam.lookAt(S.tx, 0, S.tz);
-  S.r.render(S.scene, S.cam);
-}
-function showSel() {
-  const el = document.getElementById('s2sel'); if (!el) return;
-  const d = E.map.find(x => x.id === S.sel);
-  if (!d || !window.S2tile) { el.innerHTML = '<p class="mut">Click a room to see its floor, label and price. Drag to look around.</p>'; return; }
-  const plan = E.map.filter(x => x.active && x.bld === d.bld && x.fl === d.fl).map(x => `<button class="${x.id === d.id ? '' : 'g'}" onclick="S3.pick(${x.id})">${esc(x.name)}</button>`).join('');
-  const adm = me.role !== 'user' ? `<div class="row"><input id="s3b" value="${esc(d.bld)}" style="width:170px"><input id="s3f" type="number" min="1" max="12" value="${d.fl}" style="width:80px"><button class="g" onclick="act('admin_district_place',{p_id:${d.id},p_building:v('s3b'),p_floor:+v('s3f')},'Moved')">Move room</button></div>` : '';
-  el.innerHTML = `<div class="card" style="margin-top:12px"><b>${esc(d.bld)} · Floor ${d.fl}</b><div class="s2tag">Floor plan: rooms on this floor</div><div class="row">${plan}</div></div><div style="max-width:340px">${window.S2tile(d)}</div>${adm}`;
-}
-window.S3 = {rot: d => { S.yaw += d * Math.PI / 2; draw(); }, zoom: f => { S.zoom = Math.min(45, Math.max(6, S.zoom * f)); draw(); }, pick: id => { S.sel = id; sync(); showSel(); draw(); }};
-function mount() {
-  if (!me || location.hash.slice(2).split('/')[0] !== 'empire' || E.view !== '3d' || !E.map.length) return;
-  const el = document.getElementById('s2map'); if (!el || (!S.r && !init())) return;
-  S.el = el; el.appendChild(S.r.domElement); S.w = 0; sync(); showSel(); draw();
-}
-const _r = render;
-render = function () { _r(); try { mount(); } catch (e) { console.error(e); toast('3D map error: ' + e.message); } };
-})();
-</script>
-
 </body>
 </html>
