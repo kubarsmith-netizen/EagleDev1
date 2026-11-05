@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://qwkmyncxomibcpmlguxj.supabase.co wss://qwkmyncxomibcpmlguxj.supabase.co; img-src 'self' data: blob: https://qwkmyncxomibcpmlguxj.supabase.co; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://lumsbvchmibxmvrzqtpt.supabase.co wss://lumsbvchmibxmvrzqtpt.supabase.co; img-src 'self' data: blob: https://lumsbvchmibxmvrzqtpt.supabase.co; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <title>EagleEye Market</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -255,9 +255,10 @@ nav a{white-space:nowrap;gap:9px}
 #rim span{position:absolute;line-height:1;font-size:var(--s,30px);transform:rotate(var(--r,0deg));filter:drop-shadow(0 2px 2px #7c2d1266)}
 /* stickers stuck to the PAGE: they scroll away with it instead of following you */
 .pgstk{position:absolute;z-index:3;pointer-events:none;font-size:var(--s,34px);line-height:1;transform:rotate(var(--r,0deg));filter:var(--stk)}
-.navstick{display:flex;justify-content:space-between;gap:10px;margin:8px 0 6px;padding:0 10px;pointer-events:none}
-.navstick span{font-size:26px;line-height:1;filter:var(--stk);transform:rotate(var(--r,0deg))}
-.navstick span:nth-child(1){--r:-14deg}.navstick span:nth-child(2){--r:8deg}.navstick span:nth-child(3){--r:-6deg}.navstick span:nth-child(4){--r:16deg}
+/* stickers hanging off the sidebar's outer edge (zero width, so nothing shifts) */
+.navdeco{position:sticky;top:22px;height:calc(100vh - 44px);width:0;flex:0 0 0;z-index:4;pointer-events:none}
+.navdeco span{position:absolute;left:-7px;font-size:26px;line-height:1;transform:rotate(var(--r,0deg));filter:var(--stk)}
+@media(max-width:860px){.navdeco{display:none}}
 /* the Turkey Market: highlighted in place, with the only turkey sticker on the page */
 .turkey-hl{border-color:#e8590c!important;box-shadow:0 0 0 3px #ffb347,0 8px 26px #e8590c66;background:linear-gradient(135deg,color-mix(in srgb,var(--acc) 28%,var(--card)),var(--card))}
 .tkstk{position:absolute;right:-12px;top:-20px;font-size:46px;line-height:1;transform:rotate(14deg);filter:var(--stk);z-index:3;pointer-events:none}
@@ -277,8 +278,8 @@ nav a{white-space:nowrap;gap:9px}
 <div id="t"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
-const SUPABASE_URL = 'https://qwkmyncxomibcpmlguxj.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_mwgMhSwlsfRnOtu3h8-hUA_F7xjnxAV';
+const SUPABASE_URL = 'https://lumsbvchmibxmvrzqtpt.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_2FD2bNN5kt9U954xwnfidg_HEZu7b2M';
 const ALLOWED_DOMAINS = ['headroyce.org'];
 const REFERRER_BONUS = 300, FRIEND_BONUS = 100; // keep equal to v_ref_bonus / v_new_bonus in the award_referral SQL function
 
@@ -1371,8 +1372,8 @@ const setIdea = (id, s) => rpc('set_idea_status', {p_id:id, p_status:s});
 
 // ---------- Streak badge ----------
 const toggleStk = () => { STK_OPEN = !STK_OPEN; render(); };
-const NAVSTK = [['🍁','🎃',-14,10],['🦃','🍂',8,-12],['🍂','🍁',-8,16],['🎃','🦃',12,-6]];
-const navStk = i => { const [a, b, r1, r2] = NAVSTK[i]; return `<div class="navstick" aria-hidden="true" style="justify-content:${i % 2 ? 'flex-end' : 'space-between'}"><span style="--r:${r1}deg">${a}</span><span style="--r:${r2}deg">${b}</span></div>`; };
+// stickers hanging off the sidebar's outer edge: they sit outside the buttons, so nothing is covered or moved
+const NAVDECO = [['🍁',9,-14],['🎃',27,10],['🦃',46,-8],['🍂',64,14],['🎃',82,-10]].map(([e, t, r]) => `<span style="top:${t}%;--r:${r}deg">${e}</span>`).join('');
 const feastFab = () => FE ? `<a class="feast-fab" href="#/feast" title="Thanksgiving Feast: ${Math.floor(feastPct())}% full"><span class="tk">🦃</span><span>${Math.floor(feastPct())}%</span></a>` : '';
 function streakBadge(){
   if (!STK) return FE ? `<div id="stk">${feastFab()}</div>` : '';
@@ -1403,13 +1404,12 @@ function render(){
   const body = !pages[pg] ? '<p>Page not found.</p>' : (pg in ok && !ok[pg]) ? '<p class="mut">You do not have access to this page.</p>' : waiting ? '<p class="mut">Loading...</p>' : pages[pg]();
 
   $('#app').innerHTML = `<div id="shell"><nav><h2>EagleEye Market</h2>
-    ${link('feast', 'Thanksgiving Feast')}${link('raffle', 'Turkey Raffle', myTix() ? myTix() : '')}${link('favors', 'Trade Favors', FE && FE.favor_in ? '1' : '')}${navStk(0)}${link('markets', 'Markets')}${link('portfolio', 'Portfolio')}${link('leaderboard', 'Leaderboard')}${navStk(1)}${link('shop', 'Shop')}${link('ideas', 'Idea Box', ideaNew() || '')}${link('rules', 'Rules')}${navStk(2)}
+    ${link('feast', 'Thanksgiving Feast')}${link('raffle', 'Turkey Raffle', myTix() ? myTix() : '')}${link('favors', 'Trade Favors', FE && FE.favor_in ? '1' : '')}${link('markets', 'Markets')}${link('portfolio', 'Portfolio')}${link('leaderboard', 'Leaderboard')}${link('shop', 'Shop')}${link('ideas', 'Idea Box', ideaNew() || '')}${link('rules', 'Rules')}
     ${staff ? link('create', 'Create market') + link('review', 'Review', pend || '') : link('suggest', 'Suggest a market')}
     ${owner ? link('admin', 'Admin tools') : ''}
-    ${navStk(3)}
     <div class="navref"><span class="mut">Your referral link</span><input readonly value="${esc(refLink())}" onclick="this.select()" aria-label="Your referral link"><button onclick="navigator.clipboard.writeText(refLink());toast('Link copied!')">Copy link</button></div>
     <a href="#/account" class="me${pg === 'account' || pg === 'inventory' ? ' on' : ''}${meBn ? ' bn' : ''}"${meBn ? ` style="${esc(bannerStyle(meBn))}"` : ''}>${avatar(me.username, 30)}<span style="min-width:0"><b style="display:block;overflow:hidden;text-overflow:ellipsis">${esc(me.username)}</b><span class="mut">${(+me.balance).toFixed(0)} tokens · 🎟️ ${myTix()}</span></span></a>
-    </nav><main>${PAGE_STICKERS}<div id="rb">${favorBanner()}${eventBanner()}${pg === 'feast' ? '' : feastBanner()}</div>${body}</main></div><div id="stkw">${streakBadge()}</div>`;
+    </nav><div class="navdeco" aria-hidden="true">${NAVDECO}</div><main>${PAGE_STICKERS}<div id="rb">${favorBanner()}${eventBanner()}${pg === 'feast' ? '' : feastBanner()}</div>${body}</main></div><div id="stkw">${streakBadge()}</div>`;
 
   for (const k in keep) { const el = document.getElementById(k); if (el) el.value = keep[k]; }
   if (pg === 'admin') { showShopPreview(); showSpecialPreview(); }
