@@ -246,10 +246,14 @@ main{padding-bottom:90px}
 main{position:relative}
 nav a{white-space:nowrap;gap:9px}
 @media(min-width:861px){#shell{padding:22px}nav{top:22px;height:calc(100vh - 44px);border:var(--bw) solid var(--bd);border-radius:18px}main{padding-top:8px;padding-bottom:70px}}
-@media(max-width:860px){#shell{padding:14px}/* rim of maple leaves around the whole screen */
+@media(max-width:860px){#shell{padding:14px}.pgstk{display:none}}
+/* rim of maple leaves around the whole screen */
 #rim{position:fixed;inset:0;pointer-events:none;z-index:5;overflow:hidden}
 #rim span{position:absolute;line-height:1;font-size:var(--s,30px);transform:rotate(var(--r,0deg));filter:drop-shadow(0 2px 2px #7c2d1266)}
-/* the Turkey Market: highlighted in place */
+/* stickers stuck to the PAGE: they scroll away with it instead of following you */
+.pgstk{position:absolute;z-index:3;pointer-events:none;font-size:var(--s,34px);line-height:1;transform:rotate(var(--r,0deg));filter:var(--stk)}
+/* the Turkey Market: highlighted in place, with the only turkey sticker on the page */
+.tkstk{position:absolute;right:-12px;top:-20px;font-size:46px;line-height:1;transform:rotate(14deg);filter:var(--stk);z-index:3;pointer-events:none}
 .turkey-hl{border-color:#e8590c!important;box-shadow:0 0 0 3px #ffb347,0 8px 26px #e8590c66;background:linear-gradient(135deg,color-mix(in srgb,var(--acc) 28%,var(--card)),var(--card))}
 /* Thanksgiving event banner (links to Favors and the Turkey Raffle) */
 .event-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:12px 18px;margin:0 0 16px;border-radius:18px;border:var(--bw) solid var(--acc);background:linear-gradient(110deg,color-mix(in srgb,var(--acc) 30%,var(--card)),var(--card));color:var(--fg);position:relative}
@@ -303,7 +307,7 @@ const IC = {markets:'M3 17l6-6 4 4 8-8M15 7h6v6', portfolio:'M3 8h18v12H3zM8 8V5
 const svg = d => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg>`;
 const ico = d => d[0] === '@' ? `<span class="ni">${d.slice(1)}</span>` : svg(d);
 
-// falling leaves, a rim of maple leaves around the whole screen (decoration only)
+// falling leaves, a rim of maple leaves around the whole screen, and stickers stuck to the page (decoration only)
 const rnd = (a, b) => a + Math.random() * (b - a);
 (() => {
   const L = ['🍁','🍂','🍁','🍃','🍁','🍂'], wide = innerWidth > 860, d = document.createElement('div');
@@ -331,6 +335,16 @@ function buildRim(){
 }
 buildRim();
 addEventListener('resize', () => { clearTimeout(rimT); rimT = setTimeout(buildRim, 250); });
+// a few stickers stuck to the page itself (inside <main>), so you scroll past them. They are made once, so each stays in its spot.
+const PAGE_STICKERS = (() => {
+  const S = ['🍁','🦃','🎃','🍂','🎃','🦃','🍁','🍂'], n = S.length, out = [];
+  for (let i = 0; i < n; i++) {
+    const side = i % 2 === 0 ? 'left:-6px' : 'right:-6px', top = Math.round(7 + (i + rnd(0, .6)) * (86 / n));
+    out.push(`<span class="pgstk" aria-hidden="true" style="${side};top:${top}%;--s:${Math.round(rnd(30, 42))}px;--r:${Math.round(rnd(-24, 24))}deg">${S[i]}</span>`);
+  }
+  return out.join('');
+})();
+
 // shop art: built-in items store CSS/emoji, uploaded items store "img:<path>"
 const isImg = x => String(x.art).startsWith('img:');
 const imgUrl = x => SHOPURL + x.art.slice(4);
@@ -629,7 +643,7 @@ const sorters = {
 const fnum = n => Math.round(+n || 0).toLocaleString();
 const isFeastReward = x => /^(bn|ic)_feast_/.test(x.id);
 const isTurkey = m => !!(FE && FE.active && FE.turkey_market_id === m.id && !m.is_motw);
-const turkeyIcon = () => '';
+const turkeyIcon = () => '';   // the only turkey sticker is on the Turkey Market card itself
 const favIn = () => (FE && FE.active && FE.favor_in) ? +FE.favor_in.pct : 0;
 const favOwe = () => (FE && FE.active) ? +(FE.favor_owed_pct || 0) : 0;
 // a favor waiting for you shows at the top of every page: who sent it and what it is worth
@@ -916,7 +930,7 @@ function marketGrid(){
   const list = markets.filter(m => m !== motw && ok(m) && (searching ? m.status === 'open' : (FILTER === 'all' || (FILTER === 'open') === (m.status === 'open')))).sort(sorters[SORT]);
   return (motw ? motwCard(motw) : '') + (list.map(m => {
     const y = py(m), mine = P.some(p => p.market_id === m.id);
-    return `<a class="card mk${isTurkey(m) ? ' turkey-hl' : ''}" href="#/market/${m.id}">${tags(m)}${isTurkey(m) ? '<div class="tags"><span class="tkbadge">Turkey Market · 2× profit today</span></div>' : ''}<b>${esc(m.question)}</b>${m.proposed_by ? `<div class="mut" style="margin-top:4px">Suggested by ${nm(m.proposed_by)}</div>` : ''}
+    return `<a class="card mk${isTurkey(m) ? ' turkey-hl' : ''}" href="#/market/${m.id}">${isTurkey(m) ? '<span class="tkstk" title="Turkey Market: 2× profit when you cash out today">🦃</span>' : ''}${tags(m)}${isTurkey(m) ? '<div class="tags"><span class="tkbadge">Turkey Market · 2× profit today</span></div>' : ''}<b>${esc(m.question)}</b>${m.proposed_by ? `<div class="mut" style="margin-top:4px">Suggested by ${nm(m.proposed_by)}</div>` : ''}
     <div class="bar"><i style="width:${y*100}%"></i></div>
     <div class="split"><span style="color:var(--yes)">YES ${(y*100).toFixed(0)}%</span><span style="color:var(--no)">NO ${((1-y)*100).toFixed(0)}%</span></div>
     <div class="mut" style="margin-top:6px">${mState(m)}${mine ? ' · you have a position' : ''}</div></a>`;
@@ -1386,7 +1400,7 @@ function render(){
     ${owner ? link('admin', 'Admin tools') : ''}
     <div class="navref"><span class="mut">Your referral link</span><input readonly value="${esc(refLink())}" onclick="this.select()" aria-label="Your referral link"><button onclick="navigator.clipboard.writeText(refLink());toast('Link copied!')">Copy link</button></div>
     <a href="#/account" class="me${pg === 'account' || pg === 'inventory' ? ' on' : ''}${meBn ? ' bn' : ''}"${meBn ? ` style="${esc(bannerStyle(meBn))}"` : ''}>${avatar(me.username, 30)}<span style="min-width:0"><b style="display:block;overflow:hidden;text-overflow:ellipsis">${esc(me.username)}</b><span class="mut">${(+me.balance).toFixed(0)} tokens · 🎟️ ${myTix()}</span></span></a>
-    </nav><main><div id="rb">${favorBanner()}${eventBanner()}${pg === 'feast' ? '' : feastBanner()}</div>${body}</main></div><div id="stkw">${streakBadge()}</div>`;
+    </nav><main>${PAGE_STICKERS}<div id="rb">${favorBanner()}${eventBanner()}${pg === 'feast' ? '' : feastBanner()}</div>${body}</main></div><div id="stkw">${streakBadge()}</div>`;
 
   for (const k in keep) { const el = document.getElementById(k); if (el) el.value = keep[k]; }
   if (pg === 'admin') { showShopPreview(); showSpecialPreview(); }
