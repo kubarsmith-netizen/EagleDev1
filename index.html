@@ -25,8 +25,6 @@ body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 Fraunces,Georg
 h1{margin:0 0 8px;font-size:25px;font-weight:700;letter-spacing:-.01em}
 h2{font-size:16px;font-weight:700;margin:26px 0 10px}
 h1,h2{font-family:Fraunces,Georgia,serif}
-h1::before{content:'🍁 '}h1::after{content:' 🍂'}
-h2::before{content:'🍂 ';font-size:.9em}
 #shell{display:flex;min-height:100vh;position:relative;z-index:1}
 nav{width:204px;flex-shrink:0;background:var(--side);border-right:var(--bw) solid var(--bd);padding:16px 10px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:1px;font-size:14px;overflow-y:auto}
 nav h2{margin:0 10px 14px;font-size:15px;letter-spacing:.02em}
@@ -52,7 +50,6 @@ nav a.me .av{width:30px;height:30px;font-size:16px;margin:0}
 nav a.me.bn .mut{color:inherit;opacity:.9}
 main{flex:1;padding:30px 38px;min-width:0}
 .card{background:var(--card);border:var(--bw) solid var(--bd);border-radius:8px;padding:16px;margin:0 0 16px;position:relative}
-.card::after{content:'🍂';position:absolute;right:10px;bottom:3px;font-size:14px;opacity:.28;pointer-events:none}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
 .grid .card{margin:0}
 .two{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin-top:16px}
@@ -247,7 +244,8 @@ main{padding-bottom:90px}
 
 /* =============== v3: rim, page stickers, event banner, layout =============== */
 main{position:relative}
-nav a{white-space:nowrap;gap:9px}
+nav a{white-space:nowrap;gap:9px;position:relative}
+.nst{position:absolute;font-size:22px;line-height:1;pointer-events:none;filter:var(--stk);transform:rotate(var(--r,0deg));z-index:2}
 @media(min-width:861px){#shell{padding:22px}nav{top:22px;height:calc(100vh - 44px);border:var(--bw) solid var(--bd);border-radius:18px}main{padding-top:8px;padding-bottom:70px}}
 @media(max-width:860px){#shell{padding:14px}.pgstk{display:none}}
 /* rim of maple leaves around the whole screen */
@@ -1373,7 +1371,7 @@ const setIdea = (id, s) => rpc('set_idea_status', {p_id:id, p_status:s});
 // ---------- Streak badge ----------
 const toggleStk = () => { STK_OPEN = !STK_OPEN; render(); };
 // stickers hanging off the sidebar's outer edge: they sit outside the buttons, so nothing is covered or moved
-const NAVDECO = [['🍁',9,-14],['🎃',27,10],['🦃',46,-8],['🍂',64,14],['🎃',82,-10]].map(([e, t, r]) => `<span style="top:${t}%;--r:${r}deg">${e}</span>`).join('');
+const NAVDECO = [['🍂',18,-14],['🎃',50,10],['🍁',80,-10]].map(([e, t, r]) => `<span style="top:${t}%;--r:${r}deg">${e}</span>`).join('');
 const feastFab = () => FE ? `<a class="feast-fab" href="#/feast" title="Thanksgiving Feast: ${Math.floor(feastPct())}% full"><span class="tk">🦃</span><span>${Math.floor(feastPct())}%</span></a>` : '';
 function streakBadge(){
   if (!STK) return FE ? `<div id="stk">${feastFab()}</div>` : '';
@@ -1397,7 +1395,9 @@ function render(){
   const staff = me.role !== 'user', owner = me.role === 'owner';
   const pend = PR.filter(p => p.status === 'pending').length;
   const meBn = itemById(me.banner);
-  const link = (id, label, badge) => `<a href="#/${id}" class="${id === pg || (id === 'markets' && pg === 'market') || (id === 'leaderboard' && pg === 'user') ? 'on' : ''}">${ico(IC[id])}${label}${badge ? `<span class="chip">${badge}</span>` : ''}</a>`;
+  // stickers stuck on some of the buttons (never on the ones that show a badge)
+  const NST = {feast:['🦃','right:3px;top:-11px',12], markets:['🍁','right:38px;top:-9px',-18], portfolio:['🎃','right:10px;top:8px',10], leaderboard:['🍂','right:52px;top:-7px',-12], shop:['🍁','right:16px;top:-9px',16], rules:['🦃','right:34px;top:6px',-10]};
+  const link = (id, label, badge) => `<a href="#/${id}" class="${id === pg || (id === 'markets' && pg === 'market') || (id === 'leaderboard' && pg === 'user') ? 'on' : ''}">${ico(IC[id])}${label}${badge ? `<span class="chip">${badge}</span>` : ''}${NST[id] ? `<span class="nst" aria-hidden="true" style="${NST[id][1]};--r:${NST[id][2]}deg">${NST[id][0]}</span>` : ''}</a>`;
   const pages = {markets: pgMarkets, market: () => pgMarket(+arg), portfolio: pgPortfolio, leaderboard: pgBoard, raffle: pgRaffle, feast: pgFeast, raffle: pgRaffle, favors: pgFavors, user: () => pgUser(decodeURIComponent(arg || '')), shop: pgShop, ideas: pgIdeas, rules: pgRules, suggest: pgSuggest, create: pgCreate, review: pgReview, admin: pgAdmin, account: pgAccount, inventory: pgInventory};
   const ok = {create: staff, review: staff, admin: owner, suggest: !staff};
   const waiting = BLOCKING[pg] && (EXTRAS[pg] || []).some(k => !LOADED[k]);
