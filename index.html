@@ -207,6 +207,7 @@ nav a,.chip,.rc,.rank,.nm{border-radius:12px}
 .feast-fab:hover{filter:brightness(1.1)}
 .feast-fab .tk{font-size:22px}
 .turkey-note{border-color:#d97706;background:linear-gradient(120deg,color-mix(in srgb,#d97706 28%,var(--card)),var(--card))}
+.penalty-note{border-color:var(--no);background:linear-gradient(120deg,color-mix(in srgb,var(--no) 24%,var(--card)),var(--card))}
 .favor-in{border-color:var(--yes);background:linear-gradient(120deg,color-mix(in srgb,var(--yes) 20%,var(--card)),var(--card))}
 .pct-pill{display:inline-block;font-size:30px;font-weight:700;font-family:Fraunces,Georgia,serif;color:var(--acc)}
 .tix{display:inline-flex;gap:3px;flex-wrap:wrap}
@@ -640,6 +641,7 @@ const sorters = {
 // once the race's end time passes, so the fetch stays in FETCH.ev and ensureExtras().
 
 // ---------- Thanksgiving Feast helpers ----------
+const pen = () => FE ? +(FE.penalty_pct == null ? 50 : FE.penalty_pct) : 0;   // % of every balance lost if the meter is not full
 const fnum = n => Math.round(+n || 0).toLocaleString();
 const isFeastReward = x => /^(bn|ic)_feast_/.test(x.id);
 const isTurkey = m => !!(FE && FE.active && FE.turkey_market_id === m.id && !m.is_motw);
@@ -664,8 +666,8 @@ function feastBanner(){
   if (Date.now() > endMs + 3 * 864e5) return '';
   const over = Date.now() >= endMs, p = feastPct();
   const msg = over
-    ? (FE.rolled ? (FE.goal_met ? 'The community filled the meter. Prizes were paid!' : 'The meter fell short this year, so no prizes were paid. Thank you for playing!') : 'Dinner is served! Counting the results...')
-    : (p >= 100 ? 'The meter is FULL! Keep contributing, prizes are paid at Thanksgiving.' : 'Every trade, cash-out and favor fills the meter. Prizes are paid only if we fill it together!');
+    ? (FE.rolled ? (FE.goal_met ? 'The community filled the meter. Prizes were paid!' : `The meter fell short, so no prizes were paid${pen() > 0 ? ` and every balance was cut by ${pen()}%` : ''}.`) : 'Dinner is served! Counting the results...')
+    : (p >= 100 ? 'The meter is FULL! Keep contributing, prizes are paid at Thanksgiving.' : `Fill the meter together for prizes${pen() > 0 ? `. If we do not, <b>everybody's balance is cut by ${pen()}%</b>!` : '!'}`);
   return `<div class="feast-bar"><div class="fb-top"><span class="chip ev">THANKSGIVING FEAST</span><b>${fnum(FE.total)} / ${fnum(FE.goal)} points (${Math.floor(p)}%)</b><span class="sp"></span><span class="rc" style="background:#ffffff33;border-color:#ffffff66;color:#fff">Your points: <b>${fnum(FE.mine.points)}</b></span><a href="#/feast">Open the feast →</a></div>${meter()}<div style="margin-top:6px;font-size:13px">${msg}</div></div>`;
 }
 // Thanksgiving event banner: replaces the old Trading Frenzy banner, with links to Favors, the raffle and the Turkey Market
@@ -725,7 +727,7 @@ function pgFeast(){
   if (FE.rolled) {
     const R = FE.raffle || {}, fin = FE.final || [];
     results = `<div class="card feast-hero"><b style="font-size:18px">🍽️ The feast results</b>
-      <p style="margin-bottom:6px">${FE.goal_met ? `🎉 The community filled the meter with <b>${fnum(FE.total)}</b> points! <b>${FE.guests_paid || 0}</b> players received a reward by rank.${+mine.reward > 0 ? ` You received <b>${fnum(mine.reward)}</b> tokens.` : ''}` : `The meter finished at <b>${fnum(FE.total)}</b> of ${fnum(FE.goal)} points, so <b>no prizes</b> are paid this year. Thank you for playing!`}</p>
+      <p style="margin-bottom:6px">${FE.goal_met ? `🎉 The community filled the meter with <b>${fnum(FE.total)}</b> points! <b>${FE.guests_paid || 0}</b> players received a reward by rank.${+mine.reward > 0 ? ` You received <b>${fnum(mine.reward)}</b> tokens.` : ''}` : `The meter finished at <b>${fnum(FE.total)}</b> of ${fnum(FE.goal)} points, so <b>no prizes</b> were paid${pen() > 0 ? ` and <b>every balance was cut by ${pen()}%</b>${FE.penalized ? ` (${FE.penalized} players)` : ''}` : ''}. Thank you for playing!`}</p>
       ${FE.goal_met ? `<p style="margin:6px 0">🎟️ Raffle winner: <b>${R.winner ? esc(R.winner) : 'nobody (no one earned a ticket)'}</b>${R.winner ? ` won <b>${fnum(R.prize)}</b> tokens (ticket #${R.ticket} of ${R.tickets_total})` : ''}</p>` : ''}
       <p style="margin:6px 0 0">🏆 Top contributors: ${fin.length ? fin.map(f => `#${f.place} ${nm(f.username)} (${fnum(f.points)})`).join(' · ') : 'none'}</p>
       ${FE.goal_met && R.winner ? '<div class="row"><button class="tk" onclick="replayRaffle()">🎟️ Watch the raffle again</button></div>' : ''}</div>`;
@@ -735,6 +737,7 @@ function pgFeast(){
     <div style="text-align:right"><div id="fcd" style="font-weight:600">${feastCd()}</div><div class="mut">Ends ${feastEnd()}</div></div></div>
     ${meter()}
     <p style="margin:0">${over ? '' : (p >= 100 ? '🎉 The meter is full! Keep going, every point still counts toward the leaderboard. ' : 'Everybody works together. ')}<b>Prizes are paid only if the meter is full when dinner is served.</b> Contributors so far: <b>${FE.players}</b>.</p></div>
+  ${!over && !FE.rolled && pen() > 0 && p < 100 ? `<div class="card penalty-note"><b>Fill the meter, or everybody loses ${pen()}% of their balance!</b><p class="mut" style="margin:6px 0 0">If the meter is not full when dinner is served, every player's token balance is cut by ${pen()}%. We still need <b>${fnum(Math.max(0, FE.goal - FE.total))}</b> points, about <b>${fnum(Math.max(0, FE.goal - FE.total) / Math.max(1, Math.ceil((new Date(FE.ends_at) - Date.now()) / 864e5)))}</b> per day. Every trade, cash-out, favor and friend you bring in helps.</p></div>` : ''}
   ${results}
   <div class="stats">
     <div class="card"><div class="mut">Your points</div><div class="big">${fnum(mine.points)}</div><div class="mut">${mine.rank ? 'Rank #' + mine.rank : 'Not on the board yet'}</div></div>
@@ -774,7 +777,7 @@ function pgRaffle(){
   let result = '';
   if (FE.rolled) {
     const R = FE.raffle || {};
-    result = `<div class="card feast-hero"><b style="font-size:18px">🎟️ The raffle has been drawn</b><p style="margin-bottom:0">${FE.goal_met ? (R.winner ? `Winner: <b>${esc(R.winner)}</b> won <b>${fnum(R.prize)}</b> tokens (ticket #${R.ticket} of ${R.tickets_total}).` : 'Nobody earned a ticket, so there was no winner.') : 'The community meter was not full, so no prizes were paid this year.'}</p>${FE.goal_met && R.winner ? '<div class="row"><button class="tk" onclick="replayRaffle()">🎟️ Watch the drawing again</button></div>' : ''}</div>`;
+    result = `<div class="card feast-hero"><b style="font-size:18px">🎟️ The raffle has been drawn</b><p style="margin-bottom:0">${FE.goal_met ? (R.winner ? `Winner: <b>${esc(R.winner)}</b> won <b>${fnum(R.prize)}</b> tokens (ticket #${R.ticket} of ${R.tickets_total}).` : 'Nobody earned a ticket, so there was no winner.') : `The community meter was not full, so no prizes were paid${pen() > 0 ? ` and every balance was cut by ${pen()}%` : ''}.`}</p>${FE.goal_met && R.winner ? '<div class="row"><button class="tk" onclick="replayRaffle()">🎟️ Watch the drawing again</button></div>' : ''}</div>`;
   }
   return `<h1>Turkey Raffle</h1>
   <div class="card feast-hero"><div class="split" style="flex-wrap:wrap"><div><div class="mut">Grand prize</div><div class="pts">${fnum(FE.raffle_prize)} tokens</div></div>
@@ -1048,7 +1051,7 @@ const pgRules = () => `<h1>Rules</h1><div class="card" style="max-width:760px">
 </ul>
   <h2>Market of the Week</h2><p>One featured market sits at the top of the Markets page each week and resolves on Friday. If you win, or cash out at a profit, you earn <b>2 times your profit</b>. If you lose or cash out at a loss, it works as usual, with no extra loss.</p>
   <h2>Rewards</h2><p>You earn <b>300 tokens</b> for every market you suggest that gets approved. You earn <b>300 tokens</b> for every friend who signs up with your referral link and confirms their email (they get 100 too).</p>
-  <h2>Thanksgiving Feast</h2><p>From now until <b>Thanksgiving</b>, everybody fills one big community meter together on the <a href="#/feast">Thanksgiving Feast</a> page. Your <b>very first trade ever</b> adds 50 points, and your first trade of any other day adds 7. Every <b>buy</b> adds 2, every <b>cash-out</b> adds 5, every <b>approved market suggestion</b> adds 15, every <b>Trade Favor</b> you send adds 3, and every friend who joins with your link adds 20. <b>Prizes are paid only if the meter is full when dinner is served.</b> If it is, every player with 25 or more points gets tokens by rank: <b>500</b> for the top 10, <b>300</b> for the next 20, and <b>150</b> for everybody below that. The top contributor also wins <b>750 bonus tokens</b>, and the top 5 win Thanksgiving banners and icons.</p>
+  <h2>Thanksgiving Feast</h2><p>From now until <b>Thanksgiving</b>, everybody fills one big community meter together on the <a href="#/feast">Thanksgiving Feast</a> page. Your <b>very first trade ever</b> adds 50 points, and your first trade of any other day adds 7. Every <b>buy</b> adds 2, every <b>cash-out</b> adds 5, every <b>approved market suggestion</b> adds 15, every <b>Trade Favor</b> you send adds 3, and every friend who joins with your link adds 20. <b>Prizes are paid only if the meter is full when dinner is served, and if it is not full, everybody's balance is cut by 50%.</b> If it is full, every player with 25 or more points gets tokens by rank: <b>500</b> for the top 10, <b>300</b> for the next 20, and <b>150</b> for everybody below that. The top contributor also wins <b>750 bonus tokens</b>, and the top 5 win Thanksgiving banners and icons.</p>
   <h2>Turkey Market</h2><p>At 12:00 AM Pacific every day, one open market becomes the <b>Turkey Market</b>. It is the same market for everyone, and nobody knows which one until the day begins, when it is highlighted on the Markets page. For that day, your profit when you <b>cash out</b> on it is <b>doubled</b>. It never stacks with the Market of the Week.</p>
   <h2>Trade Favors</h2><p>Send another player a favor worth 0.1% to 10%. On their next <b>profitable cash-out worth over 100 tokens</b>, they get that percentage of their profit as a bonus. It costs you the same: that percentage comes off the profit of <b>your</b> next profitable cash-out worth over 100 tokens. You can send 3 a day, each player can have one favor waiting at a time, and you can never owe more than 10% at once. A favor waiting for you shows at the top of every page. Favors end with the feast.</p>
   <h2>Turkey Tickets</h2><p>Every day (midnight to 11:59 PM Pacific) your <b>ROI</b> is your leaderboard number at the end of the day minus the number at the start of the day, divided by the start-of-day number, times 100. Under 1% earns 0 tickets, 1% to 3% earns 1, 3% to 6% earns 2, 6% to 15% earns 3, 15% to 25% earns 5, 25% to 50% earns 10, and 50% or more earns 20. When the feast ends, one ticket is drawn at random and its owner wins <b>1,500 tokens</b> (if the meter is full). The winner is the same for everybody, and the drawing is shown the next time you load the site. See the <a href="#/raffle">Turkey Raffle</a> page.</p>
