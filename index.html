@@ -933,7 +933,7 @@ function marketGrid(){
   const list = markets.filter(m => m !== motw && ok(m) && (searching ? m.status === 'open' : (FILTER === 'all' || (FILTER === 'open') === (m.status === 'open')))).sort(sorters[SORT]);
   return (motw ? motwCard(motw) : '') + (list.map(m => {
     const y = py(m), mine = P.some(p => p.market_id === m.id);
-    return `<a class="card mk${isTurkey(m) ? ' turkey-hl' : ''}" href="#/market/${m.id}">${tags(m)}${isTurkey(m) ? '<div class="tags"><span class="tkbadge">Turkey Market · 2× profit today</span></div>' : ''}<b>${esc(m.question)}</b>${m.proposed_by ? `<div class="mut" style="margin-top:4px">Suggested by ${nm(m.proposed_by)}</div>` : ''}
+    return `<a class="card mk${isTurkey(m) ? ' turkey-hl' : ''}" href="#/market/${m.id}">${isTurkey(m) ? '<span class="tkstk" title="Turkey Market: 2× profit when you cash out today">🦃</span>' : ''}${tags(m)}${isTurkey(m) ? '<div class="tags"><span class="tkbadge">Turkey Market · 2× profit today</span></div>' : ''}<b>${esc(m.question)}</b>${m.proposed_by ? `<div class="mut" style="margin-top:4px">Suggested by ${nm(m.proposed_by)}</div>` : ''}
     <div class="bar"><i style="width:${y*100}%"></i></div>
     <div class="split"><span style="color:var(--yes)">YES ${(y*100).toFixed(0)}%</span><span style="color:var(--no)">NO ${((1-y)*100).toFixed(0)}%</span></div>
     <div class="mut" style="margin-top:6px">${mState(m)}${mine ? ' · you have a position' : ''}</div></a>`;
