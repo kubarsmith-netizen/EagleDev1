@@ -265,6 +265,21 @@ nav a{white-space:nowrap;gap:9px}
 .event-bar a.pill:hover{filter:brightness(1.08)}
 </style>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A6%83%3C/text%3E%3C/svg%3E">
+<!-- Web Monetization (Interledger / Open Payments): invisible, no UI, no tracking.
+     Paste your wallet address(es) (aka payment pointers) into WALLETS, e.g. "https://wallet.example.com/yourname".
+     Empty list = does nothing. Visitors without a Web Monetization extension are unaffected. -->
+<script>
+(function(){
+  var WALLETS = [];
+  try{
+    WALLETS.forEach(function(w){
+      if(typeof w!=="string"||!/^https:\/\/[^\s"'<>]+$/.test(w)) return;
+      var l=document.createElement("link"); l.rel="monetization"; l.href=w;
+      document.head.appendChild(l);
+    });
+  }catch(e){}
+})();
+</script>
 </head>
 <body>
 <div id="app"></div>
