@@ -63,6 +63,11 @@ main{flex:1;padding:30px 38px;min-width:0}
 .motw{border-color:var(--acc);background:var(--grad)}
 .motw b{font-size:24px}
 .motw .tags .chip{margin-left:6px;vertical-align:middle}
+.motw{cursor:pointer}.motw b a{color:inherit;text-decoration:none}
+.qt{display:flex;gap:10px;margin-top:14px}.qt button{flex:1;padding:12px;font-size:17px;font-weight:700;letter-spacing:.04em}
+.qb-back{position:fixed;inset:0;background:rgba(0,0,0,.62);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.qb{width:min(380px,100%);background:var(--card);border:var(--bw) solid var(--acc);border-radius:12px;padding:20px;box-shadow:0 12px 40px rgba(0,0,0,.5)}
+.qb>b{display:block;font-size:19px}.qb p{margin:12px 0 0}
 .narrow{max-width:540px}
 .big{font-size:23px;font-weight:600}
 .bar{height:8px;border-radius:4px;background:var(--no);overflow:hidden;margin:10px 0}
@@ -699,13 +704,18 @@ function eventBanner(){
 
 // full-width Market of the Week card shown at the top of the Markets page
 const motwCard = m => {
-  const y = py(m), mine = P.some(p => p.market_id === m.id && +p.shares > 0);
-  return `<a class="card mk motw" style="grid-column:1/-1" href="#/market/${m.id}">
+  const y = py(m), mine = P.some(p => p.market_id === m.id && +p.shares > 0), i = info(m);
+  // quick trade: Yes / No buttons that open a bet pop-up without leaving the Markets page
+  const quick = !i.open ? '' : i.closed ? '<div class="mut" style="margin-top:12px">Trading closed</div>'
+    : i.locked ? `<div class="mut" style="margin-top:12px">Locked until ${new Date(i.until).toLocaleString()}</div>`
+    : mine ? '<div class="mut" style="margin-top:12px">You already have a position here. Open the market to cash out.</div>'
+    : `<div class="qt"><button class="y" onclick="quickBet(event,${m.id},'yes')">YES</button><button class="n" onclick="quickBet(event,${m.id},'no')">NO</button></div>`;
+  return `<div class="card mk motw" style="grid-column:1/-1" onclick="go('market/${m.id}')">
     <div class="tags"><span class="tag">Market of the Week</span><span class="chip">WINNERS EARN 2× PROFIT</span></div>
-    <b>${esc(m.question)}</b>${m.proposed_by ? `<div class="mut" style="margin-top:4px">Suggested by ${nm(m.proposed_by)}</div>` : ''}
+    <b><a href="#/market/${m.id}">${esc(m.question)}</a></b>${m.proposed_by ? `<div class="mut" style="margin-top:4px">Suggested by ${nm(m.proposed_by)}</div>` : ''}
     <div class="bar"><i style="width:${y*100}%"></i></div>
     <div class="split"><span style="color:var(--yes)">YES ${(y*100).toFixed(0)}%</span><span style="color:var(--no)">NO ${((1-y)*100).toFixed(0)}%</span></div>
-    <div class="mut" style="margin-top:6px">${mState(m)}${m.closes_at ? ' · Closes ' + new Date(m.closes_at).toLocaleString() : ''}${mine ? ' · you have a position' : ''}</div></a>`;
+    <div class="mut" style="margin-top:6px">${mState(m)}${m.closes_at ? ' · Closes ' + new Date(m.closes_at).toLocaleString() : ''}${mine ? ' · you have a position' : ''}</div>${quick}</div>`;
 };
 
 // ---------- Thanksgiving Feast page ----------
@@ -1476,6 +1486,46 @@ async function fetchTrades(id){
 // ---------- actions ----------
 const buy = (id, side) => +$('#a'+id).value >= 10 ? rpc('trade', {p_market:id, p_side:side, p_tokens:+$('#a'+id).value, p_action:'buy'}) : toast('Minimum bet is 10 tokens.');
 const sell = (id, side) => rpc('trade', {p_market:id, p_side:side, p_tokens:0, p_action:'sell'});
+
+// ---------- Quick bet pop-up (Market of the Week card) ----------
+let qbKey = null;
+function closeQuickBet(){
+  const d = $('#qb'); if (d) d.remove();
+  if (qbKey) { document.removeEventListener('keydown', qbKey); qbKey = null; }
+}
+function quickBet(ev, id, side){
+  ev.stopPropagation(); ev.preventDefault();
+  const m = markets.find(x => x.id === id); if (!m) return;
+  const i = info(m);
+  if (!i.open || i.closed) return toast('Trading is closed on this market.');
+  if (i.locked) return toast('Locked until ' + new Date(i.until).toLocaleString());
+  if (P.some(p => p.market_id === id && +p.shares > 0)) return toast('You already have a position here. Cash out first to trade again.');
+  closeQuickBet();
+  const S = side.toUpperCase(), d = document.createElement('div');
+  d.id = 'qb'; d.className = 'qb-back';
+  d.innerHTML = `<div class="qb" role="dialog" aria-modal="true" aria-labelledby="qbt">
+    <b id="qbt">How much would you like to bet?</b>
+    <div class="mut" style="margin-top:4px"><b style="color:var(--${side})">${S}</b> · ${esc(m.question)}</div>
+    <input id="qba" type="number" min="10" step="1" inputmode="numeric" placeholder="Tokens (minimum 10)" autocomplete="off">
+    <div class="row">${[10, 50, 100].map(n => `<button class="g" data-n="${n}">${n}</button>`).join('')}</div>
+    <p class="mut">You have ${(+me.balance).toFixed(1)} tokens.</p>
+    <div class="row"><button class="${side === 'yes' ? 'y' : 'n'}" id="qbok">Bet ${S}</button><button class="g" id="qbx">Cancel</button></div></div>`;
+  document.body.appendChild(d);
+  const inp = $('#qba');
+  d.addEventListener('click', e => { if (e.target === d) closeQuickBet(); });
+  d.querySelectorAll('[data-n]').forEach(b => b.addEventListener('click', () => { inp.value = b.dataset.n; inp.focus(); }));
+  $('#qbx').addEventListener('click', closeQuickBet);
+  const submit = async () => {
+    const n = +inp.value;
+    if (!(n >= 10)) return toast('Minimum bet is 10 tokens.');
+    closeQuickBet();
+    await rpc('trade', {p_market:id, p_side:side, p_tokens:n, p_action:'buy'}, 'Bet placed: ' + n + ' tokens on ' + S);
+  };
+  $('#qbok').addEventListener('click', submit);
+  qbKey = e => { if (e.key === 'Escape') closeQuickBet(); else if (e.key === 'Enter' && document.activeElement === inp) submit(); };
+  document.addEventListener('keydown', qbKey);
+  inp.focus();
+}
 
 async function mk(){
   const id = await rpc('create_market', {p_question:$('#q').value, p_yes:$('#o').value/100, p_cooldown:Math.round($('#c').value*3600), p_closes:$('#d').value ? new Date($('#d').value).toISOString() : null});
