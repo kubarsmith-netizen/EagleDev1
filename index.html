@@ -20,12 +20,12 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none}
 [data-pat=lines] body::before{background-image:repeating-linear-gradient(45deg,var(--line) 0 1px,transparent 1px 14px)}
 [data-pat=leaves] body::before{background:none}
 #leafbg{display:none;position:fixed;left:0;top:0;z-index:-1;pointer-events:none}
-[data-pat=leaves] #leafbg,[data-pat=wrapping] #leafbg,[data-pat=ornaments] #leafbg,[data-pat=trees] #leafbg{display:block}
+[data-pat=leaves] #leafbg,[data-pat=ornaments] #leafbg,[data-pat=trees] #leafbg{display:block}
 [data-pat=plaid] body::before{background-image:repeating-linear-gradient(0deg,color-mix(in srgb,var(--acc) 14%,transparent) 0 14px,transparent 14px 40px),repeating-linear-gradient(90deg,color-mix(in srgb,var(--acc) 14%,transparent) 0 14px,transparent 14px 40px),repeating-linear-gradient(0deg,var(--line) 0 2px,transparent 2px 10px)}
 /* Wrapping paper: the default background. Red paper with candy stripes and snowflake dots; trees and ornaments are drawn on top at random. */
 [data-pat=wrapping] body::before{background-color:#8f1620;background-image:repeating-linear-gradient(135deg,#ffffff17 0 12px,transparent 12px 44px),radial-gradient(circle at 22px 22px,#ffffffdd 2.4px,transparent 3.2px),radial-gradient(circle at 66px 66px,#f5c542 2.2px,transparent 3px);background-size:auto,88px 88px,88px 88px}
-[data-pat=ornaments] body::before{background:radial-gradient(ellipse at 50% 0%,#14532d,#0a2e1e 70%)}
-[data-pat=trees] body::before{background:linear-gradient(#08142e,#0f2a4d 55%,#1d4e7a)}
+[data-pat=ornaments] body::before{background:repeating-linear-gradient(45deg,#8f1620 0 28px,#b3202a 28px 56px)}
+[data-pat=trees] body::before,[data-pat=leaves] body::before{background:radial-gradient(ellipse at 50% 0%,#14532d,#07301c 75%)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 Fraunces,Georgia,serif;-webkit-font-smoothing:antialiased}
 h1{margin:0 0 8px;font-size:25px;font-weight:700;letter-spacing:-.01em}
@@ -160,10 +160,10 @@ th{color:var(--acc);font-weight:600;font-size:12px;border-bottom:var(--bw) solid
 .sm .lbr{min-height:46px}
 .sm .lbr .nm{font-size:14px}
 #stk{position:fixed;top:26px;right:36px;z-index:8;display:flex;flex-direction:column-reverse;align-items:flex-end;gap:10px}
-.stk-btn{display:flex;align-items:center;gap:8px;color:#fff;border:0;border-radius:999px;padding:10px 22px;font-size:22px;line-height:1;font-weight:700;background:linear-gradient(135deg,#fbbf24,#ea580c 55%,#9a3412);box-shadow:0 6px 22px #ea580cbb,inset 0 0 0 var(--bw) #ffffff77;text-shadow:0 1px 3px #4a1d0488}
+.stk-btn{display:flex;align-items:center;gap:8px;color:#fff;border:0;border-radius:999px;padding:10px 22px;font-size:22px;line-height:1;font-weight:700;background:linear-gradient(135deg,#6dff8f,#22e05a 55%,#10b53f);color:#04361a;box-shadow:0 6px 22px #22e05acc,inset 0 0 0 var(--bw) #ffffff99;text-shadow:0 1px 2px #ffffff66}
 .stk-btn b{font-size:24px}
 .stk-btn:hover{filter:brightness(1.1)}
-.stk-btn.off{background:linear-gradient(135deg,#fde68a,#fb923c);box-shadow:0 4px 14px #fb923c88,inset 0 0 0 var(--bw) #ffffff77}
+.stk-btn.off{background:linear-gradient(135deg,#b6ffc9,#6dff8f);box-shadow:0 4px 14px #6dff8f88,inset 0 0 0 var(--bw) #ffffff77}
 @keyframes stkpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
 .stk-btn:not(.off){animation:stkpulse 2.6s ease-in-out infinite}
 .stk-panel{background:var(--card);border:var(--bw) solid var(--acc);border-radius:8px;padding:14px 16px;width:280px}
@@ -218,7 +218,7 @@ nav a,.chip,.rc,.rank,.nm{border-radius:12px}
 .xmas-bar .meter{height:20px;margin:10px 0 0;background:#00000040;border-color:#ffffff88}
 .xmas-hero{background:linear-gradient(135deg,color-mix(in srgb,#dc2626 24%,var(--card)),var(--card));border-color:#f5c542}
 .xmas-hero .pts{font-size:34px;font-weight:700;font-family:Fraunces,Georgia,serif}
-.xmas-fab{display:flex;align-items:center;gap:6px;border:0;border-radius:999px;padding:10px 18px;font-size:18px;font-weight:700;color:#fff;text-decoration:none;background:linear-gradient(135deg,#ef4444,#b91c1c 60%,#166534);box-shadow:0 6px 22px #b91c1cbb,inset 0 0 0 var(--bw) #ffffff77;text-shadow:0 1px 3px #3b0a0aaa}
+.xmas-fab{display:flex;align-items:center;gap:6px;border:0;border-radius:999px;padding:10px 18px;font-size:18px;font-weight:700;color:#fff;text-decoration:none;background:linear-gradient(135deg,#ef4444,#b91c1c);box-shadow:0 6px 22px #b91c1cbb,inset 0 0 0 var(--bw) #ffffff77;text-shadow:0 1px 3px #3b0a0aaa}
 .xmas-fab:hover{filter:brightness(1.1)}
 .xmas-fab .tk{font-size:22px}
 .tug{margin:10px 0 2px}
@@ -226,18 +226,25 @@ nav a,.chip,.rc,.rank,.nm{border-radius:12px}
 .tug-bar::before{content:'';position:absolute;left:50%;top:-4px;bottom:-4px;width:2px;background:#fff9}
 .tug-knot{position:absolute;top:50%;transform:translate(-50%,-50%);font-size:26px;filter:drop-shadow(0 2px 3px #0008);transition:left .8s}
 .xmas-bar .tug-bar{height:20px}
+.xmas-bar .xb-msg{margin-top:8px;font-size:13.5px}
+.xmas-bar .xb-msg a{color:#fff}
+.xmas-bar .xb-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.xmas-bar a.pill{display:inline-flex;align-items:center;gap:7px;padding:7px 15px;border-radius:999px;background:linear-gradient(135deg,#22c55e,#15803d);color:#fff;text-decoration:none;font-weight:700;font-size:13.5px;box-shadow:0 2px 0 #0f5132;white-space:nowrap}
+.xmas-bar a.pill:hover{filter:brightness(1.08)}
+.bchip{display:inline-block;margin:2px 6px 2px 0;padding:3px 10px;border-radius:999px;background:#ffffff26;border:1px solid #ffffff66;font-size:12.5px;font-weight:700}
+.card .bchip{background:color-mix(in srgb,var(--acc) 22%,var(--card));border-color:var(--acc)}
 .team-card.nice{border-color:#22c55e;background:linear-gradient(135deg,color-mix(in srgb,#16a34a 22%,var(--card)),var(--card))}
 .team-card.naughty{border-color:#a78bfa;background:linear-gradient(135deg,color-mix(in srgb,#7c3aed 24%,var(--card)),var(--card))}
 .team-card .pts{font-size:30px;font-weight:700;font-family:Fraunces,Georgia,serif}
 .dstar{position:absolute;top:5px;right:8px;color:var(--acc);font-style:normal;font-size:15px}
 .door .dprize{font-size:26px;line-height:1}
-/* the present that opens on every cash-out (and every Advent door) */
+/* the present that opens on every cash-out (and every Advent door): cash or coal pops out */
 #rf .gift-ov{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 45%,#000a,#000d);animation:gfade .25s both;cursor:pointer;overflow:hidden}
 .gift-ov{--b1:#dc2626;--b2:#7f1d1d;--rib:#facc15}
 .gift-ov.cash{--b1:#16a34a;--b2:#14532d;--rib:#facc15}
 .gift-ov.cold{--b1:#7dd3fc;--b2:#0369a1;--rib:#f0f9ff}
-.gift-stage{position:relative;width:min(92vw,380px);min-height:340px;display:flex;align-items:center;justify-content:center}
-.gbox{position:absolute;width:150px;height:130px;animation:gpop .55s cubic-bezier(.3,1.6,.5,1) both,gshake .8s .6s ease-in-out}
+.gift-stage{position:relative;width:min(92vw,380px);height:480px}
+.gbox{position:absolute;left:50%;top:300px;margin-left:-75px;width:150px;height:130px;animation:gpop .55s cubic-bezier(.3,1.6,.5,1) both,gshake .8s .6s ease-in-out}
 .gbody{position:absolute;left:0;right:0;bottom:0;height:92px;border-radius:8px;background:linear-gradient(var(--b1),var(--b2));box-shadow:0 10px 24px #0008;animation:gvanish .35s 1.75s forwards}
 .gbody::after,.glid::after{content:'';position:absolute;left:50%;top:0;bottom:0;width:26px;margin-left:-13px;background:var(--rib)}
 .glid{position:absolute;left:-8px;right:-8px;top:0;height:42px;border-radius:8px;background:linear-gradient(var(--b1),var(--b2));box-shadow:0 4px 10px #0006;transform-origin:20% 100%;animation:glid .65s 1.5s cubic-bezier(.3,.1,.6,1) forwards}
@@ -245,8 +252,10 @@ nav a,.chip,.rc,.rank,.nm{border-radius:12px}
 .gbow::before,.gbow::after{content:'';position:absolute;top:0;width:30px;height:26px;border:7px solid var(--rib);border-radius:50% 50% 50% 0}
 .gbow::before{left:0;transform:rotate(-12deg)}
 .gbow::after{right:0;border-radius:50% 50% 0 50%;transform:rotate(12deg)}
-.gglow{position:absolute;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,#fff,var(--rib) 35%,transparent 70%);opacity:0;animation:gglow .9s 1.5s ease-out forwards}
-.gcard{position:relative;opacity:0;text-align:center;background:var(--card);border:var(--bw) solid var(--rib);border-radius:22px;padding:20px 26px;max-width:340px;box-shadow:0 20px 60px #000a;animation:gcard .6s 1.7s cubic-bezier(.3,1.5,.5,1) forwards}
+.gglow{position:absolute;left:50%;top:310px;margin-left:-60px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,#fff,var(--rib) 35%,transparent 70%);opacity:0;animation:gglow .9s 1.5s ease-out forwards}
+.gitem{position:absolute;left:50%;top:315px;width:150px;margin-left:-75px;display:flex;justify-content:center;opacity:0;z-index:3;filter:drop-shadow(0 8px 14px #000a);animation:gout 1.1s 1.5s cubic-bezier(.2,1.3,.4,1) forwards}
+.gitem-in{display:flex;animation:gbob 1.5s 2.6s ease-in-out infinite alternate}
+.gcard{position:absolute;left:0;right:0;top:150px;margin:0 auto;width:max-content;max-width:100%;opacity:0;text-align:center;background:var(--card);border:var(--bw) solid var(--rib);border-radius:22px;padding:18px 26px;box-shadow:0 20px 60px #000a;animation:gcard .6s 1.7s cubic-bezier(.3,1.5,.5,1) forwards}
 .gcard .gbig{font-family:Fraunces,Georgia,serif;font-size:38px;font-weight:800;line-height:1.05}
 .gcard .gamt{font-size:22px;font-weight:700;margin:6px 0}
 .gift-ov.cash .gbig,.gift-ov.cash .gamt{color:#4ade80}
@@ -257,8 +266,10 @@ nav a,.chip,.rc,.rank,.nm{border-radius:12px}
 @keyframes glid{to{transform:translateY(-150px) rotate(-35deg);opacity:0}}
 @keyframes gvanish{to{transform:scale(.2);opacity:0}}
 @keyframes gglow{0%{transform:scale(.2);opacity:1}100%{transform:scale(7);opacity:0}}
+@keyframes gout{0%{opacity:0;transform:translateY(0) scale(.3) rotate(-25deg)}15%{opacity:1}100%{opacity:1;transform:translateY(-285px) scale(1) rotate(0)}}
+@keyframes gbob{from{transform:translateY(0) rotate(-3deg)}to{transform:translateY(-6px) rotate(3deg)}}
 @keyframes gcard{from{opacity:0;transform:translateY(30px) scale(.8)}to{opacity:1;transform:none}}
-@media(prefers-reduced-motion:reduce){.gbox,.gglow{display:none}.gcard{opacity:1;animation:none}}
+@media(prefers-reduced-motion:reduce){.gbox,.gglow{display:none}.gitem{opacity:1;transform:translateY(-285px);animation:none}.gitem-in{animation:none}.gcard{opacity:1;animation:none}}
 .present-note{border-color:#f5c542;background:linear-gradient(120deg,color-mix(in srgb,#dc2626 26%,var(--card)),var(--card))}
 .gift-in{border-color:var(--yes);background:linear-gradient(120deg,color-mix(in srgb,var(--yes) 20%,var(--card)),var(--card))}
 .pct-pill{display:inline-block;font-size:30px;font-weight:700;font-family:Fraunces,Georgia,serif;color:var(--acc)}
@@ -325,7 +336,7 @@ nav a{white-space:nowrap;gap:9px}
 const SUPABASE_URL = 'https://lumsbvchmibxmvrzqtpt.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_2FD2bNN5kt9U954xwnfidg_HEZu7b2M';
 const ALLOWED_DOMAINS = ['headroyce.org'];
-const REFERRER_BONUS = 300, FRIEND_BONUS = 100; // keep equal to v_ref_bonus / v_new_bonus in the award_referral SQL function
+const REFERRER_BONUS = 700, FRIEND_BONUS = 100; // keep equal to v_ref_bonus / v_new_bonus in the award_referral SQL function
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 try { const r = new URLSearchParams(location.search).get('ref'); if (r) localStorage.setItem('ref', r.trim().toLowerCase().slice(0, 16)); } catch (e) {}
@@ -353,7 +364,7 @@ const AV = ['🦅','🐺','🦊','🐼','🐯','🦁','🐸','🐙','🦉','🐧
 const CK = {bg:'--bg', card:'--card', fg:'--fg', acc:'--acc'};
 const AVURL = SUPABASE_URL + '/storage/v1/object/public/avatars/';
 const SHOPURL = SUPABASE_URL + '/storage/v1/object/public/shop-art/';
-const PATS = {wrapping:'Wrapping paper', ornaments:'Ornaments', trees:'Christmas trees', none:'None', dots:'Dots', grid:'Grid', lines:'Lines', leaves:'Holly', plaid:'Plaid'};
+const PATS = {wrapping:'Wrapping paper', ornaments:'Ornaments', trees:'Holly', none:'None', dots:'Dots', grid:'Grid', lines:'Lines', plaid:'Plaid'};
 const CRIT = {top_streak:'Highest daily streak (ties share it)', top_referrals:'Most referrals (ties share it)', top_trades:'Most trades in the Trading Frenzy (ties share it)'};
 const IC = {markets:'M3 17l6-6 4 4 8-8M15 7h6v6', portfolio:'M3 8h18v12H3zM8 8V5h8v3', leaderboard:'M6 20V10M12 20V4M18 20v-7', shop:'M5 7h14l-1 13H6zM9 7a3 3 0 016 0', rules:'M6 3h12v18H6zM9 8h6M9 12h6', suggest:'M12 5v14M5 12h14', create:'M12 5v14M5 12h14', review:'M5 12l5 5 9-10', admin:'M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z', ideas:'M9 18h6M10 21h4M12 3a6 6 0 00-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0012 3z', teams:'M4 4l16 16M20 4L4 20M3 8l5-5M16 21l5-5M21 8l-5-5M8 21l-5-5', advent:'M5 5h14a1 1 0 011 1v14H4V6a1 1 0 011-1zM4 10h16M8 3v4M16 3v4M8 14h1M12 14h1M16 14h1M8 17h1M12 17h1', santa:'M4 11h16v9H4zM3 7h18v4H3zM12 7v13M12 7C9 7 7 5.5 8 4s4 1 4 3zM12 7c3 0 5-1.5 4-3s-4 1-4 3z'};
 const svg = d => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg>`;
@@ -362,16 +373,17 @@ const ico = d => d[0] === '@' ? `<span class="ni">${d.slice(1)}</span>` : svg(d)
 // falling leaves, a rim of maple leaves around the whole screen, and stickers stuck to the page (decoration only)
 const rnd = (a, b) => a + Math.random() * (b - a);
 
-// Decorated backgrounds: drawn fresh at random on a canvas every visit (holly, ornaments, trees; trees and ornaments over the wrapping paper)
+// Decorated backgrounds, drawn fresh at random on a canvas every visit: Ornaments (a ton of baubles on red stripes) and Holly (deep green leaves with red berries)
 let LEAFBG = null;
-const BG_MODES = ['leaves', 'wrapping', 'ornaments', 'trees'];
+const BG_MODES = ['leaves', 'ornaments', 'trees'];
+const ORN_PAL = [[45, 85, 52, 60], [140, 60, 32, 42], [210, 75, 45, 55], [275, 60, 45, 55], [330, 70, 60, 68], [210, 10, 66, 74], [175, 65, 38, 46], [0, 0, 86, 92]];
 function bauble(g, x, y, r){
-  const hue = [352, 4, 45, 135, 205, 275, 330][Math.floor(Math.random() * 7)], sat = rnd(65, 90), lit = hue === 45 ? rnd(50, 60) : rnd(40, 52);
+  const [hue, sat, l1, l2] = ORN_PAL[Math.floor(Math.random() * ORN_PAL.length)], lit = rnd(l1, l2);
   g.save();
   g.strokeStyle = 'rgba(255,255,255,.55)'; g.lineWidth = 1.2; g.beginPath(); g.moveTo(x, y - r - rnd(10, 60)); g.lineTo(x, y - r); g.stroke();
   g.fillStyle = '#d4af37'; g.fillRect(x - r * .26, y - r - r * .22, r * .52, r * .3);
   const gr = g.createRadialGradient(x - r * .35, y - r * .4, r * .08, x, y, r);
-  gr.addColorStop(0, `hsl(${hue},${sat}%,${Math.min(90, lit + 38)}%)`); gr.addColorStop(.45, `hsl(${hue},${sat}%,${lit}%)`); gr.addColorStop(1, `hsl(${hue},${sat}%,${Math.max(12, lit - 24)}%)`);
+  gr.addColorStop(0, `hsl(${hue},${sat}%,${Math.min(95, lit + 38)}%)`); gr.addColorStop(.45, `hsl(${hue},${sat}%,${lit}%)`); gr.addColorStop(1, `hsl(${hue},${sat}%,${Math.max(10, lit - 26)}%)`);
   g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fill();
   const t = Math.random();
   g.globalAlpha = .55; g.strokeStyle = 'rgba(255,255,255,.9)'; g.lineWidth = Math.max(1, r * .08);
@@ -385,78 +397,63 @@ function star(g, x, y, R, col){
   for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? R * .45 : R; g.lineTo(x + Math.cos(a) * rr, y + Math.sin(a) * rr); }
   g.closePath(); g.fill(); g.restore();
 }
-function tree(g, x, base, h, alpha){
-  const w = h * .62, y0 = base - h * .1;
-  g.save(); g.globalAlpha = alpha == null ? 1 : alpha;
-  g.fillStyle = '#5b3a1e'; g.fillRect(x - w * .06, base - h * .12, w * .12, h * .12);
-  for (let i = 0; i < 3; i++) {
-    const tw = w * (1 - i * .28), bot = y0 - i * h * .26, top = bot - h * .42;
-    g.fillStyle = `hsl(145,${rnd(42, 55).toFixed(0)}%,${24 + i * 3}%)`; g.strokeStyle = 'rgba(2,30,14,.6)'; g.lineWidth = 1.5; g.lineJoin = 'round';
-    g.beginPath(); g.moveTo(x - tw / 2, bot); g.lineTo(x + tw / 2, bot); g.lineTo(x, top); g.closePath(); g.fill(); g.stroke();
-  }
-  const topY = y0 - 2 * h * .26 - h * .42;
-  const hues = [352, 45, 205, 330, 275];
-  for (let k = 0; k < 11; k++) {
-    const t = rnd(.08, .9), hw = (w / 2) * (1 - t) * .8, px = x + rnd(-hw, hw), py = y0 - t * (y0 - topY), r = Math.max(2, h * rnd(.028, .045));
-    g.fillStyle = `hsl(${hues[Math.floor(Math.random() * hues.length)]},80%,55%)`; g.beginPath(); g.arc(px, py, r, 0, 7); g.fill();
-    g.fillStyle = 'rgba(255,255,255,.7)'; g.beginPath(); g.arc(px - r * .3, py - r * .3, r * .3, 0, 7); g.fill();
-  }
-  star(g, x, topY - h * .01, Math.max(5, h * .08), '#facc15');
+// one glossy holly leaf: spiky edge, light central vein
+function hollyLeaf(g, x, y, len, ang, tone){
+  g.save(); g.translate(x, y); g.rotate(ang);
+  const w = len * .27, n = 7;
+  g.beginPath(); g.moveTo(0, 0);
+  for (let k = 1; k <= n; k++) g.lineTo(len * k / (n + 1) - len * .03, -(w * Math.sin(Math.PI * k / (n + 1)) + (k % 2 ? w * .3 : 0)));
+  g.lineTo(len, 0);
+  for (let k = n; k >= 1; k--) g.lineTo(len * k / (n + 1) - len * .03, w * Math.sin(Math.PI * k / (n + 1)) + (k % 2 ? w * .3 : 0));
+  g.closePath();
+  const gr = g.createLinearGradient(0, -w, 0, w);
+  gr.addColorStop(0, `hsl(146,52%,${14 + tone}%)`); gr.addColorStop(.55, `hsl(142,50%,${25 + tone}%)`); gr.addColorStop(1, `hsl(150,48%,${12 + tone}%)`);
+  g.fillStyle = gr; g.strokeStyle = 'rgba(2,28,14,.7)'; g.lineWidth = Math.max(1, len * .03); g.lineJoin = 'round';
+  g.fill(); g.stroke();
+  g.strokeStyle = 'rgba(190,255,205,.35)'; g.lineWidth = Math.max(1, len * .025);
+  g.beginPath(); g.moveTo(len * .04, 0); g.lineTo(len * .94, 0); g.stroke();
+  g.lineWidth = Math.max(.8, len * .016);
+  for (let k = 1; k <= 5; k++) { const px = len * k / 6.2; g.beginPath(); g.moveTo(px, 0); g.lineTo(px + len * .1, -w * .55); g.moveTo(px, 0); g.lineTo(px + len * .1, w * .55); g.stroke(); }
   g.restore();
+}
+function berry(g, x, y, r){
+  const gr = g.createRadialGradient(x - r * .35, y - r * .35, r * .1, x, y, r);
+  gr.addColorStop(0, '#ff8a8a'); gr.addColorStop(.35, '#e11d2e'); gr.addColorStop(1, '#7f0d1a');
+  g.save(); g.shadowColor = 'rgba(0,0,0,.4)'; g.shadowBlur = r * .6; g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fill();
+  g.shadowBlur = 0; g.fillStyle = 'rgba(255,255,255,.85)'; g.beginPath(); g.ellipse(x - r * .38, y - r * .4, r * .22, r * .13, -.6, 0, Math.PI * 2); g.fill(); g.restore();
+}
+// a sprig: three leaves fanned out, with a cluster of red berries in the middle
+function holly(g, x, y, sc, ang){
+  const L = 70 * sc;
+  hollyLeaf(g, x, y, L * rnd(.9, 1.1), ang - .8 + rnd(-.1, .1), 0);
+  hollyLeaf(g, x, y, L * rnd(.9, 1.1), ang + .8 + rnd(-.1, .1), 0);
+  hollyLeaf(g, x, y, L * rnd(.95, 1.15), ang + rnd(-.15, .15), 6);
+  const r = 7.5 * sc;
+  berry(g, x + r * .9, y - r * .5, r); berry(g, x - r * .9, y - r * .4, r); berry(g, x, y + r * .85, r);
 }
 function drawLeafBg(){
   const mode = document.documentElement.dataset.pat;
   if (!BG_MODES.includes(mode)) return;
   const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
   const W = Math.max(innerWidth, LEAFBG ? LEAFBG.cssW : 0), H = Math.max(innerHeight, LEAFBG ? LEAFBG.cssH : 0);
-  if (LEAFBG && LEAFBG.mode === mode && W <= LEAFBG.cssW && H <= LEAFBG.cssH) return;      // already covers the screen, keep it so it does not change while you use the site
+  const kind = mode === 'ornaments' ? 'ornaments' : 'holly';
+  if (LEAFBG && LEAFBG.kind === kind && W <= LEAFBG.cssW && H <= LEAFBG.cssH) return;      // already covers the screen, keep it so it does not change while you use the site
   let cv = document.getElementById('leafbg');
   if (!cv) { cv = document.createElement('canvas'); cv.id = 'leafbg'; cv.setAttribute('aria-hidden', 'true'); document.body.prepend(cv); }
   cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); cv.style.width = W + 'px'; cv.style.height = H + 'px';
   const g = cv.getContext('2d'); g.scale(dpr, dpr);
-  if (mode === 'wrapping') {
-    const n = Math.round(W * H / 30000);
-    for (let k = 0; k < n; k++) {
-      if (Math.random() < .45) tree(g, rnd(0, W), rnd(80, H + 40), rnd(70, 150), .95);
-      else bauble(g, rnd(0, W), rnd(40, H), rnd(10, 22));
-    }
-  } else if (mode === 'ornaments') {
+  if (kind === 'ornaments') {
     const n = Math.round(W * H / 4600), arr = Array.from({length:n}, () => [rnd(0, W), rnd(30, H), rnd(9, 30)]).sort((a, b) => a[2] - b[2]);
     for (const [x, y, r] of arr) bauble(g, x, y, r);
     for (let k = 0; k < n / 6; k++) star(g, rnd(0, W), rnd(0, H), rnd(5, 11), 'rgba(250,204,21,.85)');
-  } else if (mode === 'trees') {
-    g.fillStyle = 'rgba(255,255,255,.8)';
-    for (let k = 0; k < W * H / 4500; k++) { g.beginPath(); g.arc(rnd(0, W), rnd(0, H * .6), rnd(.5, 1.6), 0, 7); g.fill(); }
-    [[.62, 80, .55], [.8, 118, .8], [1.0, 165, 1]].forEach(([by, h, a]) => {
-      const step = h * .55;
-      for (let x = rnd(-20, step); x < W + 40; x += step * rnd(.85, 1.35)) tree(g, x, H * by + rnd(-6, 10), h * rnd(.85, 1.15), a);
-    });
-    g.fillStyle = '#e8f1ff'; g.beginPath(); g.moveTo(0, H);
-    for (let x = 0; x <= W; x += 40) g.lineTo(x, H - 22 + Math.sin(x / 90) * 10);
-    g.lineTo(W, H); g.closePath(); g.fill();
   } else {
-    g.fillStyle = '#0f3a22'; g.fillRect(0, 0, W, H);
-    const SHAPES = [
-      [new Path2D('M50 2L56 18L64 12L63 30L80 22L75 42L96 42L86 56L92 70L70 68L60 80L53 78L53 98L47 98L47 78L40 80L30 68L8 70L14 56L4 42L25 42L20 22L37 30L36 12L44 18Z'), new Path2D('M50 28V90M50 56L70 40M50 56L30 40')],
-      [new Path2D('M50 3C82 22 86 64 50 97C14 64 18 22 50 3Z'), new Path2D('M50 10V98M50 38L67 26M50 56L69 43M50 38L33 26M50 56L31 43')],
-      [new Path2D('M50 2C68 14 94 38 74 62C66 72 58 78 53 80L53 98L47 98L47 80C42 78 34 72 26 62C6 38 32 14 50 2Z'), new Path2D('M50 14V92M50 44L66 32M50 60L68 48M50 44L34 32M50 60L32 48')]
-    ];
-    const n = Math.round(W * H / 3300);
-    for (let k = 0; k < n; k++) {
-      const [body, vein] = SHAPES[Math.floor(Math.random() * SHAPES.length)];
-      const sc = rnd(.3, .95), sx = sc * rnd(.75, 1.25), sy = sc * rnd(.75, 1.25);
-      g.save();
-      g.globalAlpha = rnd(.5, 1);
-      g.translate(rnd(-20, W + 20), rnd(-20, H + 20)); g.rotate(rnd(0, Math.PI * 2)); g.scale(sx, sy); g.translate(-50, -50);
-      g.fillStyle = `hsl(${rnd(105, 150).toFixed(0)},${rnd(38, 65).toFixed(0)}%,${rnd(16, 32).toFixed(0)}%)`;
-      g.strokeStyle = 'rgba(4,36,18,.55)'; g.lineWidth = 2.5; g.lineJoin = 'round';
-      g.fill(body); g.stroke(body);
-      g.strokeStyle = 'rgba(4,36,18,.4)'; g.stroke(vein);
-      g.restore();
-      if (k % 3 === 0) { g.save(); g.globalAlpha = 1; g.fillStyle = '#e11d2e'; g.beginPath(); g.arc(rnd(0, W), rnd(0, H), rnd(3, 6), 0, 7); g.fill(); g.restore(); }
-    }
+    const gr = g.createRadialGradient(W / 2, 0, 20, W / 2, 0, Math.max(W, H));
+    gr.addColorStop(0, '#14532d'); gr.addColorStop(1, '#07301c');
+    g.fillStyle = gr; g.fillRect(0, 0, W, H);
+    for (let k = 0; k < W * H / 9000; k++) hollyLeaf(g, rnd(-20, W + 20), rnd(-20, H + 20), rnd(45, 95), rnd(0, Math.PI * 2), -5);   // dark leaves behind
+    for (let k = 0; k < W * H / 15000; k++) holly(g, rnd(-10, W + 10), rnd(-10, H + 10), rnd(.55, 1.3), rnd(0, Math.PI * 2));          // sprigs with berries in front
   }
-  LEAFBG = {cssW: W, cssH: H, mode};
+  LEAFBG = {cssW: W, cssH: H, kind};
 }
 let leafT;
 addEventListener('resize', () => { clearTimeout(leafT); leafT = setTimeout(() => { if (BG_MODES.includes(document.documentElement.dataset.pat)) drawLeafBg(); }, 250); });
@@ -708,7 +705,7 @@ async function ensureExtras(){
   const quiet = ['ev', 'streak', 'xm'];
   const presentMoved = (XM ? XM.present_market_id : null) !== prevPresent;
   if (stale.every(k => quiet.includes(k)) && !firstLoad.includes('xm') && !presentMoved && cur === page && page !== 'teams' && page !== 'advent' && page !== 'santa') {
-    const rb = $('#rb'); if (rb) rb.innerHTML = giftBanner() + eventBanner() + teamBanner();
+    const rb = $('#rb'); if (rb) rb.innerHTML = giftBanner() + xmasBanner();
     const sw = $('#stkw'); if (sw) sw.innerHTML = streakBadge();
     return;
   }
@@ -732,8 +729,12 @@ async function load(){
     sb.from('positions').select().eq('user_id', session.user.id),
     sb.rpc('my_cooldowns')
   ]);
-  if (!a.data) { me = null; resetCaches(); return render(); }
-  me = a.data;
+  let prof = a.data;
+  if (!prof) {   // signed in but no profile yet: ask the server to create it, then try once more
+    try { await sb.rpc('ensure_profile'); const r2 = await sb.from('profiles').select().eq('id', session.user.id).single(); prof = r2.data; } catch (e) {}
+  }
+  if (!prof) { me = null; resetCaches(); return render(); }
+  me = prof;
   applyLook();
   markets = b.data || [];
   P = c.data || [];
@@ -798,7 +799,17 @@ const presentIcon = () => '';
 const giftsUnseen = () => (XM && XM.santa) ? +XM.santa.unseen || 0 : 0;
 const doorReady = () => !!(XM && XM.active && XM.advent && XM.advent.open_now && !XM.advent.today_opened);
 const goldenBoost = () => XM && XM.boost_pct ? +XM.boost_pct : 0;
-const TEAMS = {nice:{name:'Team Nice', emoji:'😇', blurb:'The good list. Steady hands, smart trades, halo on.'}, naughty:{name:'Team Naughty', emoji:'😈', blurb:'The bad list. Bold bets, big swings, a little mischief.'}};
+const BOOST = {
+  profit: {icon:'⚡', name:'Golden Boost', desc: p => `+${p}% on the profit of your next profitable cash-out`},
+  team:   {icon:'🤝', name:'Team Spirit', desc: p => `+${p} points for your team on your next cash-out (they do not count for you)`},
+  santa:  {icon:'🎅', name:"Santa's Discount", desc: p => `pay only ${100 - p}% of your next Secret Santa gift (they still get the full amount)`},
+  shield: {icon:'🛡️', name:'Coal Shield', desc: () => 'your team loses nothing on your next cold cash-out'}
+};
+const boostList = () => (XM && XM.boosts) || [];
+const boostCount = k => boostList().filter(b => b.kind === k).reduce((a, b) => a + (+b.count || 0), 0);
+const boostPct = k => { const b = boostList().find(x => x.kind === k); return b ? +b.pct : 0; };
+const boostChips = () => boostList().map(b => { const B = BOOST[b.kind]; if (!B) return ''; return `<span class="bchip" title="${esc(B.desc(b.pct))}">${B.icon} ${B.name}${b.kind === 'profit' ? ' +' + b.pct + '%' : b.kind === 'team' ? ' +' + b.pct : ''}${+b.count > 1 ? ' ×' + b.count : ''}</span>`; }).join('');
+const TEAMS = {nice:{name:'Team Nice', emoji:'😇', blurb:'The good list.'}, naughty:{name:'Team Naughty', emoji:'😈', blurb:'The bad list.'}};
 const contestOver = () => !XM || Date.now() >= new Date(XM.contest_ends_at).getTime();
 const eventEnd = () => XM ? new Date(XM.ends_at).toLocaleString([], {dateStyle:'medium', timeStyle:'short'}) : '';
 const contestEnd = () => XM ? new Date(XM.contest_ends_at).toLocaleString([], {dateStyle:'medium', timeStyle:'short'}) : '';
@@ -814,31 +825,26 @@ const giftBanner = () => {
   const n = giftsUnseen(), sum = ((XM.santa || {}).in || []).filter(g => g.unseen).reduce((a, g) => a + (+g.amount || 0), 0);
   return `<div class="card gift-in"><span class="pct-pill">🎁</span> <b>A Secret Santa left you ${n > 1 ? n + ' gifts' : 'a gift'}${sum ? ` worth ${fnum(sum)} tokens` : ''}!</b> <span class="mut">${n > 1 ? 'They are' : 'It is'} already in your balance.</span> <a href="#/santa">See ${n > 1 ? 'your gifts' : 'your gift'} →</a></div>`;
 };
-// Naughty vs Nice banner: the tug of war, on every page while the contest runs (and for 3 days after)
-function teamBanner(){
+// ONE Christmas banner: the Naughty vs Nice tug of war, today's Present Market, your power-ups and the Advent / Secret Santa links
+function xmasBanner(){
   if (!XM) return '';
-  const endMs = new Date(XM.contest_ends_at).getTime();
+  const endMs = new Date(XM.ends_at).getTime(), cMs = new Date(XM.contest_ends_at).getTime();
   if (Date.now() > endMs + 3 * 864e5) return '';
-  const over = Date.now() >= endMs, me = XM.me;
-  const msg = over
-    ? (XM.rolled ? (XM.winner === 'tie' ? 'It ended in a tie!' : `${TEAMS[XM.winner].emoji} ${TEAMS[XM.winner].name} won the tug of war!`) : 'The final bell rang! Counting up...')
-    : me ? `You are on <b>${TEAMS[me.team].emoji} ${TEAMS[me.team].name}</b>. Every cash-out moves the rope: <b>cash</b> pulls it your way, <b>cold</b> lets it slip.`
-    : '<b>Pick a side!</b> Join Team Nice or Team Naughty, and every profit you cash out pulls the rope your way.';
-  return `<div class="xmas-bar"><div class="fb-top"><span class="chip ev">NAUGHTY VS NICE</span><b>😇 ${fnum(XM.nice.points)} <span style="opacity:.8">vs</span> ${fnum(XM.naughty.points)} 😈</b><span class="sp"></span><a href="#/teams">${me || over ? 'Open the battle' : 'Pick your side'} →</a></div>${tug()}<div style="margin-top:6px;font-size:13px">${msg}</div></div>`;
-}
-function eventBanner(){
-  if (!XM) return '';
-  const endMs = new Date(XM.ends_at).getTime();
-  if (Date.now() > endMs + 3 * 864e5) return '';
-  const over = Date.now() >= endMs, pm = XM.present_market_id ? markets.find(m => m.id === XM.present_market_id) : null;
-  const boost = goldenBoost() ? ` <span class="mut">⚡ Golden Boost ready: +${goldenBoost()}% on your next profitable cash-out.</span>` : '';
-  const txt = over ? 'The Christmas event is over. Thank you for playing!'
-    : pm ? `🎁 <b>Today's Present Market:</b> <a href="#/market/${pm.id}">${esc(pm.question)}</a> <span class="mut">Cash out on it today for +50% profit!</span>${boost}`
-    : `🎄 <b>Christmas Event!</b> Open Advent doors, be a Secret Santa and take a side in Naughty vs Nice.${boost}`;
-  return `<div class="event-bar"><span class="chip ev">🎄 CHRISTMAS EVENT</span><span class="ev-txt">${txt}</span>${over ? '' : `<span class="links"><a class="pill" href="#/advent">${ico(IC.advent)} Advent Calendar${doorReady() ? ' · NEW' : ''}</a><a class="pill" href="#/santa">${ico(IC.santa)} Secret Santa</a></span>`}</div>`;
+  const over = Date.now() >= endMs, cOver = Date.now() >= cMs, me = XM.me, R = XM.rewards || {};
+  const pm = XM.present_market_id ? markets.find(m => m.id === XM.present_market_id) : null;
+  const msg = cOver
+    ? (XM.rolled ? (XM.winner === 'tie' ? "It ended in a tie, so nobody's balance changed." : `${TEAMS[XM.winner].emoji} ${TEAMS[XM.winner].name} won! Their balances went up ${R.win_pct}% and the other team's went down ${R.lose_pct}%.`) : 'The final bell rang! Counting up...')
+    : me ? `You are on <b>${TEAMS[me.team].emoji} ${TEAMS[me.team].name}</b>. Every cash-out moves the rope: <b>cash</b> pulls it your way, <b>cold</b> lets it slip. At the final bell the winners gain ${R.win_pct}% and the losers lose ${R.lose_pct}%.` : '';
+  const pmLine = !over && pm ? `🎁 <b>Present Market today:</b> <a href="#/market/${pm.id}">${esc(pm.question)}</a> Cash out on it for +50% profit!` : '';
+  const chips = boostChips();
+  return `<div class="xmas-bar"><div class="fb-top"><span class="chip ev">🎄 CHRISTMAS EVENT</span><b>😇 ${fnum(XM.nice.points)} <span style="opacity:.8">vs</span> ${fnum(XM.naughty.points)} 😈</b><span class="sp"></span><a href="#/teams">Naughty vs Nice →</a></div>${tug()}`
+    + (msg ? `<div class="xb-msg">${msg}</div>` : '') + (pmLine ? `<div class="xb-msg">${pmLine}</div>` : '') + (chips ? `<div class="xb-msg">${chips}</div>` : '')
+    + (over ? '' : `<div class="xb-links"><a class="pill" href="#/advent">${ico(IC.advent)} Advent Calendar${doorReady() ? ' · NEW' : ''}</a><a class="pill" href="#/santa">${ico(IC.santa)} Secret Santa</a></div>`) + '</div>';
 }
 
-// ---------- the present that opens on every cash-out and every Advent door ----------
+// ---------- the present that opens on every cash-out and every Advent door: cash or coal pops out ----------
+const CASH_SVG = '<svg viewBox="0 0 120 70" width="136" aria-hidden="true"><rect x="4" y="4" width="112" height="62" rx="6" fill="#86efac" stroke="#166534" stroke-width="4"/><rect x="12" y="12" width="96" height="46" rx="3" fill="none" stroke="#166534" stroke-width="2" stroke-dasharray="4 3"/><circle cx="60" cy="35" r="19" fill="#bbf7d0" stroke="#166534" stroke-width="3"/><text x="60" y="45" text-anchor="middle" font-size="27" font-weight="800" fill="#166534" font-family="Georgia,serif">$</text><circle cx="22" cy="35" r="5" fill="#166534" opacity=".5"/><circle cx="98" cy="35" r="5" fill="#166534" opacity=".5"/></svg>';
+const COAL_SVG = '<svg viewBox="0 0 120 100" width="120" aria-hidden="true"><polygon points="18,62 30,28 58,12 92,22 108,52 94,84 52,92 26,82" fill="#1f2937" stroke="#030712" stroke-width="3" stroke-linejoin="round"/><polygon points="30,28 58,12 52,40 34,50" fill="#374151"/><polygon points="58,12 92,22 80,44 52,40" fill="#4b5563" opacity=".85"/><polygon points="52,40 80,44 94,84 56,78" fill="#111827"/><polygon points="34,50 52,40 56,78 26,82" fill="#0b1220"/><path d="M62 20L76 26M40 34L46 30" stroke="#9ca3af" stroke-width="3" stroke-linecap="round" opacity=".7"/></svg>';
 let GIFT_T = null;
 const closeGift = () => { const b = $('#rf'); if (b) b.innerHTML = ''; clearTimeout(GIFT_T); };
 function giftOpen(o){
@@ -846,25 +852,29 @@ function giftOpen(o){
   if (!box) return;
   const E = o.kind === 'cold' ? ['❄️', '🥶', '❄️', '🧊'] : o.kind === 'cash' ? ['💵', '💰', '✨', '🪙'] : ['🎁', '⭐', '🎄', '🍬', '🔔'];
   const conf = Array.from({length:34}, (_, i) => `<span style="left:${Math.round(rnd(0, 100))}%;animation-delay:${(1.5 + rnd(0, 1.2)).toFixed(2)}s">${E[i % E.length]}</span>`).join('');
+  const art = o.kind === 'cash' ? CASH_SVG : o.kind === 'cold' ? COAL_SVG : o.kind === 'even' ? '<span style="font-size:72px;line-height:1">🪙</span>' : '<span style="font-size:80px;line-height:1">🎁</span>';
   let inner;
   if (o.kind === 'door') {
-    inner = `<div class="gbig">Door ${o.day}!</div><div class="gamt">+${fnum(o.tokens)} tokens</div>`
+    const B = BOOST[o.boost_kind];
+    inner = `<div class="gbig">Door ${o.day}!</div>${+o.tokens > 0 ? `<div class="gamt">+${fnum(o.tokens)} tokens</div>` : ''}`
       + (o.items || []).map(it => `<div style="margin:8px 0">${itemPrev(it)}<div class="mut">${esc(it.name)} · a new ${it.kind}!</div></div>`).join('')
-      + (o.boost ? `<div style="margin:8px 0">⚡ <b>Golden Boost +${o.boost}%</b><div class="mut">It is added to your next profitable cash-out.</div></div>` : '')
+      + (B && o.boost_pct ? `<div style="margin:8px 0">${B.icon} <b>${B.name}${o.boost_kind === 'profit' ? ' +' + o.boost_pct + '%' : o.boost_kind === 'team' ? ' +' + o.boost_pct : ''}</b><div class="mut" style="max-width:260px">${B.desc(o.boost_pct)}.</div></div>` : '')
       + ((o.items || []).length ? '<div class="mut">Equip your new prize in the Inventory.</div>' : '');
   } else {
-    const cap = (XM && XM.rewards && XM.rewards.cap) || 250, mt = XM && XM.me, pts = Math.max(-cap, Math.min(cap, Math.round(o.profit)));
-    const team = mt && XM.contest_open ? `<div class="mut" style="margin-top:6px">${TEAMS[mt.team].emoji} ${TEAMS[mt.team].name}: <b>${pts > 0 ? '+' : ''}${pts}</b> points</div>` : '';
+    const cap = (XM && XM.rewards && XM.rewards.cap) || 250, mt = XM && XM.me;
+    const pts = o.shield ? 0 : Math.max(-cap, Math.min(cap, Math.round(o.profit)));
+    const team = mt && XM.contest_open ? `<div class="mut" style="margin-top:6px">${TEAMS[mt.team].emoji} ${TEAMS[mt.team].name}: <b>${pts > 0 ? '+' : ''}${pts}</b> points${o.teamBonus ? ` <b>+${o.teamBonus}</b> Team Spirit` : ''}</div>` : '';
     const head = o.kind === 'cash' ? "It's CASH!" : o.kind === 'cold' ? "It's COLD." : 'Break even.';
     const amt = o.kind === 'cash' ? `+${tk1(o.profit)} tokens` : o.kind === 'cold' ? `${tk1(o.profit)} tokens` : 'No gain, no loss';
-    const flavor = o.kind === 'cold' ? 'Brr. Shake it off, there is always another market.' : '';
-    inner = `<div class="gbig">${head}</div><div class="gamt">${amt}</div><div class="mut">You cashed out <b>${tk1(o.pay)}</b> tokens${o.extra >= 1 ? ` + <b>${tk1(o.extra)}</b> bonus` : ''}.</div>${flavor ? `<div class="mut">${flavor}</div>` : ''}${team}`;
+    const notes = [o.kind === 'cold' ? 'Brr. Shake it off, there is always another market.' : '', o.shield ? '🛡️ Coal Shield: your team lost nothing!' : '', o.boosted ? `⚡ Golden Boost +${o.boosted}% added` : ''].filter(Boolean);
+    inner = `<div class="gbig">${head}</div><div class="gamt">${amt}</div><div class="mut">You cashed out <b>${tk1(o.pay)}</b> tokens${o.extra >= 1 ? ` + <b>${tk1(o.extra)}</b> bonus` : ''}.</div>${notes.map(t => `<div class="mut">${t}</div>`).join('')}${team}`;
   }
-  box.innerHTML = `<div class="gift-ov ${o.kind === 'door' ? 'door' : o.kind}" onclick="closeGift()"><div class="burst">${conf}</div><div class="gift-stage"><div class="gbox"><div class="glid"><i class="gbow"></i></div><div class="gbody"></div></div><div class="gglow"></div><div class="gcard">${inner}<div style="margin-top:10px"><button class="g" onclick="closeGift()">${o.kind === 'cold' ? 'Ok' : 'Nice!'}</button></div></div></div></div>`;
+  box.innerHTML = `<div class="gift-ov ${o.kind === 'door' ? 'door' : o.kind}" onclick="closeGift()"><div class="burst">${conf}</div><div class="gift-stage"><div class="gbox"><div class="glid"><i class="gbow"></i></div><div class="gbody"></div></div><div class="gglow"></div><div class="gitem"><div class="gitem-in">${art}</div></div><div class="gcard">${inner}<div style="margin-top:10px"><button class="g" onclick="closeGift()">${o.kind === 'cold' ? 'Ok' : 'Nice!'}</button></div></div></div></div>`;
   clearTimeout(GIFT_T); GIFT_T = setTimeout(closeGift, 14000);
 }
 const sell = async (id, side, inv) => {
   const m = markets.find(x => x.id === id);
+  const shieldUp = boostCount('shield') > 0, teamUp = boostPct('team'), boostUp = goldenBoost(), inTeam = !!(XM && XM.me && XM.contest_open);
   const {error} = await sb.rpc('trade', {p_market:id, p_side:side, p_tokens:0, p_action:'sell'});
   if (error) { toast(error.message); return; }
   let pay = null;
@@ -873,8 +883,9 @@ const sell = async (id, side, inv) => {
     if (r.data && r.data[0]) pay = +r.data[0].tokens;
   } catch (e) {}
   const profit = (pay == null ? 0 : pay) - (+inv || 0);
-  const extra = profit > 0 ? (m && isPresent(m) ? profit * .5 : 0) + (goldenBoost() ? profit * goldenBoost() / 100 : 0) : 0;
-  giftOpen({kind: profit > 0.005 ? 'cash' : profit < -0.005 ? 'cold' : 'even', profit, pay: pay == null ? 0 : pay, extra});
+  const extra = profit > 0 ? (m && isPresent(m) ? profit * .5 : 0) + (boostUp ? profit * boostUp / 100 : 0) : 0;
+  giftOpen({kind: profit > 0.005 ? 'cash' : profit < -0.005 ? 'cold' : 'even', profit, pay: pay == null ? 0 : pay, extra,
+    shield: inTeam && shieldUp && profit < -0.005, teamBonus: inTeam ? teamUp : 0, boosted: profit > 0 ? boostUp : 0});
   for (const k in AT) AT[k] = 0;
   await load();
 };
@@ -897,50 +908,38 @@ const motwCard = m => {
 
 // ---------- Naughty vs Nice page ----------
 const notSetUp = t => `<h1>${t}</h1><div class="card"><b>This is not set up yet.</b><p class="mut">${esc(XMERR || 'No event data was found.')}</p></div>`;
-const joinTeam = t => {
-  if (!confirm(`Join ${TEAMS[t].name}? You cannot switch sides later.`)) return;
-  rpc('xmas_join_team', {p_team:t}, `${TEAMS[t].emoji} Welcome to ${TEAMS[t].name}!`);
-};
 function teamCol(t){
-  const T = TEAMS[t], d = XM[t], list = (XM.top || {})[t] || [];
-  return `<div class="card team-card ${t}"><div class="split"><b style="font-size:18px">${T.emoji} ${T.name}</b><span class="pts">${fnum(d.points)}</span></div><div class="mut">${fnum(d.members)} players · ${fnum(d.active)} have cashed out</div>
-    ${list.length ? `<table><tr><th>#</th><th>Player</th><th>Points</th><th>💵</th><th>🥶</th></tr>${list.map((x, i) => `<tr><td>${i + 1}</td><td>${nm(x.username)}</td><td><b>${fnum(x.points)}</b></td><td>${x.cash}</td><td>${x.cold}</td></tr>`).join('')}</table>` : '<p class="mut">Nobody here yet.</p>'}</div>`;
+  const T = TEAMS[t], d = XM[t], list = (XM.top || {})[t] || [], mine = XM.me && XM.me.team === t;
+  return `<div class="card team-card ${t}"><div class="split"><b style="font-size:18px">${T.emoji} ${T.name}${mine ? ' <span class="chip">YOUR TEAM</span>' : ''}</b><span class="pts">${fnum(d.points)}</span></div><div class="mut">${fnum(d.members)} players · ${fnum(d.active)} have cashed out</div>
+    ${list.length ? `<table><tr><th>#</th><th>Player</th><th>Points</th><th>💵</th><th>🥶</th></tr>${list.map((x, i) => `<tr><td>${i + 1}</td><td>${nm(x.username)}</td><td><b>${fnum(x.points)}</b></td><td>${x.cash}</td><td>${x.cold}</td></tr>`).join('')}</table>` : '<p class="mut">Nobody has cashed out yet.</p>'}</div>`;
 }
 function pgTeams(){
   if (!XM) return notSetUp('Naughty vs Nice');
-  const R = XM.rewards || {}, over = contestOver(), me = XM.me, other = t => t === 'nice' ? 'naughty' : 'nice';
-  let join = '';
-  if (!me && !over && XM.contest_open) {
-    join = `<div class="card xmas-hero"><b style="font-size:18px">⚔️ Pick your side</b><p class="mut" style="margin:6px 0 0">You can only choose once, so choose wisely. Teams stay fair: a team cannot get more than ${R.max_gap} players bigger than the other one.</p></div>
-    <div class="two">${['nice', 'naughty'].map(t => {
-      const crowded = XM[t].members + 1 - XM[other(t)].members > R.max_gap;
-      return `<div class="card team-card ${t}"><b style="font-size:20px">${TEAMS[t].emoji} ${TEAMS[t].name}</b><p class="mut">${TEAMS[t].blurb}</p><p class="mut">${fnum(XM[t].members)} players · ${fnum(XM[t].points)} points</p><button class="tk" ${crowded ? 'disabled' : ''} onclick="joinTeam('${t}')">Join ${TEAMS[t].name}</button>${crowded ? '<p class="mut" style="margin:6px 0 0">A little crowded right now. Try the other side!</p>' : ''}</div>`;
-    }).join('')}</div>`;
-  }
+  const R = XM.rewards || {}, over = contestOver(), me = XM.me, RS = XM.results;
   let results = '';
-  if (XM.rolled) {
-    const mv = XM.mvps || {}, w = XM.winner;
+  if (XM.rolled && RS) {
     results = `<div class="card xmas-hero"><b style="font-size:18px">🔔 The final bell</b>
-      <p style="margin:6px 0">${w === 'tie' ? `It ended in a <b>tie</b> (${fnum(mv.nice_total)} to ${fnum(mv.naughty_total)}), so everyone with ${R.min_cashouts}+ cash-outs got ${fnum(R.tie)} tokens.` : `${TEAMS[w].emoji} <b>${TEAMS[w].name}</b> won, ${fnum(mv.nice_total)} to ${fnum(mv.naughty_total)}! Players with ${R.min_cashouts}+ cash-outs got ${fnum(R.win)} tokens on the winning team and ${fnum(R.lose)} on the other.`}</p>
-      <p style="margin:6px 0">⭐ <b>Winter MVP:</b> ${mv.overall ? nm(mv.overall) : '-'} · 😇 <b>Nice MVP:</b> ${mv.nice ? nm(mv.nice) : '-'} · 😈 <b>Naughty MVP:</b> ${mv.naughty ? nm(mv.naughty) : '-'}</p>
-      ${me && +me.reward > 0 ? `<p style="margin:8px 0 0"><b>You received ${fnum(me.reward)} tokens.</b></p>` : me ? `<p class="mut" style="margin:8px 0 0">You needed ${R.min_cashouts} cash-outs to get a reward.</p>` : ''}</div>`;
+      <p style="margin:6px 0">${RS.winner === 'tie' ? `It ended in a <b>tie</b> (${fnum(RS.nice_total)} to ${fnum(RS.naughty_total)}), so nobody's balance changed.` : `${TEAMS[RS.winner].emoji} <b>${TEAMS[RS.winner].name}</b> won, ${fnum(RS.nice_total)} to ${fnum(RS.naughty_total)}! Their balances went <b>up ${R.win_pct}%</b> and the other team's went <b>down ${R.lose_pct}%</b>.`}</p>
+      ${me && RS.winner !== 'tie' ? `<p style="margin:8px 0 0"><b>Your balance ${+me.delta >= 0 ? 'went up' : 'went down'} by ${fnum(Math.abs(me.delta))} tokens.</b></p>` : ''}</div>`;
   }
-  const mine = me ? `<div class="stats" style="grid-template-columns:repeat(4,1fr)"><div class="card"><div class="mut">Your points</div><div class="big">${fnum(me.points)}</div></div><div class="card"><div class="mut">Rank on your team</div><div class="big">#${me.rank || '-'}</div></div><div class="card"><div class="mut">💵 Cash-outs</div><div class="big">${fnum(me.cash)}</div></div><div class="card"><div class="mut">🥶 Cold cash-outs</div><div class="big">${fnum(me.cold)}</div></div></div>
-    ${!over && me.cashouts < R.min_cashouts ? `<div class="card"><b>${R.min_cashouts - me.cashouts} more cash-out${R.min_cashouts - me.cashouts === 1 ? '' : 's'}</b> and you qualify for the team reward at the final bell.</div>` : ''}` : '';
+  const mine = me ? `<div class="card xmas-hero"><b style="font-size:18px">${TEAMS[me.team].emoji} You are on ${TEAMS[me.team].name}</b>
+      <p class="mut" style="margin:6px 0 0">Everyone is put on a team automatically. Players are dealt out down the leaderboard, one to Nice, the next to Naughty, and so on, so the teams stay even. New players join whichever team is smaller.</p></div>
+    <div class="stats" style="grid-template-columns:repeat(4,1fr)"><div class="card"><div class="mut">Your points</div><div class="big">${fnum(me.points)}</div></div><div class="card"><div class="mut">Rank on your team</div><div class="big">#${me.rank || '-'}</div></div><div class="card"><div class="mut">💵 Cash-outs</div><div class="big">${fnum(me.cash)}</div></div><div class="card"><div class="mut">🥶 Cold cash-outs</div><div class="big">${fnum(me.cold)}</div></div></div>
+    ${+me.bonus > 0 ? `<div class="card">🤝 Your Team Spirit gave your team <b>${fnum(me.bonus)}</b> extra points.</div>` : ''}` : '';
   return `<h1>Naughty vs Nice</h1>
   <div class="card xmas-hero"><div class="split" style="flex-wrap:wrap;gap:8px"><div><div class="mut">The great tug of war</div><div class="pts">😇 ${fnum(XM.nice.points)} <span class="mut" style="font-size:16px">vs</span> ${fnum(XM.naughty.points)} 😈</div></div>
     <div style="text-align:right"><div id="fcd" style="font-weight:600">${xmasCd()}</div><div class="mut">Final bell ${contestEnd()}</div></div></div>
     ${tug()}</div>
-  ${join}${results}${mine}
+  ${results}${mine}
   <div class="two">${teamCol('nice')}${teamCol('naughty')}</div>
   <div class="card"><b>🎄 How it works</b>
     <table>
-      <tr><td>⚔️</td><td><b>Pick a side</b> (Nice or Naughty). Your side is final.</td></tr>
+      <tr><td>⚖️</td><td>Everyone is on a team: <b>Team Nice</b> or <b>Team Naughty</b>. Your side is final.</td></tr>
       <tr><td>💵</td><td><b>Cash</b>: every profitable cash-out adds its profit to your team's score.</td></tr>
       <tr><td>🥶</td><td><b>Cold</b>: every losing cash-out takes its loss off your team's score.</td></tr>
       <tr><td>🛡️</td><td>One cash-out counts for at most <b>${fnum(R.cap)}</b> points either way, so one lucky bet cannot win it.</td></tr>
-      <tr><td>🔔</td><td>At the <b>final bell</b> (${contestEnd()}), everyone with <b>${R.min_cashouts}+ cash-outs</b> gets <b>${fnum(R.win)}</b> tokens on the winning team, <b>${fnum(R.lose)}</b> on the losing team, or <b>${fnum(R.tie)}</b> each in a tie.</td></tr>
-      <tr><td>⭐</td><td>Each team's top scorer gets an MVP banner and icon. The overall <b>Winter MVP</b> gets <b>${fnum(R.mvp)}</b> bonus tokens and golden prizes.</td></tr>
+      <tr><td>🔔</td><td>At the <b>final bell</b> (${contestEnd()}), the <b>winning team's balances go up ${R.win_pct}%</b> and the <b>losing team's balances go down ${R.lose_pct}%</b>. In a tie nothing changes.</td></tr>
+      <tr><td>🎁</td><td>Advent doors can give you power-ups for this: <b>Team Spirit</b> (extra team points), <b>Coal Shield</b> (a cold cash-out costs your team nothing).</td></tr>
     </table></div>`;
 }
 
@@ -949,7 +948,7 @@ const ptMonth = () => +new Intl.DateTimeFormat('en-US', {timeZone:'America/Los_A
 const openDoor = async () => {
   const {data, error} = await sb.rpc('xmas_open_door');
   if (error) { toast(error.message); return; }
-  giftOpen({kind:'door', day:data.day, tokens:+data.tokens, items:data.items || [], boost:data.boost_pct});
+  giftOpen({kind:'door', day:data.day, tokens:+data.tokens, items:data.items || [], boost_kind:data.boost_kind, boost_pct:data.boost_pct});
   for (const k in AT) AT[k] = 0;
   await load();
 };
@@ -958,14 +957,16 @@ function pgAdvent(){
   const A = XM.advent || {}, list = A.list || [], today = A.today, opened = {}, mo = ptMonth();
   (A.opened || []).forEach(o => { opened[o.day] = o; });
   const isPast = d => mo === 12 && (today == null || d < today);
-  const vals = Object.values(opened), got = vals.length, earned = vals.reduce((a, o) => a + (+o.tokens || 0), 0), prizes = vals.reduce((a, o) => a + (o.items || []).length, 0);
+  const vals = Object.values(opened), got = vals.length, earned = vals.reduce((a, o) => a + (+o.tokens || 0), 0), prizes = vals.reduce((a, o) => a + (o.items || []).length, 0), powers = vals.filter(o => o.boost_kind).length;
   const doors = list.map(({day:d, special}) => {
     const o = opened[d], now = d === today && !o && A.open_now, cls = o ? 'open' : now ? 'today' : isPast(d) ? 'miss' : 'lock';
     const big = d === 25 || d === 31;
     let face;
     if (o) {
-      const art = (o.items || []).map(it => it.kind === 'icon' ? iconHtml(it, 26) : '🏅').join('') || '🎁';
-      face = `<span class="dprize" title="${esc((o.items || []).map(it => it.name).join(', '))}">${art}</span><span>+${fnum(o.tokens)}${o.boost_pct ? ` · ⚡${o.boost_pct}%` : ''}</span>`;
+      const B = BOOST[o.boost_kind];
+      const art = (o.items || []).map(it => it.kind === 'icon' ? iconHtml(it, 26) : '🏅').join('') + (B ? B.icon : '') || '🎁';
+      const label = +o.tokens > 0 ? '+' + fnum(o.tokens) + (B ? ' · ' + B.icon : '') : (B ? B.name : '');
+      face = `<span class="dprize" title="${esc((o.items || []).map(it => it.name).concat(B ? [B.name] : []).join(', '))}">${art}</span><span>${label}</span>`;
     } else if (now) face = '<span class="dprize">🎄</span><span>Tap to open!</span>';
     else if (isPast(d)) face = '<span>Missed</span>';
     else face = `<span class="dprize">🔒</span><span>Dec ${d}</span>`;
@@ -976,39 +977,44 @@ function pgAdvent(){
     : !A.open_now ? 'All the doors are done for this year.'
     : A.today_opened ? `You opened door ${today} today. Come back tomorrow for the next one!`
     : `<b>Door ${today} is ready!</b> Tap it to open it.`;
+  const mine = boostList().length ? `<div class="card"><b>⚡ Your power-ups</b><p style="margin:8px 0 0">${boostList().map(b => `<span class="bchip">${BOOST[b.kind].icon} ${BOOST[b.kind].name}${+b.count > 1 ? ' ×' + b.count : ''}</span> <span class="mut">${BOOST[b.kind].desc(b.pct)}.</span><br>`).join('')}</p></div>` : '';
   return `<h1>Advent Calendar</h1>
   <div class="card xmas-hero"><b style="font-size:18px">🎄 31 doors, 31 days</b>
     <p style="margin:6px 0 0">${status}</p>
-    <p class="mut" style="margin:6px 0 0">Open one door a day, December 1 to 31 (today's door only, Pacific time, so a missed door stays closed). Every door has tokens. The <b style="color:var(--acc)">★ doors</b> hide something extra: <b>collectible banners and icons</b> you cannot get anywhere else, and <b>Golden Boosts</b> (+25% to +50% bonus on the profit of your next profitable cash-out). Christmas Day (door 25) and New Year's Eve (door 31) are the big ones.</p>
-    ${goldenBoost() ? `<p style="margin:8px 0 0">⚡ <b>You have ${XM.boost_count} Golden Boost${XM.boost_count > 1 ? 's' : ''} ready.</b> Your next profitable cash-out gets +${goldenBoost()}% on the profit.</p>` : ''}</div>
-  <div class="stats" style="grid-template-columns:repeat(3,1fr)"><div class="card"><div class="mut">Doors opened</div><div class="big">${got} / ${list.length}</div></div><div class="card"><div class="mut">Tokens from the calendar</div><div class="big">${fnum(earned)}</div></div><div class="card"><div class="mut">Collectibles won</div><div class="big">${prizes}</div></div></div>
+    <p class="mut" style="margin:6px 0 0">Open one door a day, December 1 to 31 (today's door only, Pacific time, so a missed door stays closed). Behind the doors: <b>tokens</b>, <b>collectible banners and icons</b> you cannot get anywhere else, and <b>power-ups</b>: ⚡ <b>Golden Boosts</b> (a bonus on your next profitable cash-out), 🤝 <b>Team Spirit</b> (extra points for your Naughty vs Nice team), 🛡️ <b>Coal Shields</b> (a cold cash-out costs your team nothing) and 🎅 <b>Santa's Discounts</b> (pay only 75% of your next Secret Santa gift). The <b style="color:var(--acc)">★ doors</b> hide collectibles or big prizes, and Christmas Day (door 25) and New Year's Eve (door 31) are the big ones.</p></div>
+  ${mine}
+  <div class="stats" style="grid-template-columns:repeat(4,1fr)"><div class="card"><div class="mut">Doors opened</div><div class="big">${got} / ${list.length}</div></div><div class="card"><div class="mut">Tokens won</div><div class="big">${fnum(earned)}</div></div><div class="card"><div class="mut">Collectibles</div><div class="big">${prizes}</div></div><div class="card"><div class="mut">Power-ups</div><div class="big">${powers}</div></div></div>
   <div class="doors">${doors}</div>`;
 }
 
 // ---------- Secret Santa page ----------
-const setGift = v => { const a = $('#xa'), sl = $('#xs'); if (a) a.value = v; if (sl) sl.value = v; };
+const santaCost = amt => { const d = XM && XM.santa ? +XM.santa.discount || 0 : 0; return d ? Math.round(amt * (100 - d) / 100) : amt; };
+const updCost = () => { const e = $('#xcost'), a = $('#xa'); if (e && a) { const amt = Math.round(+a.value) || 0; e.textContent = fnum(santaCost(amt)); } };
+const setGift = v => { const a = $('#xa'), sl = $('#xs'); if (a) a.value = v; if (sl) sl.value = v; updCost(); };
 const sendGift = async () => {
   const to = $('#xu').value.trim(), amt = Math.round(+$('#xa').value), note = $('#xn').value.trim();
   if (!to) return toast('Type the username of the player.');
   if (!(amt >= 5 && amt <= 1000)) return toast('Choose a gift between 5 and 1,000 tokens.');
-  if (!confirm(`Secretly give ${to} ${fnum(amt)} tokens?\n\nIt comes out of YOUR balance (you have ${fnum(me.balance)}), and they will not know it was you until the event ends.`)) return;
+  const cost = santaCost(amt);
+  if (!confirm(`Secretly give ${to} ${fnum(amt)} tokens?\n\nIt comes out of YOUR balance: ${cost < amt ? `you pay only ${fnum(cost)} tokens thanks to Santa's Discount` : `${fnum(cost)} tokens`} (you have ${fnum(me.balance)}), and they will not know it was you until the event ends.`)) return;
   await rpc('xmas_send_gift', {p_to:to, p_amount:amt, p_note:note || null}, '🎁 Gift sent!');
 };
 const fmtAt = t => new Date(t).toLocaleString([], {dateStyle:'medium', timeStyle:'short'});
 function pgSanta(){
   if (!XM) return notSetUp('Secret Santa');
-  const S = XM.santa || {}, left = Math.max(0, (S.limit || 3) - (S.sent_today || 0)), room = Math.max(0, (S.cap || 5000) - (+S.given || 0));
+  const S = XM.santa || {}, left = Math.max(0, (S.limit || 3) - (S.sent_today || 0)), room = Math.max(0, (S.cap || 5000) - (+S.given || 0)), disc = +S.discount || 0;
   const inn = S.in || [], out = S.out || [];
   const can = XM.active && left > 0 && room >= (S.min || 5);
-  const maxAmt = Math.max(S.min || 5, Math.min(S.max || 1000, room, Math.floor(+me.balance)));
+  const maxAmt = Math.max(S.min || 5, Math.min(S.max || 1000, room, Math.floor(+me.balance / (disc ? (100 - disc) / 100 : 1))));
   const v0 = Math.min(25, maxAmt), presets = [25, 100, 250, 500, 1000].filter(v => v < maxAmt);
   const form = !XM.active ? '<p class="mut" style="margin:8px 0 0">Secret Santa is over for this year.</p>' : `
     <div class="row"><label class="mut">Who is your giftee? (username)<input id="xu" maxlength="20" placeholder="username" autocomplete="off"></label></div>
-    <div class="row"><label class="mut">Gift (tokens)<input id="xa" type="number" min="${S.min || 5}" max="${maxAmt}" step="1" value="${v0}" oninput="$('#xs').value=this.value"></label></div>
-    <div class="row"><input id="xs" type="range" min="${S.min || 5}" max="${maxAmt}" step="1" value="${v0}" oninput="$('#xa').value=this.value" aria-label="Gift amount"></div>
+    <div class="row"><label class="mut">Gift (tokens)<input id="xa" type="number" min="${S.min || 5}" max="${maxAmt}" step="1" value="${v0}" oninput="$('#xs').value=this.value;updCost()"></label></div>
+    <div class="row"><input id="xs" type="range" min="${S.min || 5}" max="${maxAmt}" step="1" value="${v0}" oninput="$('#xa').value=this.value;updCost()" aria-label="Gift amount"></div>
     <div class="row">${presets.map(v => `<button class="g" onclick="setGift(${v})">${fnum(v)}</button>`).join('')}<button class="g" onclick="setGift(${maxAmt})">Max (${fnum(maxAmt)})</button></div>
     <div class="row"><label class="mut">Secret note (optional)<input id="xn" maxlength="60" placeholder="Happy holidays!"></label></div>
-    <p class="mut" style="margin:6px 0">🎁 The gift comes out of <b>your own balance</b> (you have <b>${fnum(me.balance)}</b> tokens).</p>
+    <p class="mut" style="margin:6px 0">🎁 The gift comes out of <b>your own balance</b> (you have <b>${fnum(me.balance)}</b> tokens). It will cost you <b id="xcost">${fnum(santaCost(v0))}</b> tokens.</p>
+    ${disc ? `<p style="margin:6px 0">🎅 <b>Santa's Discount ready:</b> you pay only ${100 - disc}% of your next gift, and they still get the full amount.</p>` : ''}
     <div class="row"><button class="tk" ${can ? '' : 'disabled'} onclick="sendGift()">🎁 Wrap and send</button><span class="mut">${left} of ${S.limit || 3} gifts left today · ${fnum(room)} of ${fnum(S.cap || 5000)} tokens left to give this season</span></div>`;
   const rec = inn.length ? `<table><tr><th>When</th><th>From</th><th>Gift</th><th>Note</th></tr>${inn.map(g => `<tr><td>${fmtAt(g.at)}${g.unseen ? ' <span class="chip">NEW</span>' : ''}</td><td>${g.from ? nm(g.from) : '🎅 A Secret Santa'}</td><td><b>+${fnum(g.amount)}</b></td><td>${g.note ? esc(g.note) : ''}</td></tr>`).join('')}</table>` : '<p class="mut">No gifts yet. Maybe a Secret Santa is on the way!</p>';
   const sent = out.length ? `<table><tr><th>When</th><th>To</th><th>Gift</th></tr>${out.map(g => `<tr><td>${fmtAt(g.at)}</td><td>${nm(g.to)}</td><td>${fnum(g.amount)}</td></tr>`).join('')}</table>` : '<p class="mut">You have not sent any gifts yet.</p>';
@@ -1156,7 +1162,7 @@ const statusRows = (list, who) => list.map(p => `<tr><td>${esc(p.question)}</td>
 
 const pgRules = () => `<h1>Rules</h1><div class="card" style="max-width:760px">
   <h2 style="margin-top:0">The season</h2><p>The season ends on <b>January 1, 2027 at 12:00 AM Pacific Time (midnight at the end of December 31)</b>. The countdown is at the top of every page. When it reaches zero, trading closes.</p>
-  <h2>Your tokens</h2><p>Everyone starts with <b>1,000 tokens</b>. Tokens are free, there is nothing to buy with real money, and they cannot be bought or sold. You can spend tokens on profile icons and banners in the Shop.</p>
+  <h2>Your tokens</h2><p>Everyone starts with <b>1,000 tokens</b> (players who join during December start with <b>2,000</b>). Tokens are free, there is nothing to buy with real money, and they cannot be bought or sold. You can spend tokens on profile icons and banners in the Shop.</p>
   <h2>Trading</h2><p>You can trade on any open market. Buy YES or NO with your tokens. The odds move as people buy, so buying early at a low price pays more if you are right. You can cash out a position before the market resolves. Everyone can trade every open market, including markets they suggested.</p>
   <p><b>Cooldown:</b> after you buy in a market, you cannot buy or cash out in that same market until its cooldown ends. Cashing out does not start a new cooldown. You can hold one position per market at a time, so cash out before betting again. The length is shown on each market page.</p>
   <h2>Suggest a market</h2><p>Use <a href="#/suggest">Suggest a market</a> to submit a question and, if you like, a cooldown (default 1 hour). Every suggestion must be <b>approved by an admin</b> before it goes live, and the admin may leave a comment. Approved markets always show who suggested them.</p>
@@ -1173,11 +1179,11 @@ const pgRules = () => `<h1>Rules</h1><div class="card" style="max-width:760px">
 <li>No insults of any kind and no comments about identity, about a specific person or any group of people.</li>
 </ul>
   <h2>Market of the Week</h2><p>One featured market sits at the top of the Markets page each week and resolves on Friday. If you win, or cash out at a profit, you earn <b>2 times your profit</b>. If you lose or cash out at a loss, it works as usual, with no extra loss.</p>
-  <h2>Rewards</h2><p>You earn <b>300 tokens</b> for every market you suggest that gets approved. You earn <b>300 tokens</b> for every friend who signs up with your referral link and confirms their email (they get 100 too).</p>
-  <h2>Naughty vs Nice</h2><p>The big Christmas contest is a tug of war. Pick <b>Team Nice</b> or <b>Team Naughty</b> on the <a href="#/teams">Naughty vs Nice</a> page. You can only choose once, and a team cannot get more than 3 players bigger than the other. Every time you <b>cash out</b> a trade, the result moves your team's rope: a profit is <b>CASH</b> and adds points, a loss is <b>COLD</b> and takes points away. One cash-out counts for at most 250 points either way, so a single lucky bet cannot win it. The final bell rings at <b>12:00 AM Pacific on December 31</b>. Everyone with at least 3 cash-outs gets tokens: <b>300</b> on the winning team, <b>100</b> on the losing team, or <b>200</b> each in a tie. Each team's top scorer wins an MVP banner and icon, and the overall <b>Winter MVP</b> gets <b>500</b> bonus tokens and golden prizes.</p>
+  <h2>Rewards</h2><p>You earn <b>500 tokens</b> for every market you suggest that gets approved. You earn <b>700 tokens</b> for every friend who signs up with your referral link and confirms their email (they get 100 too).</p>
+  <h2>Naughty vs Nice</h2><p>The big Christmas contest is a tug of war between <b>Team Nice</b> and <b>Team Naughty</b>, and everyone is put on a team automatically. Players are dealt out down the leaderboard (1st is Nice, 2nd is Naughty, 3rd is Nice, and so on) so the teams are as even as possible, and new players join the smaller team. Every time you <b>cash out</b> a trade, the result moves your team's rope: a profit is <b>CASH</b> and adds points, a loss is <b>COLD</b> and takes points away. One cash-out counts for at most 250 points either way, so a single lucky bet cannot win it. The final bell rings at <b>12:00 AM Pacific on December 31</b>: every player on the <b>winning team gets 10% added to their balance</b>, and every player on the <b>losing team gets 10% taken off</b>. In a tie nothing changes.</p>
   <h2>Cash-out presents</h2><p>Every time you cash out, a present opens. If the trade made money, it's <b>CASH</b>. If it lost money, it's <b>COLD</b>.</p>
   <h2>Present Market</h2><p>At 12:00 AM Pacific every day, one open market becomes the <b>Present Market</b>. It is the same market for everyone, and nobody knows which one until the day begins, when it is highlighted on the Markets page. For that day, your profit when you <b>cash out</b> on it gets a <b>+50% bonus</b>. It never stacks with the Market of the Week.</p>
-  <h2>Advent Calendar</h2><p>From December 1 through December 31 you can open one door a day on the <a href="#/advent">Advent Calendar</a>. Only today's door (Pacific time) opens, so a door you miss stays closed. Every door has tokens, and the <b>★ doors</b> hide extra prizes: collectible banners and icons you cannot get anywhere else, and <b>Golden Boosts</b> that add a +25% to +50% bonus to the profit of your next profitable cash-out. Christmas Day (door 25) and New Year's Eve (door 31) are the biggest doors.</p>
+  <h2>Advent Calendar</h2><p>From December 1 through December 31 you can open one door a day on the <a href="#/advent">Advent Calendar</a>. Only today's door (Pacific time) opens, so a door you miss stays closed. Doors can hold tokens, collectible banners and icons you cannot get anywhere else, and power-ups: <b>Golden Boosts</b> (a +20% to +50% bonus on the profit of your next profitable cash-out), <b>Team Spirit</b> (extra points for your team that do not count for you), <b>Coal Shields</b> (your next cold cash-out costs your team nothing) and <b>Santa's Discounts</b> (pay only 75% of your next Secret Santa gift). Christmas Day (door 25) and New Year's Eve (door 31) are the biggest doors.</p>
   <h2>Secret Santa</h2><p>On the <a href="#/santa">Secret Santa</a> page you can send another player a gift of 5 to 1,000 tokens. <b>The gift comes out of your own balance.</b> They see that a Secret Santa sent it, and the names are revealed when the event ends. You can send 3 gifts a day and 5,000 tokens in total.</p>
   <h2>Player profiles</h2><p>Click any player on a leaderboard to see their portfolio and trade history. You can hide yours from other players on your Account page.</p>
   <h2>Daily streaks</h2><p>Make at least 5 trades in a day to build a streak. Buys and cash-outs both count, and days run midnight to midnight Pacific Time. Each streak day adds 0.1% to the profit on your cash-outs, up to 10%. Missing a day resets the bonus to 0%.</p>
@@ -1211,9 +1217,9 @@ const pgAdmin = () => `<h1>Admin tools</h1><div class="grid"><div class="card"><
   <div class="card"><b>Current admins</b><table>${STAFF.filter(s => s.role === 'admin').map(s => `<tr><td>${nm(s.username)}</td><td><button class="g" data-u="${esc(s.username)}" onclick="setRole(this.dataset.u,'user')">Remove</button></td></tr>`).join('') || '<tr><td class="mut">None yet</td></tr>'}</table></div>
   ${xmasAdminCard()}${prizeAdminCard()}${shopUploadCard()}${specialAdminCard()}</div>`;
 
-const xmasAdminCard = () => XM ? `<div class="card" style="grid-column:1/-1"><b>🎄 Naughty vs Nice</b><p class="mut">😇 Nice ${fnum(XM.nice.points)} points (${fnum(XM.nice.members)} players) vs 😈 Naughty ${fnum(XM.naughty.points)} points (${fnum(XM.naughty.members)} players). Final bell: ${contestEnd()}${XM.rolled ? ' · <b>already paid out</b>' : ''}. Team rewards and MVP prizes are paid automatically. The whole Christmas event ends with the season: ${eventEnd()}.</p></div>` : '';
+const xmasAdminCard = () => XM ? `<div class="card" style="grid-column:1/-1"><b>🎄 Naughty vs Nice</b><p class="mut">😇 Nice ${fnum(XM.nice.points)} points (${fnum(XM.nice.members)} players) vs 😈 Naughty ${fnum(XM.naughty.points)} points (${fnum(XM.naughty.members)} players). Final bell: ${contestEnd()}${XM.rolled ? ' · <b>already paid out</b>' : ''}. At the bell the winning team's balances go up ${XM.rewards.win_pct}% and the losing team's go down ${XM.rewards.lose_pct}%. The whole Christmas event ends with the season: ${eventEnd()}.</p></div>` : '';
 // ---------- Christmas prizes (owner): edit the banners and icons that the Christmas events give out ----------
-const PRIZES = [['bn_xmas_champ', 'Winning team banner'], ['ic_xmas_crown', 'Winning team icon'], ['bn_xmas_nice', 'Nice MVP banner'], ['ic_xmas_halo', 'Nice MVP icon'], ['bn_xmas_naughty', 'Naughty MVP banner'], ['ic_xmas_imp', 'Naughty MVP icon'], ['bn_xmas_head', 'Winter MVP banner'], ['ic_xmas_golden', 'Winter MVP icon'], ['ic_adv_snowman', 'Door 3 icon'], ['ic_adv_bell', 'Door 6 icon'], ['bn_adv_frost', 'Door 7 banner'], ['ic_adv_candy', 'Door 9 icon'], ['ic_adv_reindeer', 'Door 12 icon'], ['bn_adv_ginger', 'Door 14 banner'], ['ic_adv_star', 'Door 15 icon'], ['ic_adv_cookie', 'Door 18 icon'], ['bn_adv_aurora', 'Door 20 banner'], ['ic_adv_stocking', 'Door 21 icon'], ['ic_adv_santa', 'Door 24 icon'], ['bn_adv_morning', 'Door 25 banner'], ['ic_adv_christmas', 'Door 25 icon'], ['bn_adv_cozy', 'Door 27 banner'], ['bn_adv_midnight', 'Door 31 banner'], ['ic_adv_fireworks', 'Door 31 icon']];
+const PRIZES = [['ic_adv_snowman', 'Door 3 icon'], ['ic_adv_bell', 'Door 6 icon'], ['bn_adv_frost', 'Door 7 banner'], ['ic_adv_candy', 'Door 9 icon'], ['ic_adv_reindeer', 'Door 12 icon'], ['bn_adv_ginger', 'Door 14 banner'], ['ic_adv_star', 'Door 15 icon'], ['ic_adv_cookie', 'Door 17 icon'], ['bn_adv_aurora', 'Door 20 banner'], ['ic_adv_stocking', 'Door 22 icon'], ['ic_adv_santa', 'Door 24 icon'], ['bn_adv_morning', 'Door 25 banner'], ['ic_adv_christmas', 'Door 25 icon'], ['bn_adv_cozy', 'Door 27 banner'], ['bn_adv_midnight', 'Door 31 banner'], ['ic_adv_fireworks', 'Door 31 icon']];
 let PRZFILE = {};
 const prizeAdminCard = () => {
   const rows = PRIZES.map(([id, label]) => {
@@ -1439,7 +1445,7 @@ function pgInventory(){
     const h = holdersOf(x);
     return `<div class="card"><div class="dim">${itemPrev(x)}</div><div class="mut" style="margin-top:6px">${esc(x.name)} <span class="chip">LOCKED</span><br>Earned by having the ${esc(CRIT[x.criteria] || '').replace(/^./, c => c.toLowerCase())}<br>Held by: ${h.length ? h.map(u => nm(u)).join(' ') : 'nobody yet'}</div></div>`;
   };
-  const xmasCard = x => `<div class="card"><div class="dim">${itemPrev(x)}</div><div class="mut" style="margin-top:6px">${esc(x.name)} <span class="chip">LOCKED</span><br>${x.id.includes('_adv_') ? 'Hidden behind a ★ door of the Advent Calendar' : 'A prize from the Naughty vs Nice contest'}</div></div>`;
+  const xmasCard = x => `<div class="card"><div class="dim">${itemPrev(x)}</div><div class="mut" style="margin-top:6px">${esc(x.name)} <span class="chip">LOCKED</span><br>Hidden behind a door of the Advent Calendar</div></div>`;
   const earn = locked.map(lockedCard).join('') + xmasLocked.map(xmasCard).join('');
   return `<h1>Account</h1>${acctTabs('inventory')}
   <p class="mut">Everything you own. Equipped items show next to your name everywhere. Buy more in the <a href="#/shop">Shop</a>.</p>
@@ -1519,12 +1525,12 @@ function render(){
   const body = !pages[pg] ? '<p>Page not found.</p>' : (pg in ok && !ok[pg]) ? '<p class="mut">You do not have access to this page.</p>' : waiting ? '<p class="mut">Loading...</p>' : pages[pg]();
 
   $('#app').innerHTML = `<div id="shell"><nav><h2>EagleEye Market</h2>
-    ${link('teams', 'Naughty vs Nice', XM && !XM.me && XM.contest_open ? '!' : '')}${link('advent', 'Advent Calendar', doorReady() ? '1' : '')}${link('santa', 'Secret Santa', giftsUnseen() || '')}${link('markets', 'Markets')}${link('portfolio', 'Portfolio')}${link('leaderboard', 'Leaderboard')}${link('shop', 'Shop')}${link('ideas', 'Idea Box', ideaNew() || '')}${link('rules', 'Rules')}
+    ${link('teams', 'Naughty vs Nice')}${link('advent', 'Advent Calendar', doorReady() ? '1' : '')}${link('santa', 'Secret Santa', giftsUnseen() || '')}${link('markets', 'Markets')}${link('portfolio', 'Portfolio')}${link('leaderboard', 'Leaderboard')}${link('shop', 'Shop')}${link('ideas', 'Idea Box', ideaNew() || '')}${link('rules', 'Rules')}
     ${staff ? link('create', 'Create market') + link('review', 'Review', pend || '') : link('suggest', 'Suggest a market')}
     ${owner ? link('admin', 'Admin tools') : ''}
     <div class="navref"><span class="mut">Your referral link</span><input readonly value="${esc(refLink())}" onclick="this.select()" aria-label="Your referral link"><button onclick="navigator.clipboard.writeText(refLink());toast('Link copied!')">Copy link</button></div>
     <a href="#/account" class="me${pg === 'account' || pg === 'inventory' ? ' on' : ''}${meBn ? ' bn' : ''}"${meBn ? ` style="${esc(bannerStyle(meBn))}"` : ''}>${avatar(me.username, 30)}<span style="min-width:0"><b style="display:block;overflow:hidden;text-overflow:ellipsis">${esc(me.username)}</b><span class="mut">${(+me.balance).toFixed(0)} tokens</span></span></a>
-    </nav><main>${PAGE_STICKERS}<div id="rb">${giftBanner()}${eventBanner()}${pg === 'teams' ? '' : teamBanner()}</div>${body}</main></div><div id="stkw">${streakBadge()}</div>`;
+    </nav><main>${PAGE_STICKERS}<div id="rb">${giftBanner()}${pg === 'teams' ? '' : xmasBanner()}</div>${body}</main></div><div id="stkw">${streakBadge()}</div>`;
 
   for (const k in keep) { const el = document.getElementById(k); if (el) el.value = keep[k]; }
   if (pg === 'admin') { showShopPreview(); showSpecialPreview(); }
