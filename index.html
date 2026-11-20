@@ -20,7 +20,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none}
 [data-pat=winter] body::before{background:#0a1d5a}[data-pat=hanukkah] body::before{background:#123aa8}[data-pat=kwanzaa] body::before{background:#0c0c10}[data-pat=solstice] body::before{background:#4b1b78}[data-pat=posadas] body::before{background:#34104f}[data-pat=lucia] body::before{background:#0a1844}[data-pat=nye] body::before{background:#0b0f3a}
 /* Wrapping paper: the default background. Red paper with candy stripes and snowflake dots; trees and ornaments are drawn on top at random. */
 [data-pat=wrapping] body::before{background-color:#8f1620;background-image:repeating-linear-gradient(135deg,#ffffff17 0 12px,transparent 12px 44px),radial-gradient(circle at 22px 22px,#ffffffdd 2.4px,transparent 3.2px),radial-gradient(circle at 66px 66px,#f5c542 2.2px,transparent 3px);background-size:auto,88px 88px,88px 88px}
-[data-pat=ornaments] body::before{background:repeating-linear-gradient(45deg,#8f1620 0 28px,#b3202a 28px 56px)}
+[data-pat=ornaments] body::before{background:#0a2a1c}
 /* Color scheme follows the background: the holiday backgrounds recolor the whole site. Wrapping paper (default), Ornaments, Winter wonderland and the plain patterns keep the Christmas palette. */
 [data-pat=hanukkah]{--bg:#0b1f5c;--fg:#fdf9f0;--card:#10296f;--mut:#c3d3ff;--line:#2a4a9a;--bd:#6b93e6;--acc:#f5d76e;--side:#09194a;--hov:#1b3d94;--onacc:#1a1400;--hot:#3b82f6;--hot2:#60a5fa;--hot3:#1d4ed8;--hot4:#60a5fa;--hotbtn:linear-gradient(135deg,#60a5fa,#1d4ed8);--hotglow:#1d4ed8bb;--hotbd:#bfdbfe;--hotsh:#112e7a;--pill:linear-gradient(135deg,#3b82f6,#1d4ed8);--pillsh:#112e7a;--pillring:#bfdbfe;--pillglow:#1d4ed899;--tag:linear-gradient(135deg,#1d4ed8,#1d4ed8);--bnr:linear-gradient(110deg,#0b2a7a,#1d4ed8 55%,#3b82f6)}
 [data-pat=kwanzaa]{--bg:#111114;--fg:#fdf9f0;--card:#1b1b20;--mut:#cfd8cf;--line:#34343c;--bd:#4f9e5f;--acc:#f2b632;--side:#0d0d10;--hov:#2b2b32;--onacc:#1a1400;--hot:#dc2626;--hot2:#ef4444;--hot3:#991b1b;--hot4:#ef4444;--hotbtn:linear-gradient(135deg,#ef4444,#991b1b);--hotglow:#991b1bbb;--hotbd:#fca5a5;--hotsh:#5a0f0f;--pill:linear-gradient(135deg,#22c55e,#15803d);--pillsh:#0f5132;--pillring:#86efac;--pillglow:#15803d99;--tag:linear-gradient(135deg,#991b1b,#15803d);--bnr:linear-gradient(110deg,#991b1b,#1a1a1f 50%,#166534)}
@@ -643,6 +643,44 @@ function drawNye(g, W, H){
 }
 const BG_DRAW = {winter: drawWinter, hanukkah: drawHanukkah, kwanzaa: drawKwanzaa, solstice: drawSolstice, posadas: drawPosadas, lucia: drawLucia, nye: drawNye};
 
+// Ornaments: a tidy, repeating design. Gold garland wires hang in even rows, each with evenly spaced baubles in just three colors (red, gold, silver), over deep evergreen.
+function drawOrnaments(g, W, H){
+  const k = W > 860 ? 1 : .78, sx = 126 * k, sy = 114 * k, r = 21 * k, cx0 = W / 2, cy0 = H * .35;
+  const bg = g.createRadialGradient(cx0, cy0, 0, cx0, cy0, Math.max(W, H) * .85);
+  bg.addColorStop(0, '#17593d'); bg.addColorStop(1, '#0a2a1c'); g.fillStyle = bg; g.fillRect(0, 0, W, H);
+  const COL = [[353, 72, 50], [43, 82, 56], [210, 14, 80]], GOLD = '#e3b64a';
+  for (let i = 0; i * sy < H + sy; i++) {
+    const wy = i * sy + 12 * k, off = (i % 2) * sx / 2 - sx, hooks = [];
+    for (let x = off; x < W + sx; x += sx) hooks.push(x);
+    g.save(); g.strokeStyle = GOLD; g.lineWidth = 1.7 * k; g.lineCap = 'round'; g.shadowColor = 'rgba(0,0,0,.35)'; g.shadowBlur = 3;
+    g.beginPath(); g.moveTo(hooks[0], wy);
+    for (let h = 1; h < hooks.length; h++) g.quadraticCurveTo((hooks[h - 1] + hooks[h]) / 2, wy + 9 * k, hooks[h], wy);
+    g.stroke(); g.restore();
+    hooks.forEach((x, j) => {
+      const cy = wy + 34 * k + r, [hue, sat, lit] = COL[(j + i) % 3], v = (j + 2 * i) % 3;
+      g.save();
+      g.strokeStyle = 'rgba(227,182,74,.85)'; g.lineWidth = 1.2 * k; g.beginPath(); g.moveTo(x, wy); g.lineTo(x, cy - r - 6 * k); g.stroke();
+      g.fillStyle = GOLD; g.beginPath(); g.arc(x, wy, 2.2 * k, 0, 7); g.fill();
+      g.shadowColor = 'rgba(0,0,0,.4)'; g.shadowBlur = 7 * k; g.shadowOffsetY = 3 * k;
+      const gr = g.createRadialGradient(x - r * .35, cy - r * .4, r * .08, x, cy, r);
+      gr.addColorStop(0, `hsl(${hue},${sat}%,${Math.min(94, lit + 36)}%)`); gr.addColorStop(.5, `hsl(${hue},${sat}%,${lit}%)`); gr.addColorStop(1, `hsl(${hue},${sat}%,${Math.max(12, lit - 26)}%)`);
+      g.fillStyle = gr; g.beginPath(); g.arc(x, cy, r, 0, 7); g.fill();
+      g.shadowColor = 'transparent'; g.shadowBlur = 0; g.shadowOffsetY = 0;
+      g.strokeStyle = 'rgba(255,255,255,.6)'; g.fillStyle = 'rgba(255,255,255,.7)'; g.lineWidth = Math.max(1, r * .1);
+      if (v === 0) { g.beginPath(); g.ellipse(x, cy, r * .98, r * .3, 0, 0, 7); g.stroke(); }
+      else if (v === 1) { for (let d = -1; d <= 1; d++) { g.beginPath(); g.arc(x + d * r * .42, cy + r * .12, r * .08, 0, 7); g.fill(); } }
+      g.fillStyle = GOLD; g.fillRect(x - r * .24, cy - r - 5 * k, r * .48, 6 * k);
+      g.strokeStyle = GOLD; g.lineWidth = 1.4 * k; g.beginPath(); g.arc(x, cy - r - 7 * k, 2.4 * k, 0, 7); g.stroke();
+      g.fillStyle = 'rgba(255,255,255,.85)'; g.beginPath(); g.ellipse(x - r * .38, cy - r * .42, r * .17, r * .1, -.6, 0, 7); g.fill();
+      g.restore();
+      // a small gold sparkle halfway to the next bauble
+      const sx2 = x + sx / 2, sy2 = cy, s = 5 * k;
+      g.save(); g.globalAlpha = .5; g.fillStyle = GOLD; g.beginPath();
+      g.moveTo(sx2, sy2 - s); g.quadraticCurveTo(sx2, sy2, sx2 + s, sy2); g.quadraticCurveTo(sx2, sy2, sx2, sy2 + s); g.quadraticCurveTo(sx2, sy2, sx2 - s, sy2); g.quadraticCurveTo(sx2, sy2, sx2, sy2 - s); g.fill(); g.restore();
+    });
+  }
+}
+
 function drawLeafBg(){
   const mode = document.documentElement.dataset.pat;
   if (!BG_MODES.includes(mode)) return;
@@ -655,9 +693,7 @@ function drawLeafBg(){
   cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); cv.style.width = W + 'px'; cv.style.height = H + 'px';
   const g = cv.getContext('2d'); g.scale(dpr, dpr);
   if (kind === 'ornaments') {
-    const n = Math.round(W * H / 4600), arr = Array.from({length:n}, () => [rnd(0, W), rnd(30, H), rnd(9, 30)]).sort((a, b) => a[2] - b[2]);
-    for (const [x, y, r] of arr) bauble(g, x, y, r);
-    for (let k = 0; k < n / 6; k++) star(g, rnd(0, W), rnd(0, H), rnd(5, 11), 'rgba(250,204,21,.85)');
+    drawOrnaments(g, W, H);
   } else if (BG_DRAW[kind]) {
     BG_DRAW[kind](g, W, H);
   }
