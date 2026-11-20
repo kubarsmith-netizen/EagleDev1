@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-pat="wrapping">
+<html lang="en" data-pat="winter">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -819,7 +819,7 @@ root.dataset.theme = 'dark';
 const applyLook = () => {
   for (const k in CK) root.style.removeProperty(CK[k]);   // drop any custom colors saved before the lock
   root.dataset.theme = 'dark';
-  root.dataset.pat = PATS[me.pattern] ? me.pattern : 'wrapping';                // the background pattern is the only look setting left
+  root.dataset.pat = PATS[me.pattern] ? me.pattern : 'winter';                // the background pattern is the only look setting left
   if (BG_MODES.includes(root.dataset.pat)) drawLeafBg();
 };
 
@@ -1669,9 +1669,9 @@ function pgAccount(){
   const stat = (l, v) => `<div class="card"><div class="mut">${l}</div><div class="big">${v}</div></div>`;
   const hist = HIST.length ? `<table><tr><th>Time</th><th>Market</th><th>Action</th><th>Tokens</th><th>YES after</th></tr>${HIST.map(r =>
     `<tr><td>${new Date(r.ts).toLocaleString()}</td><td><a href="#/market/${r.market_id}">${esc(r.question)}</a></td><td>${r.kind === 'buy' ? 'Bought' : 'Cashed out'} ${r.side.toUpperCase()}</td><td>${(+r.tokens).toFixed(1)}</td><td>${(+r.price_yes * 100).toFixed(0)}%</td></tr>`).join('')}</table>` : '<p class="mut">No trades yet.</p>';
-  const patBtn = k => `<button class="g${(me.pattern || 'wrapping') === k ? ' sel' : ''}" onclick="look({pattern:'${k}'})">${PATS[k]}</button>`;
-  const patPick = () => `<div class="patgrp">Christmas</div><div class="patgrid">${['wrapping', 'ornaments', 'winter'].map(patBtn).join('')}</div><div class="patgrp">Other holidays</div><div class="patgrid">${['hanukkah', 'kwanzaa', 'solstice', 'posadas', 'lucia', 'nye'].map(patBtn).join('')}</div>`;
-  const pick = (obj, key) => `<div class="row">${Object.entries(obj).map(([k, v]) => `<button class="g${(me[key] || (key === 'pattern' ? 'wrapping' : 'light')) === k ? ' sel' : ''}" onclick="look({${key}:'${k}'})">${v}</button>`).join('')}</div>`;
+  const patBtn = k => `<button class="g${(me.pattern || 'winter') === k ? ' sel' : ''}" onclick="look({pattern:'${k}'})">${PATS[k]}</button>`;
+  const patPick = () => `<div class="patgrid">${['winter', 'wrapping', 'ornaments', 'hanukkah', 'kwanzaa', 'solstice', 'posadas', 'lucia', 'nye'].map(patBtn).join('')}</div>`;
+  const pick = (obj, key) => `<div class="row">${Object.entries(obj).map(([k, v]) => `<button class="g${(me[key] || (key === 'pattern' ? 'winter' : 'light')) === k ? ' sel' : ''}" onclick="look({${key}:'${k}'})">${v}</button>`).join('')}</div>`;
   return `<h1>Account</h1>${acctTabs('account')}
   <div class="card split" style="background:var(--grad)"><div class="row" style="margin:0">${avatar(me.username, 48)}<div>${nm(me.username)}<div class="mut">${me.role}</div></div></div><button class="g" onclick="sb.auth.signOut().then(load)">Log out</button></div>
   <div class="stats">${stat('Tokens', (+me.balance).toFixed(1))}${stat('Net worth', (+s.net_worth || 0).toFixed(1))}${stat('Net profit', (p >= 0 ? '+' : '') + p.toFixed(1))}${stat('Trades', s.trades || 0)}</div>
