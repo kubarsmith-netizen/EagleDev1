@@ -167,14 +167,15 @@ th{color:var(--acc);font-weight:600;font-size:12px;border-bottom:var(--bw) solid
 .sm .lbr{min-height:46px}
 .sm .lbr .nm{font-size:14px}
 #stk{position:fixed;top:26px;right:36px;z-index:8;display:flex;flex-direction:column-reverse;align-items:flex-end;gap:10px}
-.stk-btn{display:flex;align-items:center;justify-content:center;gap:.25em;min-width:160px;min-height:80px;padding:0 28px;border:0;border-radius:999px;font-size:34px;line-height:1;font-weight:700;color:#fff;background:var(--pill,linear-gradient(135deg,#22c55e,#15803d));box-shadow:0 5px 0 var(--pillsh,#0f5132),0 10px 22px var(--pillglow,#15803d99),inset 0 0 0 2px var(--pillring,#86efac);text-shadow:0 2px 0 var(--pillsh,#0f5132)}
-.stk-btn b{font-size:1em;line-height:1}
+.stk-btn{display:flex;align-items:center;justify-content:center;gap:6px;min-width:112px;min-height:52px;padding:0 18px;border:0;border-radius:999px;font-size:18px;line-height:1;font-weight:700;color:#fff;background:var(--pill,linear-gradient(135deg,#22c55e,#15803d));box-shadow:0 5px 0 var(--pillsh,#0f5132),0 8px 18px var(--pillglow,#15803d99),inset 0 0 0 2px var(--pillring,#86efac);text-shadow:0 1px 3px #0f513299}
+.stk-btn .tk{font-size:22px;line-height:1}
+.stk-btn b{font-size:18px}
 .stk-btn:hover{filter:brightness(1.1)}
 @keyframes stkpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
 .stk-btn:not(.off){animation:stkpulse 2.6s ease-in-out infinite}
 .stk-panel{background:var(--card);border:var(--bw) solid var(--acc);border-radius:8px;padding:14px 16px;width:280px}
 .stk-panel p{margin:6px 0 0}
-@media(min-width:861px){#rb{margin-right:180px}}
+@media(min-width:861px){#rb{margin-right:112px}}
 .boardwrap{display:grid;grid-template-columns:7fr 4fr;gap:20px;align-items:start}
 .boardwrap>div{min-width:0}
 .sm h1{font-size:21px}
@@ -690,14 +691,7 @@ addEventListener('resize', () => { clearTimeout(leafT); leafT = setTimeout(() =>
 })();
 // the rim: a slim, mixed border hugging the edge of the screen (holly, berries, baubles and a few festive emojis)
 let rimT;
-const RIM_EMO = ['🎄', '⭐', '🔔', '🎁', '🍬', '🧦', '❄️', '🕯️', '🍪', '🦌', '🎀'];
-function miniBall(g, x, y, r){
-  const hue = [0, 45, 140, 210, 330, 275][Math.floor(Math.random() * 6)], gr = g.createRadialGradient(x - r * .35, y - r * .4, r * .1, x, y, r);
-  gr.addColorStop(0, `hsl(${hue},75%,80%)`); gr.addColorStop(.5, `hsl(${hue},70%,50%)`); gr.addColorStop(1, `hsl(${hue},70%,28%)`);
-  g.save(); g.fillStyle = '#d4af37'; g.fillRect(x - r * .26, y - r * 1.18, r * .52, r * .34);
-  g.shadowColor = 'rgba(0,0,0,.35)'; g.shadowBlur = r * .5; g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, 7); g.fill();
-  g.shadowBlur = 0; g.fillStyle = 'rgba(255,255,255,.8)'; g.beginPath(); g.ellipse(x - r * .35, y - r * .4, r * .18, r * .11, -.6, 0, 7); g.fill(); g.restore();
-}
+const RIM_EMO = ['🎄', '🎄', '🔔'];
 function rimEmoji(g, x, y, s, a){
   g.save(); g.translate(x, y); g.rotate(a); g.font = `${s}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`;
   g.textAlign = 'center'; g.textBaseline = 'middle'; g.shadowColor = 'rgba(0,0,0,.35)'; g.shadowBlur = 3;
@@ -710,29 +704,21 @@ function buildRim(){
   r.innerHTML = '<canvas></canvas>';
   const cv = r.firstChild; cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); cv.style.cssText = `position:absolute;left:0;top:0;width:${W}px;height:${H}px`;
   const g = cv.getContext('2d'); g.scale(dpr, dpr);
-  const k = wide ? 1 : .8, gap = () => (wide ? 52 : 44) * rnd(.8, 1.6), off = () => rnd(-5, 1) * k, jit = () => rnd(-.9, .9), slots = [];
-  for (let x = -4; x < W + 4; x += gap()) { slots.push([x, off(), Math.PI / 2 + jit()]); slots.push([x + rnd(-18, 18), H - off(), -Math.PI / 2 + jit()]); }
-  for (let y = 20; y < H - 20; y += gap()) { slots.push([off(), y, jit()]); slots.push([W - off(), y + rnd(-14, 14), Math.PI + jit()]); }
-  const back = [], front = [];
-  for (const [x, y, a] of slots) {
-    const t = Math.random(), inx = Math.cos(a), iny = Math.sin(a);
-    if (t < .34) {                                   // holly sprig: three leaves and berries
-      const s = rnd(.26, .4) * k;
-      back.push(() => hollyLeaf(g, x, y, rnd(22, 32) * k, a + rnd(-1.2, 1.2), -4));
-      front.push(() => holly(g, x, y, s, a));
-    } else if (t < .5) {                             // a lone leaf pair with a single berry
-      const L = rnd(20, 30) * k;
-      front.push(() => { hollyLeaf(g, x, y, L, a - .6 + rnd(-.2, .2), 0); hollyLeaf(g, x, y, L * rnd(.8, 1), a + .6 + rnd(-.2, .2), 4); berry(g, x + inx * 4, y + iny * 4, 3.2 * k); });
-    } else if (t < .62) {                            // berry cluster on one leaf
-      const L = rnd(18, 26) * k, br = 2.8 * k;
-      front.push(() => { hollyLeaf(g, x, y, L, a + rnd(-.5, .5), 0); const cx = x + inx * 7, cy = y + iny * 7; berry(g, cx, cy, br); berry(g, cx + 5 * k, cy + 3 * k, br * .9); berry(g, cx - 3 * k, cy + 5 * k, br * .85); });
-    } else if (t < .78) {                            // little bauble
-      front.push(() => miniBall(g, x + inx * rnd(7, 12), y + iny * rnd(7, 12), rnd(5, 8) * k));
-    } else {                                         // festive emoji
-      front.push(() => rimEmoji(g, x + inx * rnd(9, 13), y + iny * rnd(9, 13), rnd(15, 21) * k, rnd(-.5, .5)));
-    }
-  }
-  back.forEach(f => f()); front.forEach(f => f());
+  const k = wide ? 1 : .8, off = () => rnd(-5, 1) * k, jit = () => rnd(-.9, .9);
+  // walk the four edges in small, overlapping steps so the garland never has a gap; corners get extra pieces
+  const edge = (len, f, step) => { for (let p = -6; p < len + 6; p += step * rnd(.7, 1.1)) f(p); };
+  const dense = [], sprig = [], deco = [];
+  const slot = (list, x, y, a) => list.push([x, y, a]);
+  const sides = (list, step) => {
+    edge(W, x => { slot(list, x, off(), Math.PI / 2 + jit()); slot(list, x + rnd(-6, 6), H - off(), -Math.PI / 2 + jit()); }, step);
+    edge(H, y => { slot(list, off(), y, jit()); slot(list, W - off(), y + rnd(-6, 6), Math.PI + jit()); }, step);
+  };
+  sides(dense, 14 * k);                                  // base layer of leaves, tightly overlapped
+  sides(sprig, 30 * k);                                  // holly sprigs with berries on top
+  sides(deco, 82 * k);                                   // trees and bells now and then
+  for (const [x, y, a] of dense) hollyLeaf(g, x, y, rnd(22, 32) * k, a + rnd(-1.2, 1.2), -4);
+  for (const [x, y, a] of sprig) holly(g, x, y, rnd(.26, .4) * k, a);
+  for (const [x, y, a] of deco) rimEmoji(g, x + Math.cos(a) * rnd(9, 13), y + Math.sin(a) * rnd(9, 13), rnd(16, 21) * k, rnd(-.4, .4));
 }
 buildRim();
 addEventListener('resize', () => { clearTimeout(rimT); rimT = setTimeout(buildRim, 250); });
@@ -1758,7 +1744,7 @@ function streakBadge(){
   const panel = STK_OPEN ? `<div class="stk-panel"><b>Daily streak</b>
     <p>Streak: <b>${n}</b> day${n === 1 ? '' : 's'}</p><p>Trades today: <b>${t} / ${g}</b></p><p>Cash-out bonus: <b>${pct.toFixed(1)}%</b> of profit</p>
     <p class="mut">${status}</p><p class="mut">+0.1% per streak day, max 10%. Missing a day resets it. Days run midnight to midnight Pacific.</p></div>` : '';
-  return `<div id="stk">${panel}${xmasFab()}<button class="stk-btn${n ? '' : ' off'}" onclick="toggleStk()" aria-label="Streak details" title="Daily trading streak">🔥 <b>${n}</b></button></div>`;
+  return `<div id="stk">${panel}${xmasFab()}<button class="stk-btn${n ? '' : ' off'}" onclick="toggleStk()" aria-label="Streak details" title="Daily trading streak"><span class="tk">🔥</span><b>${n}</b></button></div>`;
 }
 
 // ---------- shell + router ----------
