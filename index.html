@@ -15,13 +15,9 @@
 :root{--grad:linear-gradient(120deg,color-mix(in srgb,var(--acc) 22%,var(--card)),color-mix(in srgb,var(--acc) 5%,var(--card)))}
 /* Background pattern lives on a fixed layer, so it stays put while the page scrolls */
 body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none}
-[data-pat=dots] body::before{background-image:radial-gradient(var(--line) 1px,transparent 1px);background-size:16px 16px}
-[data-pat=grid] body::before{background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:28px 28px}
-[data-pat=lines] body::before{background-image:repeating-linear-gradient(45deg,var(--line) 0 1px,transparent 1px 14px)}
 #leafbg{display:none;position:fixed;left:0;top:0;z-index:-1;pointer-events:none}
-[data-pat=ornaments] #leafbg,[data-pat=winter] #leafbg,[data-pat=hanukkah] #leafbg,[data-pat=kwanzaa] #leafbg,[data-pat=solstice] #leafbg,[data-pat=posadas] #leafbg,[data-pat=lucia] #leafbg,[data-pat=bodhi] #leafbg,[data-pat=nye] #leafbg{display:block}
-[data-pat=winter] body::before{background:#0a1d5a}[data-pat=hanukkah] body::before{background:#123aa8}[data-pat=kwanzaa] body::before{background:#0c0c10}[data-pat=solstice] body::before{background:#4b1b78}[data-pat=posadas] body::before{background:#34104f}[data-pat=lucia] body::before{background:#0a1844}[data-pat=bodhi] body::before{background:#063236}[data-pat=nye] body::before{background:#0b0f3a}
-[data-pat=plaid] body::before{background-image:repeating-linear-gradient(0deg,#dc262680 0 18px,transparent 18px 46px),repeating-linear-gradient(90deg,#dc262680 0 18px,transparent 18px 46px),repeating-linear-gradient(0deg,color-mix(in srgb,var(--acc) 16%,transparent) 0 3px,transparent 3px 23px),repeating-linear-gradient(90deg,color-mix(in srgb,var(--acc) 16%,transparent) 0 3px,transparent 3px 23px),repeating-linear-gradient(0deg,var(--line) 0 2px,transparent 2px 10px)}
+[data-pat=ornaments] #leafbg,[data-pat=winter] #leafbg,[data-pat=hanukkah] #leafbg,[data-pat=kwanzaa] #leafbg,[data-pat=solstice] #leafbg,[data-pat=posadas] #leafbg,[data-pat=lucia] #leafbg,[data-pat=nye] #leafbg{display:block}
+[data-pat=winter] body::before{background:#0a1d5a}[data-pat=hanukkah] body::before{background:#123aa8}[data-pat=kwanzaa] body::before{background:#0c0c10}[data-pat=solstice] body::before{background:#4b1b78}[data-pat=posadas] body::before{background:#34104f}[data-pat=lucia] body::before{background:#0a1844}[data-pat=nye] body::before{background:#0b0f3a}
 /* Wrapping paper: the default background. Red paper with candy stripes and snowflake dots; trees and ornaments are drawn on top at random. */
 [data-pat=wrapping] body::before{background-color:#8f1620;background-image:repeating-linear-gradient(135deg,#ffffff17 0 12px,transparent 12px 44px),radial-gradient(circle at 22px 22px,#ffffffdd 2.4px,transparent 3.2px),radial-gradient(circle at 66px 66px,#f5c542 2.2px,transparent 3px);background-size:auto,88px 88px,88px 88px}
 [data-pat=ornaments] body::before{background:repeating-linear-gradient(45deg,#8f1620 0 28px,#b3202a 28px 56px)}
@@ -31,8 +27,10 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none}
 [data-pat=solstice]{--bg:#2a0f47;--fg:#fdf9f0;--card:#371560;--mut:#dccbf5;--line:#5a3590;--bd:#9a74d8;--acc:#ffd166;--side:#240c3d;--hov:#4a2080;--onacc:#1a1400;--hot:#a855f7;--hot2:#c084fc;--hot3:#6d28d9;--hot4:#c084fc;--hotbtn:linear-gradient(135deg,#c084fc,#6d28d9);--hotglow:#6d28d9bb;--hotbd:#e9d5ff;--hotsh:#3b1280;--pill:linear-gradient(135deg,#a855f7,#6d28d9);--pillsh:#3b1280;--pillring:#e9d5ff;--pillglow:#6d28d999;--tag:linear-gradient(135deg,#6d28d9,#6d28d9);--bnr:linear-gradient(110deg,#4c1d95,#6d28d9 55%,#a855f7)}
 [data-pat=posadas]{--bg:#2a0d3f;--fg:#fdf9f0;--card:#3a1458;--mut:#e6cdf5;--line:#602d88;--bd:#b06ad8;--acc:#ff9f43;--side:#220a35;--hov:#4d1d73;--onacc:#1a1400;--hot:#ec4899;--hot2:#f472b6;--hot3:#be185d;--hot4:#f472b6;--hotbtn:linear-gradient(135deg,#f472b6,#be185d);--hotglow:#be185dbb;--hotbd:#fbcfe8;--hotsh:#6b0f3a;--pill:linear-gradient(135deg,#ec4899,#be185d);--pillsh:#6b0f3a;--pillring:#fbcfe8;--pillglow:#be185d99;--tag:linear-gradient(135deg,#be185d,#be185d);--bnr:linear-gradient(110deg,#9d174d,#be185d 50%,#ea580c)}
 [data-pat=lucia]{--bg:#0a1844;--fg:#fdf9f0;--card:#10245c;--mut:#cbd8f5;--line:#284586;--bd:#7595dc;--acc:#ffd966;--side:#08133a;--hov:#1a3478;--onacc:#1a1400;--hot:#f43f5e;--hot2:#fb7185;--hot3:#be123c;--hot4:#fb7185;--hotbtn:linear-gradient(135deg,#fb7185,#be123c);--hotglow:#be123cbb;--hotbd:#fecdd3;--hotsh:#6b0f26;--pill:linear-gradient(135deg,#60a5fa,#2563eb);--pillsh:#12306e;--pillring:#bfdbfe;--pillglow:#2563eb99;--tag:linear-gradient(135deg,#be123c,#2563eb);--bnr:linear-gradient(110deg,#0f2f7f,#2563eb 55%,#be123c)}
-[data-pat=bodhi]{--bg:#052a2d;--fg:#fdf9f0;--card:#0a3d41;--mut:#bfeae3;--line:#17707a;--bd:#43b8a6;--acc:#f4c95d;--side:#04222a;--hov:#10525a;--onacc:#1a1400;--hot:#e879a8;--hot2:#f0abc9;--hot3:#be3b78;--hot4:#f0abc9;--hotbtn:linear-gradient(135deg,#f0abc9,#be3b78);--hotglow:#be3b78bb;--hotbd:#fbcfe8;--hotsh:#6b1a40;--pill:linear-gradient(135deg,#14b8a6,#0f766e);--pillsh:#064e3b;--pillring:#99f6e4;--pillglow:#0f766e99;--tag:linear-gradient(135deg,#be3b78,#0f766e);--bnr:linear-gradient(110deg,#0f766e,#0e9488 55%,#be3b78)}
 [data-pat=nye]{--bg:#080b2e;--fg:#fdf9f0;--card:#10164a;--mut:#c9cff6;--line:#2c3590;--bd:#6f7de0;--acc:#ffd84d;--side:#060926;--hov:#1b2366;--onacc:#1a1400;--hot:#ec4899;--hot2:#f472b6;--hot3:#be185d;--hot4:#f472b6;--hotbtn:linear-gradient(135deg,#f472b6,#be185d);--hotglow:#be185dbb;--hotbd:#fbcfe8;--hotsh:#6b0f3a;--pill:linear-gradient(135deg,#6366f1,#4338ca);--pillsh:#272a8a;--pillring:#c7d2fe;--pillglow:#4338ca99;--tag:linear-gradient(135deg,#be185d,#4338ca);--bnr:linear-gradient(110deg,#312e81,#4338ca 55%,#be185d)}
+.patgrp{margin:14px 0 6px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.patgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.patgrid button{width:100%;margin:0;padding:10px 12px;text-align:center;white-space:nowrap}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 Fraunces,Georgia,serif;-webkit-font-smoothing:antialiased}
 h1{margin:0 0 8px;font-size:25px;font-weight:700;letter-spacing:-.01em}
@@ -379,7 +377,7 @@ const AV = ['🦅','🐺','🦊','🐼','🐯','🦁','🐸','🐙','🦉','🐧
 const CK = {bg:'--bg', card:'--card', fg:'--fg', acc:'--acc'};
 const AVURL = SUPABASE_URL + '/storage/v1/object/public/avatars/';
 const SHOPURL = SUPABASE_URL + '/storage/v1/object/public/shop-art/';
-const PATS = {wrapping:'Wrapping paper', ornaments:'Ornaments', winter:'Winter wonderland', hanukkah:'Hanukkah', kwanzaa:'Kwanzaa', solstice:'Winter solstice', posadas:'Las Posadas', lucia:'St. Lucia Day', bodhi:'Bodhi Day', nye:"New Year's Eve", dots:'Dots', grid:'Grid', lines:'Lines', plaid:'Plaid'};
+const PATS = {wrapping:'Wrapping paper', ornaments:'Ornaments', winter:'Winter wonderland', hanukkah:'Hanukkah', kwanzaa:'Kwanzaa', solstice:'Winter solstice', posadas:'Las Posadas', lucia:'St. Lucia Day', nye:"New Year's Eve"};
 const CRIT = {top_streak:'Highest daily streak (ties share it)', top_referrals:'Most referrals (ties share it)', top_trades:'Most trades in the Trading Frenzy (ties share it)'};
 const IC = {markets:'M3 17l6-6 4 4 8-8M15 7h6v6', portfolio:'M3 8h18v12H3zM8 8V5h8v3', leaderboard:'M6 20V10M12 20V4M18 20v-7', shop:'M5 7h14l-1 13H6zM9 7a3 3 0 016 0', rules:'M6 3h12v18H6zM9 8h6M9 12h6', suggest:'M12 5v14M5 12h14', create:'M12 5v14M5 12h14', review:'M5 12l5 5 9-10', admin:'M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z', ideas:'M9 18h6M10 21h4M12 3a6 6 0 00-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0012 3z', teams:'M4 4l16 16M20 4L4 20M3 8l5-5M16 21l5-5M21 8l-5-5M8 21l-5-5', advent:'M5 5h14a1 1 0 011 1v14H4V6a1 1 0 011-1zM4 10h16M8 3v4M16 3v4M8 14h1M12 14h1M16 14h1M8 17h1M12 17h1', santa:'M4 11h16v9H4zM3 7h18v4H3zM12 7v13M12 7C9 7 7 5.5 8 4s4 1 4 3zM12 7c3 0 5-1.5 4-3s-4 1-4 3z'};
 const svg = d => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg>`;
@@ -390,7 +388,7 @@ const rnd = (a, b) => a + Math.random() * (b - a);
 
 // Decorated backgrounds, drawn fresh at random on a canvas every visit: Ornaments (a ton of baubles on red stripes) and Holly (deep green leaves with red berries)
 let LEAFBG = null;
-const BG_MODES = ['ornaments', 'winter', 'hanukkah', 'kwanzaa', 'solstice', 'posadas', 'lucia', 'bodhi', 'nye'];
+const BG_MODES = ['ornaments', 'winter', 'hanukkah', 'kwanzaa', 'solstice', 'posadas', 'lucia', 'nye'];
 const ORN_PAL = [[45, 85, 52, 60], [140, 60, 32, 42], [210, 75, 45, 55], [275, 60, 45, 55], [330, 70, 60, 68], [210, 10, 66, 74], [175, 65, 38, 46], [0, 0, 86, 92]];
 function bauble(g, x, y, r){
   const [hue, sat, l1, l2] = ORN_PAL[Math.floor(Math.random() * ORN_PAL.length)], lit = rnd(l1, l2);
@@ -621,17 +619,6 @@ function lilyPad(g, x, y, r){
   g.strokeStyle = 'rgba(190,255,215,.35)'; g.lineWidth = 1; for (let i = 0; i < 6; i++) { g.beginPath(); g.moveTo(0, 0); g.lineTo(Math.cos(1 + i) * r * .9, Math.sin(1 + i) * r * .9); g.stroke(); }
   g.restore();
 }
-function drawBodhi(g, W, H){
-  skyFill(g, W, H, [[0, '#031a1c'], [.5, '#063236'], [1, '#0b4a46']]);
-  softGlow(g, W * rnd(.3, .7), H * .25, Math.max(W, H) * .4, 'rgba(120,255,220,.12)', 'rgba(120,255,220,0)');
-  g.strokeStyle = 'rgba(190,255,240,.14)'; g.lineWidth = 1.2;
-  for (let i = 0; i < W * H / 30000; i++) { const x = rnd(0, W), y = rnd(0, H), r = rnd(14, 46); for (let k = 1; k <= 3; k++) { g.beginPath(); g.ellipse(x, y, r * k * .45, r * k * .45 * .4, 0, 0, 7); g.stroke(); } }
-  const pads = Array.from({length: Math.round(W * H / 16000)}, () => [rnd(0, W), rnd(0, H), rnd(22, 60)]).sort((a, b) => a[1] - b[1]);
-  for (const [x, y, r] of pads) lilyPad(g, x, y, r);
-  const lot = Array.from({length: Math.round(W * H / 70000)}, () => [rnd(0, W), rnd(H * .1, H), rnd(26, 60)]).sort((a, b) => a[1] - b[1]);
-  for (const [x, y, r] of lot) lotus(g, x, y, r);
-  for (let i = 0; i < W * H / 40000; i++) softGlow(g, rnd(0, W), rnd(0, H), rnd(5, 12), 'rgba(255,232,140,.85)', 'rgba(255,232,140,0)');
-}
 function burst(g, x, y, R, hue){
   const n = Math.round(rnd(34, 60)), white = Math.random() < .3;
   softGlow(g, x, y, R * .5, `hsla(${hue},100%,70%,.35)`, `hsla(${hue},100%,70%,0)`);
@@ -654,7 +641,7 @@ function drawNye(g, W, H){
   for (let i = 0; i < W * H / 2600; i++) { g.save(); g.translate(rnd(0, W), rnd(0, H)); g.rotate(rnd(0, 6.28)); g.globalAlpha = rnd(.5, 1); g.fillStyle = conf[Math.floor(Math.random() * conf.length)]; g.fillRect(-3, -1.5, rnd(4, 8), rnd(2, 4)); g.restore(); }
   for (let x = -10; x < W; ) { const w = rnd(30, 80), h = rnd(H * .05, H * .2); g.fillStyle = '#04051a'; g.fillRect(x, H - h, w, h); g.fillStyle = 'rgba(255,216,102,.75)'; for (let wx = x + 5; wx < x + w - 6; wx += 10) for (let wy = H - h + 8; wy < H - 6; wy += 12) if (Math.random() < .3) g.fillRect(wx, wy, 4, 5); x += w + rnd(0, 6); }
 }
-const BG_DRAW = {winter: drawWinter, hanukkah: drawHanukkah, kwanzaa: drawKwanzaa, solstice: drawSolstice, posadas: drawPosadas, lucia: drawLucia, bodhi: drawBodhi, nye: drawNye};
+const BG_DRAW = {winter: drawWinter, hanukkah: drawHanukkah, kwanzaa: drawKwanzaa, solstice: drawSolstice, posadas: drawPosadas, lucia: drawLucia, nye: drawNye};
 
 function drawLeafBg(){
   const mode = document.documentElement.dataset.pat;
@@ -1646,6 +1633,8 @@ function pgAccount(){
   const stat = (l, v) => `<div class="card"><div class="mut">${l}</div><div class="big">${v}</div></div>`;
   const hist = HIST.length ? `<table><tr><th>Time</th><th>Market</th><th>Action</th><th>Tokens</th><th>YES after</th></tr>${HIST.map(r =>
     `<tr><td>${new Date(r.ts).toLocaleString()}</td><td><a href="#/market/${r.market_id}">${esc(r.question)}</a></td><td>${r.kind === 'buy' ? 'Bought' : 'Cashed out'} ${r.side.toUpperCase()}</td><td>${(+r.tokens).toFixed(1)}</td><td>${(+r.price_yes * 100).toFixed(0)}%</td></tr>`).join('')}</table>` : '<p class="mut">No trades yet.</p>';
+  const patBtn = k => `<button class="g${(me.pattern || 'wrapping') === k ? ' sel' : ''}" onclick="look({pattern:'${k}'})">${PATS[k]}</button>`;
+  const patPick = () => `<div class="patgrp">Christmas</div><div class="patgrid">${['wrapping', 'ornaments', 'winter'].map(patBtn).join('')}</div><div class="patgrp">Other holidays</div><div class="patgrid">${['hanukkah', 'kwanzaa', 'solstice', 'posadas', 'lucia', 'nye'].map(patBtn).join('')}</div>`;
   const pick = (obj, key) => `<div class="row">${Object.entries(obj).map(([k, v]) => `<button class="g${(me[key] || (key === 'pattern' ? 'wrapping' : 'light')) === k ? ' sel' : ''}" onclick="look({${key}:'${k}'})">${v}</button>`).join('')}</div>`;
   return `<h1>Account</h1>${acctTabs('account')}
   <div class="card split" style="background:var(--grad)"><div class="row" style="margin:0">${avatar(me.username, 48)}<div>${nm(me.username)}<div class="mut">${me.role}</div></div></div><button class="g" onclick="sb.auth.signOut().then(load)">Log out</button></div>
@@ -1658,7 +1647,7 @@ function pgAccount(){
     <div class="card"><b>Username</b><input id="nu" value="${esc(me.username)}" maxlength="20"><div class="row"><button onclick="rpc('change_username',{p_name:$('#nu').value},'Username updated')">Save username</button></div><p class="mut" style="margin-bottom:0">3-20 letters, numbers, . _ - · once every 24 hours.</p></div>
     <div class="card"><b>Privacy</b><p class="mut">Other players can open your profile from the leaderboards. Choose whether they can see your portfolio and trade history.</p>
       <div class="row"><button class="g${me.show_activity !== false ? ' sel' : ''}" onclick="setVisible(true)">Visible</button><button class="g${me.show_activity === false ? ' sel' : ''}" onclick="setVisible(false)">Hidden</button></div></div>
-    <div class="card"><b>Background pattern</b><p class="mut">The Christmas theme is the same for everyone. Wrapping paper is the default. Pick the pattern behind the page.</p>${pick(PATS, 'pattern')}</div>
+    <div class="card"><b>Background</b><p class="mut">Wrapping paper is the default. The holiday backgrounds also recolor the site.</p>${patPick()}</div>
     <div class="card"><b>Banner and icon</b><p class="mut">Buy them in the <a href="#/shop">Shop</a>, then equip them from your <a href="#/inventory">Inventory</a>.</p></div>
     <div class="card"><b>Your referral link</b><p class="mut">Earn ${REFERRER_BONUS} tokens for every friend who signs up and confirms their email. They get ${FRIEND_BONUS} too.</p><input readonly value="${esc(refLink())}" onclick="this.select()"><div class="row"><button onclick="navigator.clipboard.writeText(refLink());toast('Link copied!')">Copy link</button></div></div>
     ${me.role === 'user' ? `<div class="card"><b>Have an admin invite code?</b><input id="ic" placeholder="Code"><div class="row"><button onclick="redeem()">Redeem</button></div></div>` : ''}
