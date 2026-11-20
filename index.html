@@ -11,7 +11,7 @@
 <style>
 :root{--bw:1.5px;--onacc:#fff;--onyn:#fff}
 /* ---------- Christmas palette (LOCKED). Nobody can switch color themes. ---------- */
-:root{--bg:#0e2a1c;--fg:#fdf6e8;--card:#133a28;--mut:#bfd9c6;--line:#1f5238;--bd:#3d7a58;--yes:#5fe39a;--no:#ff7b7b;--acc:#f5c542;--side:#0b2418;--hov:#1c4d35;--onacc:#06210f;--onyn:#06210f;--stk:drop-shadow(1.5px 0 0 #fffaf0) drop-shadow(-1.5px 0 0 #fffaf0) drop-shadow(0 1.5px 0 #fffaf0) drop-shadow(0 -1.5px 0 #fffaf0) drop-shadow(0 3px 4px #0a2a1a88)}
+:root{--bg:#0e2a1c;--fg:#fdf6e8;--card:#133a28;--mut:#bfd9c6;--line:#27664a;--bd:#5a9f7b;--yes:#5fe39a;--no:#ff7b7b;--acc:#f5c542;--side:#0b2418;--hov:#1c4d35;--onacc:#06210f;--onyn:#06210f;--stk:drop-shadow(1.5px 0 0 #fffaf0) drop-shadow(-1.5px 0 0 #fffaf0) drop-shadow(0 1.5px 0 #fffaf0) drop-shadow(0 -1.5px 0 #fffaf0) drop-shadow(0 3px 4px #0a2a1a88)}
 :root{--grad:linear-gradient(120deg,color-mix(in srgb,var(--acc) 22%,var(--card)),color-mix(in srgb,var(--acc) 5%,var(--card)))}
 /* Background pattern lives on a fixed layer, so it stays put while the page scrolls */
 body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none}
@@ -25,6 +25,14 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none}
 /* Wrapping paper: the default background. Red paper with candy stripes and snowflake dots; trees and ornaments are drawn on top at random. */
 [data-pat=wrapping] body::before{background-color:#8f1620;background-image:repeating-linear-gradient(135deg,#ffffff17 0 12px,transparent 12px 44px),radial-gradient(circle at 22px 22px,#ffffffdd 2.4px,transparent 3.2px),radial-gradient(circle at 66px 66px,#f5c542 2.2px,transparent 3px);background-size:auto,88px 88px,88px 88px}
 [data-pat=ornaments] body::before{background:repeating-linear-gradient(45deg,#8f1620 0 28px,#b3202a 28px 56px)}
+/* Color scheme follows the background: the holiday backgrounds recolor the whole site. Wrapping paper (default), Ornaments, Winter wonderland and the plain patterns keep the Christmas palette. */
+[data-pat=hanukkah]{--bg:#0b1f5c;--fg:#fdf9f0;--card:#10296f;--mut:#c3d3ff;--line:#2a4a9a;--bd:#6b93e6;--acc:#f5d76e;--side:#09194a;--hov:#1b3d94;--onacc:#1a1400;--hot:#3b82f6;--hot2:#60a5fa;--hot3:#1d4ed8;--hot4:#60a5fa;--hotbtn:linear-gradient(135deg,#60a5fa,#1d4ed8);--hotglow:#1d4ed8bb;--hotbd:#bfdbfe;--hotsh:#112e7a;--pill:linear-gradient(135deg,#3b82f6,#1d4ed8);--pillsh:#112e7a;--pillring:#bfdbfe;--pillglow:#1d4ed899;--tag:linear-gradient(135deg,#1d4ed8,#1d4ed8);--bnr:linear-gradient(110deg,#0b2a7a,#1d4ed8 55%,#3b82f6)}
+[data-pat=kwanzaa]{--bg:#111114;--fg:#fdf9f0;--card:#1b1b20;--mut:#cfd8cf;--line:#34343c;--bd:#4f9e5f;--acc:#f2b632;--side:#0d0d10;--hov:#2b2b32;--onacc:#1a1400;--hot:#dc2626;--hot2:#ef4444;--hot3:#991b1b;--hot4:#ef4444;--hotbtn:linear-gradient(135deg,#ef4444,#991b1b);--hotglow:#991b1bbb;--hotbd:#fca5a5;--hotsh:#5a0f0f;--pill:linear-gradient(135deg,#22c55e,#15803d);--pillsh:#0f5132;--pillring:#86efac;--pillglow:#15803d99;--tag:linear-gradient(135deg,#991b1b,#15803d);--bnr:linear-gradient(110deg,#991b1b,#1a1a1f 50%,#166534)}
+[data-pat=solstice]{--bg:#2a0f47;--fg:#fdf9f0;--card:#371560;--mut:#dccbf5;--line:#5a3590;--bd:#9a74d8;--acc:#ffd166;--side:#240c3d;--hov:#4a2080;--onacc:#1a1400;--hot:#a855f7;--hot2:#c084fc;--hot3:#6d28d9;--hot4:#c084fc;--hotbtn:linear-gradient(135deg,#c084fc,#6d28d9);--hotglow:#6d28d9bb;--hotbd:#e9d5ff;--hotsh:#3b1280;--pill:linear-gradient(135deg,#a855f7,#6d28d9);--pillsh:#3b1280;--pillring:#e9d5ff;--pillglow:#6d28d999;--tag:linear-gradient(135deg,#6d28d9,#6d28d9);--bnr:linear-gradient(110deg,#4c1d95,#6d28d9 55%,#a855f7)}
+[data-pat=posadas]{--bg:#2a0d3f;--fg:#fdf9f0;--card:#3a1458;--mut:#e6cdf5;--line:#602d88;--bd:#b06ad8;--acc:#ff9f43;--side:#220a35;--hov:#4d1d73;--onacc:#1a1400;--hot:#ec4899;--hot2:#f472b6;--hot3:#be185d;--hot4:#f472b6;--hotbtn:linear-gradient(135deg,#f472b6,#be185d);--hotglow:#be185dbb;--hotbd:#fbcfe8;--hotsh:#6b0f3a;--pill:linear-gradient(135deg,#ec4899,#be185d);--pillsh:#6b0f3a;--pillring:#fbcfe8;--pillglow:#be185d99;--tag:linear-gradient(135deg,#be185d,#be185d);--bnr:linear-gradient(110deg,#9d174d,#be185d 50%,#ea580c)}
+[data-pat=lucia]{--bg:#0a1844;--fg:#fdf9f0;--card:#10245c;--mut:#cbd8f5;--line:#284586;--bd:#7595dc;--acc:#ffd966;--side:#08133a;--hov:#1a3478;--onacc:#1a1400;--hot:#f43f5e;--hot2:#fb7185;--hot3:#be123c;--hot4:#fb7185;--hotbtn:linear-gradient(135deg,#fb7185,#be123c);--hotglow:#be123cbb;--hotbd:#fecdd3;--hotsh:#6b0f26;--pill:linear-gradient(135deg,#60a5fa,#2563eb);--pillsh:#12306e;--pillring:#bfdbfe;--pillglow:#2563eb99;--tag:linear-gradient(135deg,#be123c,#2563eb);--bnr:linear-gradient(110deg,#0f2f7f,#2563eb 55%,#be123c)}
+[data-pat=bodhi]{--bg:#052a2d;--fg:#fdf9f0;--card:#0a3d41;--mut:#bfeae3;--line:#17707a;--bd:#43b8a6;--acc:#f4c95d;--side:#04222a;--hov:#10525a;--onacc:#1a1400;--hot:#e879a8;--hot2:#f0abc9;--hot3:#be3b78;--hot4:#f0abc9;--hotbtn:linear-gradient(135deg,#f0abc9,#be3b78);--hotglow:#be3b78bb;--hotbd:#fbcfe8;--hotsh:#6b1a40;--pill:linear-gradient(135deg,#14b8a6,#0f766e);--pillsh:#064e3b;--pillring:#99f6e4;--pillglow:#0f766e99;--tag:linear-gradient(135deg,#be3b78,#0f766e);--bnr:linear-gradient(110deg,#0f766e,#0e9488 55%,#be3b78)}
+[data-pat=nye]{--bg:#080b2e;--fg:#fdf9f0;--card:#10164a;--mut:#c9cff6;--line:#2c3590;--bd:#6f7de0;--acc:#ffd84d;--side:#060926;--hov:#1b2366;--onacc:#1a1400;--hot:#ec4899;--hot2:#f472b6;--hot3:#be185d;--hot4:#f472b6;--hotbtn:linear-gradient(135deg,#f472b6,#be185d);--hotglow:#be185dbb;--hotbd:#fbcfe8;--hotsh:#6b0f3a;--pill:linear-gradient(135deg,#6366f1,#4338ca);--pillsh:#272a8a;--pillring:#c7d2fe;--pillglow:#4338ca99;--tag:linear-gradient(135deg,#be185d,#4338ca);--bnr:linear-gradient(110deg,#312e81,#4338ca 55%,#be185d)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 Fraunces,Georgia,serif;-webkit-font-smoothing:antialiased}
 h1{margin:0 0 8px;font-size:25px;font-weight:700;letter-spacing:-.01em}
@@ -91,7 +99,7 @@ main{flex:1;padding:30px 38px;min-width:0}
 a{color:var(--acc)}
 .chip{background:var(--hov);color:var(--acc);border:var(--bw) solid var(--bd);border-radius:6px;padding:0 7px;font-size:11px;font-weight:600}
 .tags{margin:0 0 10px}
-.tag{display:inline-block;padding:2px 10px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,#dc2626,#15803d);border-radius:4px}
+.tag{display:inline-block;padding:2px 10px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--tag,linear-gradient(135deg,#dc2626,#15803d));border-radius:4px}
 input,button,select,textarea{font:inherit;padding:9px 12px;border-radius:6px;border:var(--bw) solid var(--bd);background:var(--bg);color:var(--fg)}
 input,textarea{width:100%;margin-top:8px}
 textarea{resize:vertical}
@@ -105,9 +113,9 @@ button.y{background:var(--yes);border-color:var(--yes);color:var(--onyn)}button.
 button.g{background:none;color:var(--fg);border:var(--bw) solid var(--bd)}
 button.g:hover:not(:disabled){border-color:var(--acc);color:var(--acc)}
 /* the red Christmas call-to-action button */
-button.tk,.btn.tk{background:linear-gradient(135deg,#ef4444,#b91c1c);border-color:#fca5a5;color:#fff;text-shadow:0 1px 2px #3b0a0a88;box-shadow:0 3px 0 #7f1d1d}
+button.tk,.btn.tk{background:var(--hotbtn,linear-gradient(135deg,#ef4444,#b91c1c));border-color:var(--hotbd,#fca5a5);color:#fff;text-shadow:0 1px 2px #3b0a0a88;box-shadow:0 3px 0 var(--hotsh,#7f1d1d)}
 button.tk:hover:not(:disabled){filter:brightness(1.1);animation:wiggle .5s}
-button.tk:active:not(:disabled){transform:translateY(2px);box-shadow:0 1px 0 #7f1d1d}
+button.tk:active:not(:disabled){transform:translateY(2px);box-shadow:0 1px 0 var(--hotsh,#7f1d1d)}
 @keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-2.5deg)}75%{transform:rotate(2.5deg)}}
 .btn{display:inline-block;padding:9px 14px;border-radius:6px;background:var(--acc);color:var(--onacc);cursor:pointer;font-weight:600}
 label.up{flex:none;min-width:0}
@@ -136,7 +144,7 @@ th{color:var(--acc);font-weight:600;font-size:12px;border-bottom:var(--bw) solid
 .lk input{flex:1 1 120px;max-width:260px;width:auto;min-width:0;margin:0;padding:6px 9px;font-size:13px}
 .lk button{padding:6px 11px;white-space:nowrap}
 .rc{display:inline-block;background:var(--card);border:var(--bw) solid var(--bd);border-radius:6px;padding:3px 10px;white-space:nowrap}
-.ev-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:14px 18px;margin:0 0 16px;border-radius:18px;border:var(--bw) solid #f5c542;background:linear-gradient(110deg,#7f1d1d,#b91c1c 55%,#166534);color:#fff}
+.ev-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:14px 18px;margin:0 0 16px;border-radius:18px;border:var(--bw) solid var(--acc);background:var(--bnr,linear-gradient(110deg,#7f1d1d,#b91c1c 55%,#166534));color:#fff}
 .ev-bar a{color:#fff;font-weight:600}
 .ev-bar .rc{background:#ffffff22;border-color:#ffffff44;color:#fff}
 .ev-bar .blurb{flex:2 1 280px}
@@ -149,7 +157,7 @@ th{color:var(--acc);font-weight:600;font-size:12px;border-bottom:var(--bw) solid
 .lbh,.lbr{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;padding:6px 14px}
 .lbh{color:var(--acc);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em;border-bottom:var(--bw) solid var(--bd);padding-bottom:8px;margin-bottom:2px}
 .lbh span:last-child,.lbr .val{text-align:right}
-.lbr{color:inherit;text-decoration:none;cursor:pointer;border:var(--bw) solid var(--line);border-radius:8px;min-height:58px}
+.lbr{color:inherit;text-decoration:none;cursor:pointer;border:var(--bw) solid var(--bd);border-radius:8px;min-height:58px}
 .lbr .nm{font-size:16px;font-weight:600;padding:0}
 .lbr .av{margin-right:12px}
 .lbr .val{font-weight:600}
@@ -159,15 +167,14 @@ th{color:var(--acc);font-weight:600;font-size:12px;border-bottom:var(--bw) solid
 .sm .lbr{min-height:46px}
 .sm .lbr .nm{font-size:14px}
 #stk{position:fixed;top:26px;right:36px;z-index:8;display:flex;flex-direction:column-reverse;align-items:flex-end;gap:10px}
-.stk-btn{display:flex;align-items:center;justify-content:center;gap:6px;min-width:112px;min-height:52px;padding:0 18px;border:0;border-radius:999px;font-size:22px;line-height:1;font-weight:700;color:#fff;background:linear-gradient(135deg,#22c55e,#15803d);box-shadow:0 6px 22px #15803dbb,inset 0 0 0 var(--bw) #ffffff77;text-shadow:0 1px 3px #0f513299}
-.stk-btn b{font-size:18px}
+.stk-btn{display:flex;align-items:center;justify-content:center;gap:.25em;min-width:160px;min-height:80px;padding:0 28px;border:0;border-radius:999px;font-size:34px;line-height:1;font-weight:700;color:#fff;background:var(--pill,linear-gradient(135deg,#22c55e,#15803d));box-shadow:0 5px 0 var(--pillsh,#0f5132),0 10px 22px var(--pillglow,#15803d99),inset 0 0 0 2px var(--pillring,#86efac);text-shadow:0 2px 0 var(--pillsh,#0f5132)}
+.stk-btn b{font-size:1em;line-height:1}
 .stk-btn:hover{filter:brightness(1.1)}
-.stk-btn.off{background:linear-gradient(135deg,#22c55e,#15803d);opacity:.72;box-shadow:0 4px 14px #15803d88,inset 0 0 0 var(--bw) #ffffff55}
 @keyframes stkpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
 .stk-btn:not(.off){animation:stkpulse 2.6s ease-in-out infinite}
 .stk-panel{background:var(--card);border:var(--bw) solid var(--acc);border-radius:8px;padding:14px 16px;width:280px}
 .stk-panel p{margin:6px 0 0}
-@media(min-width:861px){#rb{margin-right:112px}}
+@media(min-width:861px){#rb{margin-right:180px}}
 .boardwrap{display:grid;grid-template-columns:7fr 4fr;gap:20px;align-items:start}
 .boardwrap>div{min-width:0}
 .sm h1{font-size:21px}
@@ -210,14 +217,14 @@ nav a,.chip,.rc,.rank,.nm{border-radius:12px}
 .meter i{position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:repeating-linear-gradient(135deg,#ef4444 0 14px,#fff 14px 22px);transition:width .8s}
 .meter .mk25,.meter .mk50,.meter .mk75{position:absolute;top:0;bottom:0;width:2px;background:#ffffff66}
 .meter .mk25{left:25%}.meter .mk50{left:50%}.meter .mk75{left:75%}
-.xmas-bar{margin:0 0 16px;padding:14px 18px;border-radius:18px;border:var(--bw) solid #f5c542;background:linear-gradient(110deg,#a11221,#c8202f 50%,#166534);color:#fff;position:relative;overflow:hidden}
+.xmas-bar{margin:0 0 16px;padding:14px 18px;border-radius:18px;border:var(--bw) solid var(--acc);background:var(--bnr,linear-gradient(110deg,#a11221,#c8202f 50%,#166534));color:#fff;position:relative;overflow:hidden}
 .xmas-bar a{color:#fff;font-weight:700;text-decoration:underline}
 .xmas-bar .fb-top{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px}
 .xmas-bar .fb-top .sp{flex:1}
 .xmas-bar .meter{height:20px;margin:10px 0 0;background:#00000040;border-color:#ffffff88}
-.xmas-hero{background:linear-gradient(135deg,color-mix(in srgb,#dc2626 24%,var(--card)),var(--card));border-color:#f5c542}
+.xmas-hero{background:linear-gradient(135deg,color-mix(in srgb,var(--hot,#dc2626) 24%,var(--card)),var(--card));border-color:var(--acc)}
 .xmas-hero .pts{font-size:34px;font-weight:700;font-family:Fraunces,Georgia,serif}
-.xmas-fab{display:flex;align-items:center;justify-content:center;gap:6px;min-width:112px;min-height:52px;border:0;border-radius:999px;padding:0 18px;font-size:18px;line-height:1;font-weight:700;color:#fff;text-decoration:none;background:linear-gradient(135deg,#ef4444,#b91c1c);box-shadow:0 6px 22px #b91c1cbb,inset 0 0 0 var(--bw) #ffffff77;text-shadow:0 1px 3px #3b0a0aaa}
+.xmas-fab{display:flex;align-items:center;justify-content:center;gap:6px;min-width:112px;min-height:52px;border:0;border-radius:999px;padding:0 18px;font-size:18px;line-height:1;font-weight:700;color:#fff;text-decoration:none;background:var(--hotbtn,linear-gradient(135deg,#ef4444,#b91c1c));box-shadow:0 6px 22px var(--hotglow,#b91c1cbb),inset 0 0 0 var(--bw) #ffffff77;text-shadow:0 1px 3px #3b0a0aaa}
 .xmas-fab:hover{filter:brightness(1.1)}
 .xmas-fab .tk{font-size:22px}
 .tug{margin:10px 0 2px}
@@ -228,7 +235,7 @@ nav a,.chip,.rc,.rank,.nm{border-radius:12px}
 .xmas-bar .xb-msg{margin-top:8px;font-size:13.5px}
 .xmas-bar .xb-msg a{color:#fff}
 .xmas-bar .xb-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.xmas-bar a.pill{display:inline-flex;align-items:center;gap:7px;padding:7px 15px;border-radius:999px;background:linear-gradient(135deg,#22c55e,#15803d);color:#fff;text-decoration:none;font-weight:700;font-size:13.5px;box-shadow:0 2px 0 #0f5132;white-space:nowrap}
+.xmas-bar a.pill{display:inline-flex;align-items:center;gap:7px;padding:7px 15px;border-radius:999px;background:var(--pill,linear-gradient(135deg,#22c55e,#15803d));color:#fff;text-decoration:none;font-weight:700;font-size:13.5px;box-shadow:0 2px 0 var(--pillsh,#0f5132);white-space:nowrap}
 .xmas-bar a.pill:hover{filter:brightness(1.08)}
 .bchip{display:inline-block;margin:2px 6px 2px 0;padding:3px 10px;border-radius:999px;background:#ffffff26;border:1px solid #ffffff66;font-size:12.5px;font-weight:700}
 .card .bchip{background:color-mix(in srgb,var(--acc) 22%,var(--card));border-color:var(--acc)}
@@ -306,15 +313,15 @@ nav a{white-space:nowrap;gap:9px}
 .event-bar .ev-txt{flex:1 1 260px;min-width:0}
 .event-bar .ev-txt a{color:var(--acc);font-weight:700}
 .event-bar .links{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
-.event-bar a.pill{display:inline-flex;align-items:center;gap:7px;padding:7px 15px;border-radius:999px;background:linear-gradient(135deg,#22c55e,#15803d);color:#fff;text-decoration:none;font-weight:700;font-size:13.5px;box-shadow:0 2px 0 #0f5132;white-space:nowrap}
+.event-bar a.pill{display:inline-flex;align-items:center;gap:7px;padding:7px 15px;border-radius:999px;background:var(--pill,linear-gradient(135deg,#22c55e,#15803d));color:#fff;text-decoration:none;font-weight:700;font-size:13.5px;box-shadow:0 2px 0 var(--pillsh,#0f5132);white-space:nowrap}
 .event-bar a.pill:hover{filter:brightness(1.08)}
 /* a bit more red, here and there */
-nav a.on{box-shadow:inset 3px 0 0 #dc2626}
-.navmeter{border-color:#b91c2c}
-.card{border-top-color:#c8202f}
-.stk-panel{border-color:#dc2626}
-.chip{border-color:color-mix(in srgb,#dc2626 55%,var(--bd))}
-input:focus,select:focus,textarea:focus{outline:none;border-color:#ef4444}
+nav a.on{box-shadow:inset 3px 0 0 var(--hot,#dc2626)}
+.navmeter{border-color:var(--hot3,#b91c2c)}
+.card{border-top-color:var(--hot2,#c8202f)}
+.stk-panel{border-color:var(--hot,#dc2626)}
+.chip{border-color:color-mix(in srgb,var(--hot,#dc2626) 55%,var(--bd))}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--hot4,#ef4444)}
 #rim canvas{display:block}
 </style>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%84%3C/text%3E%3C/svg%3E">
@@ -681,20 +688,51 @@ addEventListener('resize', () => { clearTimeout(leafT); leafT = setTimeout(() =>
   }
   document.body.prepend(d);
 })();
-// the rim: leaves piled along all four edges of the screen, like the pile that used to sit at the bottom
+// the rim: a slim, mixed border hugging the edge of the screen (holly, berries, baubles and a few festive emojis)
 let rimT;
+const RIM_EMO = ['🎄', '⭐', '🔔', '🎁', '🍬', '🧦', '❄️', '🕯️', '🍪', '🦌', '🎀'];
+function miniBall(g, x, y, r){
+  const hue = [0, 45, 140, 210, 330, 275][Math.floor(Math.random() * 6)], gr = g.createRadialGradient(x - r * .35, y - r * .4, r * .1, x, y, r);
+  gr.addColorStop(0, `hsl(${hue},75%,80%)`); gr.addColorStop(.5, `hsl(${hue},70%,50%)`); gr.addColorStop(1, `hsl(${hue},70%,28%)`);
+  g.save(); g.fillStyle = '#d4af37'; g.fillRect(x - r * .26, y - r * 1.18, r * .52, r * .34);
+  g.shadowColor = 'rgba(0,0,0,.35)'; g.shadowBlur = r * .5; g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, 7); g.fill();
+  g.shadowBlur = 0; g.fillStyle = 'rgba(255,255,255,.8)'; g.beginPath(); g.ellipse(x - r * .35, y - r * .4, r * .18, r * .11, -.6, 0, 7); g.fill(); g.restore();
+}
+function rimEmoji(g, x, y, s, a){
+  g.save(); g.translate(x, y); g.rotate(a); g.font = `${s}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`;
+  g.textAlign = 'center'; g.textBaseline = 'middle'; g.shadowColor = 'rgba(0,0,0,.35)'; g.shadowBlur = 3;
+  g.fillText(RIM_EMO[Math.floor(Math.random() * RIM_EMO.length)], 0, 0); g.restore();
+}
 function buildRim(){
   let r = $('#rim');
   if (!r) { r = document.createElement('div'); r.id = 'rim'; r.setAttribute('aria-hidden', 'true'); document.body.appendChild(r); }
-  const W = innerWidth, H = innerHeight, wide = W > 860, dpr = Math.min(window.devicePixelRatio || 1, 1.5), step = wide ? 38 : 32;
+  const W = innerWidth, H = innerHeight, wide = W > 860, dpr = Math.min(window.devicePixelRatio || 1, 1.5);
   r.innerHTML = '<canvas></canvas>';
   const cv = r.firstChild; cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); cv.style.cssText = `position:absolute;left:0;top:0;width:${W}px;height:${H}px`;
   const g = cv.getContext('2d'); g.scale(dpr, dpr);
-  const sc = () => wide ? rnd(.52, .76) : rnd(.38, .56), off = () => wide ? rnd(2, 9) : rnd(1, 5), pts = [], jit = () => rnd(-.9, .9);
-  for (let x = -10; x < W + 10; x += step) { pts.push([x + rnd(-6, 6), off(), Math.PI / 2 + jit()]); pts.push([x + rnd(-6, 6), H - off(), -Math.PI / 2 + jit()]); }
-  for (let y = 10; y < H - 10; y += step) { pts.push([off(), y + rnd(-6, 6), jit()]); pts.push([W - off(), y + rnd(-6, 6), Math.PI + jit()]); }
-  for (const [x, y, a] of pts) hollyLeaf(g, x, y, rnd(40, 58) * (wide ? .8 : .6), a + rnd(-1.2, 1.2), -4);   // dark leaves behind
-  for (const [x, y, a] of pts) holly(g, x, y, sc(), a);                                                          // sprigs with red berries in front
+  const k = wide ? 1 : .8, gap = () => (wide ? 52 : 44) * rnd(.8, 1.6), off = () => rnd(-5, 1) * k, jit = () => rnd(-.9, .9), slots = [];
+  for (let x = -4; x < W + 4; x += gap()) { slots.push([x, off(), Math.PI / 2 + jit()]); slots.push([x + rnd(-18, 18), H - off(), -Math.PI / 2 + jit()]); }
+  for (let y = 20; y < H - 20; y += gap()) { slots.push([off(), y, jit()]); slots.push([W - off(), y + rnd(-14, 14), Math.PI + jit()]); }
+  const back = [], front = [];
+  for (const [x, y, a] of slots) {
+    const t = Math.random(), inx = Math.cos(a), iny = Math.sin(a);
+    if (t < .34) {                                   // holly sprig: three leaves and berries
+      const s = rnd(.26, .4) * k;
+      back.push(() => hollyLeaf(g, x, y, rnd(22, 32) * k, a + rnd(-1.2, 1.2), -4));
+      front.push(() => holly(g, x, y, s, a));
+    } else if (t < .5) {                             // a lone leaf pair with a single berry
+      const L = rnd(20, 30) * k;
+      front.push(() => { hollyLeaf(g, x, y, L, a - .6 + rnd(-.2, .2), 0); hollyLeaf(g, x, y, L * rnd(.8, 1), a + .6 + rnd(-.2, .2), 4); berry(g, x + inx * 4, y + iny * 4, 3.2 * k); });
+    } else if (t < .62) {                            // berry cluster on one leaf
+      const L = rnd(18, 26) * k, br = 2.8 * k;
+      front.push(() => { hollyLeaf(g, x, y, L, a + rnd(-.5, .5), 0); const cx = x + inx * 7, cy = y + iny * 7; berry(g, cx, cy, br); berry(g, cx + 5 * k, cy + 3 * k, br * .9); berry(g, cx - 3 * k, cy + 5 * k, br * .85); });
+    } else if (t < .78) {                            // little bauble
+      front.push(() => miniBall(g, x + inx * rnd(7, 12), y + iny * rnd(7, 12), rnd(5, 8) * k));
+    } else {                                         // festive emoji
+      front.push(() => rimEmoji(g, x + inx * rnd(9, 13), y + iny * rnd(9, 13), rnd(15, 21) * k, rnd(-.5, .5)));
+    }
+  }
+  back.forEach(f => f()); front.forEach(f => f());
 }
 buildRim();
 addEventListener('resize', () => { clearTimeout(rimT); rimT = setTimeout(buildRim, 250); });
