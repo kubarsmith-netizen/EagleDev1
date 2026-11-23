@@ -351,7 +351,11 @@ const SUPABASE_KEY = 'sb_publishable_2FD2bNN5kt9U954xwnfidg_HEZu7b2M';
 const ALLOWED_DOMAINS = ['headroyce.org'];
 const REFERRER_BONUS = 700, FRIEND_BONUS = 100; // keep equal to v_ref_bonus / v_new_bonus in the award_referral SQL function
 
+// ---- password reset: flags + auth listener ----
+let RECOVERY = /type=recovery/.test(location.hash); // true while a password-reset link is being used
+const LINK_EXPIRED = /error_code=otp_expired|error_description=.*(expired|invalid)/i.test(location.hash);
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+sb.auth.onAuthStateChange(ev => { if (ev === 'PASSWORD_RECOVERY') { RECOVERY = true; setTimeout(load, 0); } });
 try { const r = new URLSearchParams(location.search).get('ref'); if (r) localStorage.setItem('ref', r.trim().toLowerCase().slice(0, 16)); } catch (e) {}
 const savedRef = () => { try { return localStorage.getItem('ref') || ''; } catch (e) { return ''; } };
 const $ = s => document.querySelector(s);
@@ -873,7 +877,41 @@ function authView(){
   $('#app').innerHTML = `<div style="max-width:400px;margin:12vh auto;padding:16px;position:relative;z-index:1"><div class="card"><h1>EagleEye Market</h1>
   <p class="mut">🎄 Happy Holidays! Please sign up with your Head-Royce email</p>
   <input id="u" placeholder="Username (sign up only, 3-20 letters/numbers)" maxlength="20"><input id="e" type="email" placeholder="Email"><input id="p" type="password" placeholder="Password" minlength="8">
-  <div class="row"><button class="tk" onclick="auth(true)">🎄 Log in</button><button class="g" onclick="auth(false)">Sign up</button></div></div></div>`;
+  <div class="row" style="align-items:center"><button class="tk" onclick="auth(true)">🎄 Log in</button><button class="g" onclick="auth(false)">Sign up</button><a href="#" onclick="forgotPassword();return false" style="margin-left:auto;font-size:13px;text-decoration:underline;cursor:pointer;white-space:nowrap">Forgot Password?</a></div></div></div>`;
+}
+
+// ---------- password reset ----------
+async function forgotPassword(){
+  const email = $('#e').value.trim();
+  if (!email) return toast('Type your email in the Email box first, then tap Forgot password.');
+  const r = await sb.auth.resetPasswordForEmail(email, {redirectTo: location.origin + location.pathname});
+  if (r.error) return toast(r.error.message);
+  toast('If that email has an account, a password reset link is on its way. Check your inbox.');
+}
+
+function resetView(){
+  $('#app').innerHTML = `<div style="max-width:400px;margin:12vh auto;padding:16px;position:relative;z-index:1"><div class="card"><h1>Reset password</h1>
+  <p class="mut">Choose a new password for your account.</p>
+  <input id="np" type="password" placeholder="New password (8+ characters)" minlength="8"><input id="np2" type="password" placeholder="Confirm new password" minlength="8">
+  <div class="row"><button class="tk" onclick="setNewPassword()">Update password</button><button class="g" onclick="cancelReset()">Cancel</button></div></div></div>`;
+}
+async function setNewPassword(){
+  const a = $('#np').value, b = $('#np2').value;
+  if (a.length < 8) return toast('Use a password of at least 8 characters.');
+  if (a !== b) return toast('The two passwords do not match.');
+  const r = await sb.auth.updateUser({password: a});
+  if (r.error) return toast(r.error.message);
+  await sb.auth.signOut();
+  RECOVERY = false; me = null; resetCaches();
+  history.replaceState(null, '', location.pathname + location.search);
+  authView();
+  toast('Password updated! Log in with your new password.');
+}
+async function cancelReset(){
+  await sb.auth.signOut();
+  RECOVERY = false; me = null; resetCaches();
+  history.replaceState(null, '', location.pathname + location.search);
+  authView();
 }
 async function auth(login){
   const email = $('#e').value.trim(), password = $('#p').value, username = $('#u').value.trim();
@@ -906,7 +944,7 @@ const FETCH = {
   final: async () => { const r = await sb.from('season_final').select('place,username,score').order('place'); FINAL = r.data || []; return r; },
   staff: async () => { const r = await sb.from('profiles').select('username,role').neq('role','user'); STAFF = r.data || []; return r; },
   inv: async () => { const r = await sb.from('invite_codes').select('code,used_by'); INV = r.data || []; return r; },
-  pr: async () => { const r = await sb.from('proposals').select('id,question,closes_at,status,note,cooldown_seconds,profiles(username)').order('created_at', {ascending:false}).limit(100); PR = r.data || []; return r; },
+  pr: async () => { const r = await sb.from('proposals').select('id,question,closes_at,status,note,cooldown_seconds,proposer,admin_made,profiles(username)').order('created_at', {ascending:false}).limit(100); PR = r.data || []; return r; },
   streak: async () => { const r = await sb.rpc('my_streak'); STK = (r.data && r.data[0]) || null; return r; },
   sboard: async () => { const r = await sb.rpc('streak_board'); SBD = r.data || []; return r; },
   co: async () => { const r = await sb.rpc('cosmetics'); CO = {}; (r.data || []).forEach(x => { CO[x.username] = x; }); return r; },
@@ -984,6 +1022,8 @@ function resetCaches(){
 
 async function load(){
   const {data:{session}} = await sb.auth.getSession();
+  if (RECOVERY && !session) RECOVERY = false;
+  if (RECOVERY) { me = null; return render(); }
   if (!session) { me = null; resetCaches(); return render(); }
   const [a, b, c, d] = await Promise.all([
     sb.from('profiles').select().eq('id', session.user.id).single(),
@@ -1463,7 +1503,7 @@ const pgCreate = () => `<h1>Create market</h1><div class="card narrow"><input id
   <div class="row"><label class="mut">Closes (optional)<input id="d" type="datetime-local"></label></div><div class="row"><button class="tk" onclick="mk()">🎄 Create market</button></div></div>`;
 
 function pgReview(){
-  const pend = PR.filter(p => p.status === 'pending'), done = PR.filter(p => p.status !== 'pending');
+  const pend = PR.filter(p => p.status === 'pending' && !(p.admin_made && p.proposer === me.id)), done = PR.filter(p => p.status !== 'pending');
   return `<h1>Review suggestions</h1><div class="grid">${pend.map(p => `<div class="card"><span class="mut">From ${p.profiles ? nm(p.profiles.username) : '?'}${p.closes_at ? ' · closes ' + new Date(p.closes_at).toLocaleString() : ''}</span>
     <input id="pq${p.id}" value="${esc(p.question)}" maxlength="300">
     <div class="row"><label class="mut">Opening YES %<input id="po${p.id}" type="number" value="50"></label><label class="mut">Cooldown (hours)<input id="pc${p.id}" type="number" step="0.5" value="${+((p.cooldown_seconds || 3600) / 3600).toFixed(2)}"></label></div>
@@ -1775,12 +1815,13 @@ function streakBadge(){
 // ---------- shell + router ----------
 function render(){
   lastRender = Date.now();
+  if (RECOVERY) return resetView();
   if (!me) return authView();
   const keep = {};
   document.querySelectorAll('input[id],textarea[id],select[id]').forEach(i => keep[i.id] = i.value);
   const [pg, arg] = (location.hash.slice(2) || 'markets').split('/');
   const staff = me.role !== 'user', owner = me.role === 'owner';
-  const pend = PR.filter(p => p.status === 'pending').length;
+  const pend = PR.filter(p => p.status === 'pending' && !(p.admin_made && p.proposer === me.id)).length;
   const meBn = itemById(me.banner);
   const link = (id, label, badge) => `<a href="#/${id}" class="${id === pg || (id === 'markets' && pg === 'market') || (id === 'leaderboard' && pg === 'user') ? 'on' : ''}">${ico(IC[id])}${label}${badge ? `<span class="chip">${badge}</span>` : ''}</a>`;
   const pages = {markets: pgMarkets, market: () => pgMarket(+arg), portfolio: pgPortfolio, leaderboard: pgBoard, teams: pgTeams, advent: pgAdvent, santa: pgSanta, user: () => pgUser(decodeURIComponent(arg || '')), shop: pgShop, ideas: pgIdeas, rules: pgRules, suggest: pgSuggest, create: pgCreate, review: pgReview, admin: pgAdmin, account: pgAccount, inventory: pgInventory};
@@ -1899,7 +1940,8 @@ function quickBet(ev, id, side){
 }
 
 async function mk(){
-  const id = await rpc('create_market', {p_question:$('#q').value, p_yes:$('#o').value/100, p_cooldown:Math.round($('#c').value*3600), p_closes:$('#d').value ? new Date($('#d').value).toISOString() : null});
+  const adm = me.role === 'admin';   // an admin's market goes to the other admins for approval instead of going live
+  const id = await rpc('create_market', {p_question:$('#q').value, p_yes:$('#o').value/100, p_cooldown:Math.round($('#c').value*3600), p_closes:$('#d').value ? new Date($('#d').value).toISOString() : null}, adm ? 'Submitted! Another admin or the owner has to approve your market before it goes live.' : null);
   if (id) { toast('Market created'); go('market/' + id); }
 }
 
@@ -1933,6 +1975,8 @@ async function checkReferralAlerts(){
 setInterval(() => { if (!document.hidden) checkReferralAlerts(); }, 30000);
 
 load().then(checkReferralAlerts);
+// ---- password reset: expired / already-used link message ----
+if (LINK_EXPIRED) { history.replaceState(null, '', location.pathname + location.search); setTimeout(() => toast('That reset link has expired or was already used. Tap Forgot password to get a new one.'), 400); }
 </script>
 </body>
 </html>
